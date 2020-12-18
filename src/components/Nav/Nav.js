@@ -1,5 +1,5 @@
 // React
-import React, { useState } from "react";
+import React from "react";
 
 // FIXME: THIS NEEDS TO BE IMPLEMENTED
 // React Router
