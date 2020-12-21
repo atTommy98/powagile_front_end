@@ -1,19 +1,20 @@
 // React
 import React, { useState } from "react";
 
-// FIXME: THIS NEEDS TO BE IMPLEMENTED
-// React Router
-// import { Router, Route, Switch, Link } from "react-router";
-
-import "@fortawesome/fontawesome-svg-core";
-
+// Other Pages
 import LogInButton from "../../components/Login/LogInButton/LogInButton";
 import LogOutButton from "../../components/Login/LogOutButton/LogOutButton";
+
+//Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
-// Menu Items
+//Router
+import { Link } from "react-router-dom";
+
+// Nav Items
 import { MenuItems } from "./MenuItems";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+import "@fortawesome/fontawesome-svg-core";
 
 // CSS
 import "./Nav.css";
@@ -25,7 +26,7 @@ export default function Nav() {
     setOnOff(!onOff);
   }
 
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div className="navContainer">
@@ -37,11 +38,9 @@ export default function Nav() {
         <ul className={onOff ? "nav-menu active" : "nav-menu"}>
           {MenuItems.map((item, index) => {
             return (
-              <li key={index}>
-                <a className={item.cName} href={item.url}>
-                  {item.title}
-                </a>
-              </li>
+              <Link className={item.cName} to={`${item.url}`}>
+                {item.title}
+              </Link>
             );
           })}
           <li>{isAuthenticated ? <LogOutButton /> : <LogInButton />}</li>
