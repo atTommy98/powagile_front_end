@@ -7,10 +7,13 @@ import React, { useState } from "react";
 
 import "@fortawesome/fontawesome-svg-core";
 
+import LogInButton from "../../components/Login/LogInButton/LogInButton";
+import LogOutButton from "../../components/Login/LogOutButton/LogOutButton";
+import { useAuth0 } from "@auth0/auth0-react";
+
 // Menu Items
 import { MenuItems } from "./MenuItems";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-import {Button} from "../Button/Button"
 
 // CSS
 import "./Nav.css";
@@ -22,12 +25,12 @@ export default function Nav() {
     setOnOff(!onOff);
   }
 
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
   return (
     <div className="navContainer">
       <nav className="navbarItems">
-        <h1 className="navbar-title">
-          PowerShell Rangers
-        </h1>
+        <h1 className="navbar-title">PowerShell Rangers</h1>
         <div className="menu-icon" onClick={handleClick}>
           <MenuRoundedIcon />
         </div>
@@ -41,8 +44,8 @@ export default function Nav() {
               </li>
             );
           })}
+          <li>{isAuthenticated ? <LogOutButton /> : <LogInButton />}</li>
         </ul>
-        <Button>Log In</Button>
       </nav>
     </div>
   );
