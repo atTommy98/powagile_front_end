@@ -5,40 +5,54 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import { Input } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
+import PersonIcon from "@material-ui/icons/Person";
 
 // FIXME: Edit, and Delete functions not working
+
+// CSS
+import "./ParticipantCard.css";
 
 export default function ParticipantCard({
   index,
   name = "Sample Name",
-  beingEdited = true,
+  beingEdited,
   ToggleBeingEditedFunc,
   DeleteFunc,
   EditNameFunc,
 }) {
-  return beingEdited ? (
-    <Paper key={index} elevation={2}>
-      <Input></Input>
-      <Button
-        variant="contained"
-        onclick={(index) => EditNameFunc(index, name)}
-      >
-        <CheckIcon /> Confirm
-      </Button>
-    </Paper>
-  ) : (
-    <Paper key={index} elevation={2}>
-      <p>{name}</p>
-      <Button
-        variant="contained"
-        onclick={(index) => ToggleBeingEditedFunc(index)}
-      >
-        <EditIcon /> Edit
-      </Button>
-      &nbsp;&nbsp;
-      <Button variant="contained" onclick={(index) => DeleteFunc(index)}>
-        <DeleteForeverIcon /> Delete
-      </Button>
+  return (
+    <Paper key={index} elevation={2} className="participantCard">
+      {beingEdited ? (
+        <div>
+          <Input></Input>
+          <Button
+            variant="contained"
+            onclick={(index) => EditNameFunc(index, name)}
+          >
+            <CheckIcon /> Confirm
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <p className="name">
+            <PersonIcon />
+            &nbsp;
+            {name}
+          </p>
+          <div className="buttons">
+            <Button
+              variant="contained"
+              onclick={(index) => ToggleBeingEditedFunc(index)}
+            >
+              <EditIcon /> Edit
+            </Button>
+            &nbsp;&nbsp;
+            <Button variant="contained" onclick={(index) => DeleteFunc(index)}>
+              <DeleteForeverIcon /> Delete
+            </Button>
+          </div>
+        </div>
+      )}
     </Paper>
   );
 }

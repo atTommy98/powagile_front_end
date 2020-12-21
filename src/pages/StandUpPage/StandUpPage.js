@@ -180,14 +180,14 @@ export default function StandUpPage() {
         </form>
 
         {totalMeetingTime !== 0 ? (
-          <p>
+          <p className="totalStandupTime">
             With this setup, you'll be done in about{" "}
             <b>{totalMeetingTime} minutes.</b> Ready to start?
           </p>
         ) : null}
 
         {totalMeetingTime !== 0 ? (
-          <center>
+          <div>
             <Button size="medium" color="secondary">
               Go Back
             </Button>
@@ -195,7 +195,7 @@ export default function StandUpPage() {
             <Button size="large" color="primary" variant="contained">
               Start StandUp™
             </Button>
-          </center>
+          </div>
         ) : null}
       </div>
     </div>
