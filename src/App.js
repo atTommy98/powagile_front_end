@@ -10,6 +10,8 @@ import React from "react";
 import Nav from "./components/Nav/Nav.js";
 import StandUpPage from "./pages/StandUpPage/StandUpPage.js";
 
+import UserInfo from "./components/Login/UserInfo/UserInfo";
+
 function App() {
   return (
     <div className="appContainer">
@@ -18,9 +20,12 @@ function App() {
       </header>
       <main>
         <StandUpPage />
+        <UserInfo />
       </main>
     </div>
   );
 }
+
+
 
 export default App;
