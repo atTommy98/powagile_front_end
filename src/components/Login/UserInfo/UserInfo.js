@@ -11,6 +11,7 @@ export default function UserInfo() {
     return <div>Loading ...</div>;
   }
 
+    
   return (
     isAuthenticated && (
       <div id="userInfo">
