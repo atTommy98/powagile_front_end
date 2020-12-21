@@ -57,7 +57,7 @@ export default function StandUpPage() {
     // Add paticipant to list
     newState.listOfParticipants.push(participants.participantBeingEntered);
     // Set input field to blank
-    newState.listOfParticipants.participantBeingEntered = "";
+    newState.participantBeingEntered = "";
     // Set new state
     setParticipants(newState);
   }
