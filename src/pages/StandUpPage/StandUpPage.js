@@ -7,11 +7,12 @@ import { DialogTitle } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
 
 // CSS
 import "./StandUpPage.css";
+
+// Custom Componenets
+import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 
 export default function StandUpPage() {
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
@@ -22,6 +23,58 @@ export default function StandUpPage() {
     participantBeingEntered: "",
     listOfParticipants: [],
   });
+
+  // FIXME: Delete, Edit, Toggle functions not working
+
+  function DeleteFunc(i) {
+    // Don't delete if no index
+    if (i === undefined) {
+      console.log("No index passed to DeleteFunc");
+      return;
+    }
+    // New state
+    const newState = { ...participants };
+
+    // Delete participant
+    let newParticipants = newState.listOfParticipants;
+    newParticipants = newParticipants.slice(0, i);
+    newParticipants.concat(
+      newParticipants.slice(i + 1, newParticipants.length + 1)
+    );
+    newState.listOfParticipants = newParticipants;
+
+    // Set new state
+    setParticipants(newState);
+  }
+
+  function EditNameFunc(i, name) {
+    // Don't edit if no index
+    if (i === undefined) {
+      console.log("No index passed to EditNameFunc");
+      return;
+    }
+    // New state
+    const newState = { ...participants };
+    // Add paticipant to list
+    newState.listOfParticipants[i] = name;
+    // Set new state
+    setParticipants(newState);
+  }
+
+  function ToggleBeingEditedFunc(i) {
+    // Don't toggle if no index
+    if (i === undefined) {
+      console.log("No index passed to toggleBeingEditedFunc");
+      return;
+    }
+    // New state
+    const newState = { ...participants };
+    // Toggle participant edit status
+    const participant = newState.listOfParticipants[i];
+    participant.beingEdited = !participant.beingEdited;
+    // Set new state
+    setParticipants(newState);
+  }
 
   useEffect(() => {
     calculateMeetingTime();
@@ -55,7 +108,10 @@ export default function StandUpPage() {
     // New state
     const newState = { ...participants };
     // Add paticipant to list
-    newState.listOfParticipants.push(participants.participantBeingEntered);
+    newState.listOfParticipants.push({
+      name: participants.participantBeingEntered,
+      beingEdited: false,
+    });
     // Set input field to blank
     newState.participantBeingEntered = "";
     // Set new state
@@ -94,34 +150,33 @@ export default function StandUpPage() {
         <br />
         <br />
 
-        <form onSubmit={addParticipant} style={{ textAlign: "center" }}>
-          <p>Meeting Participants:</p>
-          <TextField
-            label="Participant name"
-            helperText="Enter one participant at a time"
-            variant="outlined"
-            value={participants.participantBeingEntered}
-            onChange={inputFieldParticipantChange}
-          />
+        <form onSubmit={addParticipant}>
+          <Paper elevation={3}>
+            <TextField
+              label="Participant name"
+              helperText="Enter one participant at a time"
+              variant="outlined"
+              value={participants.participantBeingEntered}
+              onChange={inputFieldParticipantChange}
+            />
 
-          <Button type="submit" variant="contained" color="primary">
-            Add
-          </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Add
+            </Button>
 
-          {participants.listOfParticipants
-            ? participants.listOfParticipants.map((name, i) => (
-                <Paper key={i}>
-                  <p>{name}</p>
-                  <Button variant="contained">
-                    <EditIcon /> Edit
-                  </Button>
-                  &nbsp;&nbsp;
-                  <Button variant="contained">
-                    <DeleteForeverIcon /> Delete
-                  </Button>
-                </Paper>
-              ))
-            : null}
+            {participants.listOfParticipants
+              ? participants.listOfParticipants.map((obj, i) => (
+                  <ParticipantCard
+                    index={i}
+                    name={obj.name}
+                    beingEdited={obj.beingEdited}
+                    EditNameFunc={EditNameFunc}
+                    DeleteFunc={DeleteFunc}
+                    ToggleBeingEditedFunc={ToggleBeingEditedFunc}
+                  />
+                ))
+              : null}
+          </Paper>
         </form>
 
         {totalMeetingTime !== 0 ? (
