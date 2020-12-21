@@ -1,53 +1,48 @@
 // React
-import React from "react";
+import React, { useState } from "react";
 
 // FIXME: THIS NEEDS TO BE IMPLEMENTED
 // React Router
 // import { Router, Route, Switch, Link } from "react-router";
 
-// Material UI
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import "@fortawesome/fontawesome-svg-core";
 
-// Material UI Icons
-import MenuIcon from "@material-ui/icons/Menu";
+// Menu Items
+import { MenuItems } from "./MenuItems";
+import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
+import {Button} from "../Button/Button"
 
 // CSS
 import "./Nav.css";
 
 export default function Nav() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [onOff, setOnOff] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  function handleClick() {
+    setOnOff(!onOff);
+  }
 
   return (
-    <div className="appContainer">
-      <nav>
-        <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <MenuIcon />
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose}>Home Page</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu>
+    <div className="navContainer">
+      <nav className="navbarItems">
+        <h1 className="navbar-title">
+          PowerShell Rangers
+        </h1>
+        <div className="menu-icon" onClick={handleClick}>
+          <MenuRoundedIcon />
+        </div>
+        <ul className={onOff ? "nav-menu active" : "nav-menu"}>
+          {MenuItems.map((item, index) => {
+            return (
+              <li key={index}>
+                <a className={item.cName} href={item.url}>
+                  {item.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+        <Button>Log In</Button>
       </nav>
     </div>
   );
