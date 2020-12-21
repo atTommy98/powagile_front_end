@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Material UI
 import { Input } from "@material-ui/core";
@@ -7,18 +7,24 @@ import { DialogTitle } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
 
 // CSS
 import "./StandUpPage.css";
 
 export default function StandUpPage() {
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(3);
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(20);
-  const [totalMeetingTime, setTotalMeetingTime] = useState(3);
+  const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
   const [participants, setParticipants] = useState({
     participantBeingEntered: "",
     listOfParticipants: [],
+  });
+
+  useEffect(() => {
+    calculateMeetingTime();
   });
 
   function calculateMeetingTime() {
@@ -34,10 +40,10 @@ export default function StandUpPage() {
     const timeBetweenSpeakersInSeconds = people * bufferTime;
 
     // Sum, and convert to minutes
-    const totalTimeInMinutes =
-      (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60;
+    const totalTimeInMinutes = Math.round(
+      (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
+    );
     setTotalMeetingTime(totalTimeInMinutes);
-    console.log(totalTimeInMinutes);
   }
 
   function addParticipant(event) {
@@ -66,9 +72,7 @@ export default function StandUpPage() {
   return (
     <div>
       <div className="participantsSection">
-        <DialogTitle>
-          <h2>Pow!Agile® StandUp™</h2>
-        </DialogTitle>
+        <DialogTitle>Pow!Agile® StandUp™</DialogTitle>
 
         <p>Minutes per participant</p>
 
@@ -76,7 +80,7 @@ export default function StandUpPage() {
           type="number"
           variant="outlined"
           defaultValue={minutesPerParticipant}
-          onChange={setMinutesPerParticipant}
+          onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
         />
         <br />
         <br />
@@ -85,11 +89,12 @@ export default function StandUpPage() {
           type="number"
           variant="outlined"
           defaultValue={timeBetweenSpeakers}
+          onChange={(e) => setTimeBetweenSpeakers(Number(e.target.value))}
         />
         <br />
         <br />
 
-        <form onSubmit={addParticipant}>
+        <form onSubmit={addParticipant} style={{ textAlign: "center" }}>
           <p>Meeting Participants:</p>
           <TextField
             label="Participant name"
@@ -104,20 +109,39 @@ export default function StandUpPage() {
           </Button>
 
           {participants.listOfParticipants
-            ? participants.listOfParticipants.map((name) => (
-                <Paper>
+            ? participants.listOfParticipants.map((name, i) => (
+                <Paper key={i}>
                   <p>{name}</p>
-                  <Button variant="contained">✏ Edit</Button>
-                  <Button variant="contained">❌ Delete</Button>
+                  <Button variant="contained">
+                    <EditIcon /> Edit
+                  </Button>
+                  &nbsp;&nbsp;
+                  <Button variant="contained">
+                    <DeleteForeverIcon /> Delete
+                  </Button>
                 </Paper>
               ))
             : null}
         </form>
 
-        <p>
-          With this setup, you'll be done in about {totalMeetingTime} minutes.
-          Ready to start?
-        </p>
+        {totalMeetingTime !== 0 ? (
+          <p>
+            With this setup, you'll be done in about{" "}
+            <b>{totalMeetingTime} minutes.</b> Ready to start?
+          </p>
+        ) : null}
+
+        {totalMeetingTime !== 0 ? (
+          <center>
+            <Button size="medium" color="secondary">
+              Go Back
+            </Button>
+            &nbsp;&nbsp;
+            <Button size="large" color="primary" variant="contained">
+              Start StandUp™
+            </Button>
+          </center>
+        ) : null}
       </div>
     </div>
   );
