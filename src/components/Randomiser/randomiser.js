@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 
-const name = ["Daniela", "Stefan", "Jon", "Kawalpreet", "Tommy"];
-
-function Randomiser() {
+export default function Randomiser({ array }) {
   const [choosenName, setChoosenName] = useState("");
 
   function selectRandomOption() {
-    const randomName = Math.floor(Math.random() * name.length);
-    if (name.length !== 0) {
-      setChoosenName(name.splice(randomName, 1)[0]);
+    const randomName = Math.floor(Math.random() * array.length);
+
+    console.log(array);
+    if (array.length !== 0) {
+      const displayName = array.splice(randomName, 1);
+      console.log(displayName.name);
+      console.log(displayName.name);
+      setChoosenName(displayName.name);
     } else {
       setChoosenName("No more Players");
     }
@@ -23,5 +26,3 @@ function Randomiser() {
     </div>
   );
 }
-
-export default Randomiser;
