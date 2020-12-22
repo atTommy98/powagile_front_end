@@ -14,11 +14,11 @@ import "./StandUpPage.css";
 // Custom Componenets
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 import Randomiser from "../../components/Randomiser/randomiser.js";
-import Timer from "../../components/Timer/Timer.js";
+// import Timer from "../../components/Timer/Timer.js";
 
 export default function StandUpPage() {
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(0.5);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(20);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(5);
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
   const [participants, setParticipants] = useState({
@@ -210,8 +210,12 @@ export default function StandUpPage() {
 
         {meetingActive ? (
           <div>
-            <Randomiser array={participants.listOfParticipants} />
-            <Timer timeInSeconds={minutesPerParticipant * 60} />
+            <Randomiser
+              array={participants.listOfParticipants}
+              timeInSeconds={minutesPerParticipant * 60}
+              timeBetweenSpeakers={timeBetweenSpeakers}
+            />
+            {/* <Timer timeInSeconds={minutesPerParticipant * 60} /> */}
           </div>
         ) : null}
       </div>
