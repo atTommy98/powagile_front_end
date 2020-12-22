@@ -17,7 +17,7 @@ import Randomiser from "../../components/Randomiser/randomiser.js";
 import Timer from "../../components/Timer/Timer.js";
 
 export default function StandUpPage() {
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(0.5);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(20);
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
