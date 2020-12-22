@@ -1,33 +1,51 @@
 import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
-const data = [
-  {
-    option: "Daniela",
-    style: { backgroundColor: "green", textColor: "black" },
-  },
-  { option: "Jon", style: { backgroundColor: "blue", textColor: "black" } },
-  { option: "Tommy", style: { backgroundColor: "yellow", textColor: "black" } },
-  {
-    option: "Kawalpreet",
-    style: { backgroundColor: "red", textColor: "black" },
-  },
-  { option: "Stefan", style: { backgroundColor: "pink", textColor: "black" } },
-];
-export default () => {
+
+export default function MyWheel() {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  const [wheelData, setWheelData] = useState(...data);
+  // Displayed wheel
+  const [wheelData, setWheelData] = useState([
+    {
+      option: "Daniela",
+      style: { backgroundColor: "green", textColor: "black" },
+    },
+    { option: "Jon", style: { backgroundColor: "blue", textColor: "black" } },
+    {
+      option: "Tommy",
+      style: { backgroundColor: "yellow", textColor: "black" },
+    },
+    {
+      option: "Kawalpreet",
+      style: { backgroundColor: "red", textColor: "black" },
+    },
+    {
+      option: "Stefan",
+      style: { backgroundColor: "pink", textColor: "black" },
+    },
+  ]);
+  // Data for next spin
+  const [wheelDataNextSpin, setwheelDataNextSpin] = useState("");
 
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * data.length);
+    // If the "Next Spin" data is not blank
+    if (wheelDataNextSpin !== "") {
+      setWheelData([...wheelDataNextSpin]);
+    }
+
+    const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
     console.log(newPrizeNumber);
-    // const randomItem = data.splice(newPrizeNumber, 1);
-    // console.log(randomItem);
-    let newOptions = [...data];
-    newOptions = newOptions.slice(0, newPrizeNumber);
-    newOptions.concat(newOptions.slice(newPrizeNumber + 1, data.length + 1));
-    console.log(newOptions);
+
     setPrizeNumber(newPrizeNumber);
+
+    let newState = [...wheelData];
+    newState.splice(newPrizeNumber, 1);
+
+    console.log("My New State Is");
+    console.log(newState);
+
+    setwheelDataNextSpin(newState);
+
     setMustSpin(true);
   };
 
@@ -36,7 +54,7 @@ export default () => {
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
-        data={data}
+        data={wheelData}
         onStopSpinning={() => {
           setMustSpin(false);
         }}
@@ -44,4 +62,4 @@ export default () => {
       <button onClick={handleSpinClick}>SPIN</button>
     </>
   );
-};
+}
