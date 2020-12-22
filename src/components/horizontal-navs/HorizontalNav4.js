@@ -16,7 +16,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AppsIcon from "@material-ui/icons/Apps";
 import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
+import "./HorizontalNav4.css"
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -41,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navigation(props) {
+
+  const history = useHistory();
   const classes = useStyles();
 
   const content = {
@@ -72,8 +76,8 @@ export default function Navigation(props) {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
+    <AppBar position="static" >
+      <Toolbar className="bar">
         <IconButton
           edge="start"
           className={classes.menuButton}
@@ -83,23 +87,40 @@ export default function Navigation(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Link to="/rituals/standup" className="nav-link">
+        <div className="link-container">
+        <Link to="/" className="nav-link">
           Home
         </Link>
-        <IconButton color="inherit">
-          <Avatar alt="" src={content["avatar"]} className={classes.avatar} />
+        <Link to="/rituals" className="nav-link">
+          Rituals
+        </Link>
+        <Link to="/rituals/standup" className="nav-link">
+          Stand Up
+        </Link>
+        <Link to="/rituals/retro" className="nav-link">
+          Retro
+        </Link>
+        </div>
+        <IconButton color="inherit" className="avatar">
+          <Avatar alt="" src={content["avatar"]} />
         </IconButton>
       </Toolbar>
       <Drawer anchor="left" open={state.open} onClose={toggleDrawer(false)}>
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key={content["link1"]}>
+            <ListItem button onClick={() => {
+              history.replace("/home")
+              document.location.reload()
+            }}  key={content["link1"]}>
               <ListItemIcon>
                 <AppsIcon />
               </ListItemIcon>
               <ListItemText primary={content["link1"]} />
             </ListItem>
-            <ListItem button key={content["link2"]}>
+            <ListItem button onClick={() => {
+              history.replace("/rituals/standup")
+              document.location.reload()
+            }} key={content["link2"]}>
               <ListItemIcon>
                 <BusinessCenterIcon />
               </ListItemIcon>

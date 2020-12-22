@@ -9,8 +9,6 @@ import UserPage from "./pages/UserPage/UserPage";
 // React
 import React from "react";
 
-import Wheel from "./components/Spinner/index";
-
 // Components
 import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4"
 import { UserContext } from "./UserContext.js";
