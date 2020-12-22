@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+// Material UI
+import Button from "@material-ui/core/Button";
+
+import React, { useState, useEffect } from "react";
 
 export default function Randomiser({ array }) {
   const [choosenName, setChoosenName] = useState("");
@@ -8,21 +11,23 @@ export default function Randomiser({ array }) {
 
     console.log(array);
     if (array.length !== 0) {
-      const displayName = array.splice(randomName, 1);
-      console.log(displayName.name);
-      console.log(displayName.name);
+      const displayName = array.splice(randomName, 1)[0];
       setChoosenName(displayName.name);
     } else {
       setChoosenName("No more Players");
     }
   }
 
+  useEffect(() => {
+    selectRandomOption();
+  }, []);
+
   return (
     <div className="randomiser">
-      <button id="selectRandomOption" onClick={selectRandomOption}>
+      <Button id="selectRandomOption" onClick={selectRandomOption}>
         Select Player
-      </button>
-      <h3>{choosenName}</h3>
+      </Button>
+      <h3>It is now {choosenName}'s turn!</h3>
     </div>
   );
 }

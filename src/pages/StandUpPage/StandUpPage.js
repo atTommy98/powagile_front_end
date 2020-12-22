@@ -14,6 +14,7 @@ import "./StandUpPage.css";
 // Custom Componenets
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 import Randomiser from "../../components/Randomiser/randomiser.js";
+import Timer from "../../components/Timer/Timer.js";
 
 export default function StandUpPage() {
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
@@ -24,6 +25,8 @@ export default function StandUpPage() {
     participantBeingEntered: "",
     listOfParticipants: [],
   });
+
+  const [meetingActive, setMeetingActive] = useState(false);
 
   // FIXME: Delete, Edit, Toggle functions not working
 
@@ -125,7 +128,7 @@ export default function StandUpPage() {
     });
   }
   function startStandUp() {
-    console.log("hey");
+    setMeetingActive(true);
   }
   return (
     <div>
@@ -205,7 +208,12 @@ export default function StandUpPage() {
           </div>
         ) : null}
 
-        <Randomiser array={participants.listOfParticipants} />
+        {meetingActive ? (
+          <div>
+            <Randomiser array={participants.listOfParticipants} />
+            <Timer timeInSeconds={minutesPerParticipant * 60} />
+          </div>
+        ) : null}
       </div>
     </div>
   );
