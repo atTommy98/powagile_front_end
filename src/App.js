@@ -20,12 +20,11 @@ function App() {
       </header>
       <main>
         <StandUpPage />
+
         <UserInfo />
       </main>
     </div>
   );
 }
-
-
 
 export default App;
