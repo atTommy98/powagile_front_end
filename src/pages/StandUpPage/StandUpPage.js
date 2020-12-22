@@ -13,6 +13,7 @@ import "./StandUpPage.css";
 
 // Custom Componenets
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
+import Randomiser from "../../components/Randomiser/randomiser.js";
 
 export default function StandUpPage() {
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
@@ -48,16 +49,16 @@ export default function StandUpPage() {
 
   function EditNameFunc(i, name) {
     // Don't edit if no index
-    if (i === undefined) {
-      console.log("No index passed to EditNameFunc");
-      return;
-    }
-    // New state
-    const newState = { ...participants };
-    // Add paticipant to list
-    newState.listOfParticipants[i] = name;
-    // Set new state
-    setParticipants(newState);
+    // if (i === undefined) {
+    //   console.log("No index passed to EditNameFunc");
+    //   return;
+    // }
+    // // New state
+    // const newState = { ...participants };
+    // // Add paticipant to list
+    // newState.listOfParticipants[i] = name;
+    // // Set new state
+    // setParticipants(newState);
   }
 
   function ToggleBeingEditedFunc(i) {
@@ -123,7 +124,9 @@ export default function StandUpPage() {
       participantBeingEntered: event.target.value,
     });
   }
-
+  function startStandUp() {
+    console.log("hey");
+  }
   return (
     <div>
       <div className="participantsSection">
@@ -191,11 +194,18 @@ export default function StandUpPage() {
               Go Back
             </Button>
             &nbsp;&nbsp;
-            <Button size="large" color="primary" variant="contained">
+            <Button
+              size="large"
+              color="primary"
+              variant="contained"
+              onClick={startStandUp}
+            >
               Start StandUp™
             </Button>
           </div>
         ) : null}
+
+        <Randomiser array={participants.listOfParticipants} />
       </div>
     </div>
   );
