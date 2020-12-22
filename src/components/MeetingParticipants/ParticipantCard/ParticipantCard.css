@@ -1,0 +1,19 @@
+.participantCard {
+  padding: 20px !important;
+  margin: 5px;
+  display: block;
+  width: 80%;
+}
+
+.name {
+  display: inline;
+  font-size: 25px;
+  padding: 10px;
+  text-transform: capitalize;
+}
+
+.buttons {
+  display: inline;
+  position: relative;
+  float: right;
+}
