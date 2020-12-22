@@ -9,6 +9,8 @@ import UserPage from "./pages/UserPage/UserPage";
 // React
 import React, { useState, useContext } from "react";
 
+import Wheel from "./components/Spinner/index";
+
 // Components
 import Nav from "./components/Nav/Nav.js";
 import { UserContext } from "./UserContext.js";
