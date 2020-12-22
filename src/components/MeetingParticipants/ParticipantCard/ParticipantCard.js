@@ -27,7 +27,7 @@ export default function ParticipantCard({
           <Input></Input>
           <Button
             variant="contained"
-            onclick={(index) => EditNameFunc(index, name)}
+            onClick={(index, name) => EditNameFunc(index, name)}
           >
             <CheckIcon /> Confirm
           </Button>
@@ -42,12 +42,12 @@ export default function ParticipantCard({
           <div className="buttons">
             <Button
               variant="contained"
-              onclick={(index) => ToggleBeingEditedFunc(index)}
+              onClick={(index) => ToggleBeingEditedFunc(index)}
             >
               <EditIcon /> Edit
             </Button>
             &nbsp;&nbsp;
-            <Button variant="contained" onclick={(index) => DeleteFunc(index)}>
+            <Button variant="contained" onClick={DeleteFunc}>
               <DeleteForeverIcon /> Delete
             </Button>
           </div>

@@ -15,5 +15,5 @@
 .buttons {
   display: inline;
   position: relative;
-  right: -70%;
+  float: right;
 }
