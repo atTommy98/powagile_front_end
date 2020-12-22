@@ -27,6 +27,8 @@ export default function StandUpPage() {
   // FIXME: Delete, Edit, Toggle functions not working
 
   function DeleteFunc(i) {
+    console.log(i);
+
     // Don't delete if no index
     if (i === undefined) {
       console.log("No index passed to DeleteFunc");
@@ -35,13 +37,10 @@ export default function StandUpPage() {
     // New state
     const newState = { ...participants };
 
+    console.log(i);
+
     // Delete participant
-    let newParticipants = newState.listOfParticipants;
-    newParticipants = newParticipants.slice(0, i);
-    newParticipants.concat(
-      newParticipants.slice(i + 1, newParticipants.length + 1)
-    );
-    newState.listOfParticipants = newParticipants;
+    newState.listOfParticipants.splice(i, 1);
 
     // Set new state
     setParticipants(newState);
