@@ -7,10 +7,10 @@ import RetroPage from "./pages/RetroPage/RetroPage";
 import UserPage from "./pages/UserPage/UserPage";
 
 // React
-import React, { useState, useContext } from "react";
+import React from "react";
 
 // Components
-import Nav from "./components/Nav/Nav.js";
+import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4"
 import { UserContext } from "./UserContext.js";
 
 // Router
@@ -20,13 +20,23 @@ import { Route, Switch } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated} = useAuth0();
 
   return (
     <UserContext.Provider value={[user, isAuthenticated]}>
       <div className="appContainer">
         <header>
-          <Nav />
+        <HorizontalNav4
+        content={{
+          brand: {
+            text: 'PowerShellRangers',
+            image: '',
+            width: '120',
+          },
+          link1: 'Home',
+          link2: 'Rituals',
+        }}
+      />
         </header>
         <main>
           <Switch>
