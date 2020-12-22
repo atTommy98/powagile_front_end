@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
 
-export default function MyWheel() {
+export default () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   // Displayed wheel
@@ -25,26 +25,25 @@ export default function MyWheel() {
     },
   ]);
   // Data for next spin
-  const [wheelDataNextSpin, setwheelDataNextSpin] = useState("");
+  const [wheelDataNextSpin, setWheelDataNextSpin] = useState("");
 
   const handleSpinClick = () => {
     // If the "Next Spin" data is not blank
     if (wheelDataNextSpin !== "") {
-      setWheelData([...wheelDataNextSpin]);
+      setWheelData(wheelDataNextSpin);
     }
 
     const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
-    console.log(newPrizeNumber);
+    console.log(`newprize number is:${newPrizeNumber}`);
 
     setPrizeNumber(newPrizeNumber);
 
-    let newState = [...wheelData];
+    const newState = [...wheelData];
     newState.splice(newPrizeNumber, 1);
 
-    console.log("My New State Is");
-    console.log(newState);
+    console.log(`My New State Is: ${newState}`);
 
-    setwheelDataNextSpin(newState);
+    setWheelDataNextSpin(newState);
 
     setMustSpin(true);
   };
@@ -62,4 +61,4 @@ export default function MyWheel() {
       <button onClick={handleSpinClick}>SPIN</button>
     </>
   );
-}
+};
