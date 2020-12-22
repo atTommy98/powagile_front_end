@@ -1,0 +1,4 @@
+.avatar img {
+    display: flex;
+    justify-content: right;
+}
