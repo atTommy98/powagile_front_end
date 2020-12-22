@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
 
-export default () => {
+export default function MyWheel() {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   // Displayed wheel
@@ -61,4 +61,4 @@ export default () => {
       <button onClick={handleSpinClick}>SPIN</button>
     </>
   );
-};
+}
