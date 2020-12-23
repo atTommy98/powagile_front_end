@@ -111,6 +111,8 @@ export default function StandUpPage() {
   }
   return (
     <div>
+      {/* TODO: GET RID OF THIS ONCE DONE SPLITTING UP THE STEPS */}
+      <h1 style={{ textAlign: "center" }}>STEP {standUpStep}</h1>
       <InstructionsPage
         backButton={null}
         nextButton={() => setStandUpStep(2)}
@@ -119,7 +121,7 @@ export default function StandUpPage() {
       <section className="setupPage">
         <h2 className="pageTitle" style={{ textAlign: "left" }}>
           <span className="companyName">Pow!Agile</span>{" "}
-          <span className="productName">StandUp™</span>
+          <span className="productName">Stand-Up™</span>
         </h2>
         <div className="meetingTimeSettingsWrapper">
           <Paper
@@ -129,9 +131,17 @@ export default function StandUpPage() {
             <h3>Timing</h3>
             <TextField
               type="number"
-              variant="filled"
+              variant="outlined"
               label="Minutes per participant"
               defaultValue={minutesPerParticipant}
+              error={minutesPerParticipant < 1}
+              helperText={
+                minutesPerParticipant < 1
+                  ? "Please give participants at least 1 minute"
+                  : minutesPerParticipant > 10
+                  ? "Aim for a shorter standup, if possible"
+                  : null
+              }
               onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
               InputProps={{
                 startAdornment: (
@@ -146,9 +156,15 @@ export default function StandUpPage() {
             />
             <TextField
               type="number"
-              variant="filled"
+              variant="outlined"
               label="Time between speakers"
               defaultValue={timeBetweenSpeakers}
+              error={timeBetweenSpeakers < 10}
+              helperText={
+                timeBetweenSpeakers < 10
+                  ? "We recommend at least 10 seconds"
+                  : null
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -173,25 +189,25 @@ export default function StandUpPage() {
             style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
           >
             <h3>Meeting Participants</h3>
-            <Container fixed>
-              <TextField
-                label="Participant name"
-                // helperText="Enter one participant at a time"
-                variant="filled"
-                value={participants.participantBeingEntered}
-                onChange={inputFieldParticipantChange}
-              />
 
-              <Button
-                type="submit"
-                size="large"
-                variant="contained"
-                color="primary"
-                style={{ margin: "5px 10px" }}
-              >
-                Add
-              </Button>
-            </Container>
+            <TextField
+              label="Participant name"
+              // helperText="Enter one participant at a time"
+              variant="outlined"
+              value={participants.participantBeingEntered}
+              onChange={inputFieldParticipantChange}
+            />
+
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px 10px" }}
+            >
+              Add
+            </Button>
+
             {participants.listOfParticipants
               ? participants.listOfParticipants.map((obj, i) => (
                   <ParticipantCard
@@ -226,7 +242,7 @@ export default function StandUpPage() {
               variant="contained"
               onClick={startStandUp}
             >
-              Start StandUp™ &rarr;
+              Start Stand-Up™ &rarr;
             </Button>
             <br />
             <br />

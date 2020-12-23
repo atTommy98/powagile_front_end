@@ -24,7 +24,6 @@ export default function ParticipantCard({
   return (
     <Grow
       in={animationToggle}
-      style={{ transformOrigin: "0 0 0" }}
       {...(animationToggle ? { timeout: timeoutDuration } : {})}
     >
       <Paper key={index} elevation={2} className="participantCard">

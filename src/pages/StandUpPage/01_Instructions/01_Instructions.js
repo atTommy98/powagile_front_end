@@ -1,6 +1,9 @@
 // Material UI
 import Button from "@material-ui/core/Button";
 
+// Material UI Transitions
+import Grow from "@material-ui/core/Grow";
+
 // CSS
 import "./01_Instructions.css";
 
@@ -12,26 +15,30 @@ export default function InstructionsPage({
     <section className="getStartedPage">
       <h2 className="pageTitle" style={{ textAlign: "center" }}>
         <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productName">StandUp™</span>
+        <span className="productName">Stand-Up™</span>
       </h2>
       <p className="stepsTitleText">
-        Tired of unproductive stand-ups that drag on for ages?
-        <br />
-        With StandUp™, you'll be done in no time at all! It's easy:
+        Fast, engaging, and productive standups. Every time.
       </p>
       <div className="stepsWrapper">
-        <div className="stepContainer">
-          <span className="stepNumber">1</span>
-          <p className="stepText">Enter your meeting participants</p>
-        </div>
-        <div className="stepContainer">
-          <span className="stepNumber">2</span>
-          <p className="stepText">Set your desired timing per person</p>
-        </div>
-        <div className="stepContainer">
-          <span className="stepNumber">3</span>
-          <p className="stepText">Enjoy a quick, producitve meeting!</p>
-        </div>
+        <Grow in={true} {...(true ? { timeout: 1000 } : {})}>
+          <div className="stepContainer">
+            <span className="stepNumber">1</span>
+            <p className="stepText">Enter your meeting participants</p>
+          </div>
+        </Grow>
+        <Grow in={true} {...(true ? { timeout: 1500 } : {})}>
+          <div className="stepContainer">
+            <span className="stepNumber">2</span>
+            <p className="stepText">Set your desired timing per person</p>
+          </div>
+        </Grow>
+        <Grow in={true} {...(true ? { timeout: 2000 } : {})}>
+          <div className="stepContainer">
+            <span className="stepNumber">3</span>
+            <p className="stepText">Enjoy a quick, producitve meeting!</p>
+          </div>
+        </Grow>
       </div>
 
       <Button
