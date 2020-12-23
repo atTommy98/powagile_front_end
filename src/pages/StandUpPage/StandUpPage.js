@@ -14,9 +14,10 @@ import "./StandUpPage.css";
 // Custom Componenets
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 import Randomiser from "../../components/Randomiser/randomiser.js";
-// import Timer from "../../components/Timer/Timer.js";
 
 export default function StandUpPage() {
+  const [standUpStep, setStandUpStep] = useState(1);
+
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(0.5);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(5);
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
@@ -41,27 +42,13 @@ export default function StandUpPage() {
     // New state
     const newState = { ...participants };
 
-    console.log(i);
+    console.log(i.target);
 
     // Delete participant
     newState.listOfParticipants.splice(i, 1);
 
     // Set new state
     setParticipants(newState);
-  }
-
-  function EditNameFunc(i, name) {
-    // Don't edit if no index
-    // if (i === undefined) {
-    //   console.log("No index passed to EditNameFunc");
-    //   return;
-    // }
-    // // New state
-    // const newState = { ...participants };
-    // // Add paticipant to list
-    // newState.listOfParticipants[i] = name;
-    // // Set new state
-    // setParticipants(newState);
   }
 
   function ToggleBeingEditedFunc(i) {
@@ -174,10 +161,7 @@ export default function StandUpPage() {
                   <ParticipantCard
                     index={i}
                     name={obj.name}
-                    beingEdited={obj.beingEdited}
-                    EditNameFunc={EditNameFunc}
                     DeleteFunc={DeleteFunc}
-                    ToggleBeingEditedFunc={ToggleBeingEditedFunc}
                   />
                 ))
               : null}
