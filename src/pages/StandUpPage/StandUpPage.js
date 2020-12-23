@@ -220,7 +220,7 @@ export default function StandUpPage() {
           </Paper>
         </form>
 
-        {totalMeetingTime === 0 ? null : totalMeetingTime <= 15 ? (
+        {totalMeetingTime <= 0 ? null : totalMeetingTime <= 15 ? (
           <p className="totalStandupTime goodMeetingLength">
             You'll be done in about <b>{totalMeetingTime} minutes.</b>
             <br />
@@ -234,7 +234,7 @@ export default function StandUpPage() {
           </p>
         ) : null}
 
-        {totalMeetingTime !== 0 ? (
+        {totalMeetingTime > 0 ? (
           <div>
             <Button
               size="large"
