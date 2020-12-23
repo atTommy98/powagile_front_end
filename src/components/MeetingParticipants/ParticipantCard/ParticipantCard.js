@@ -19,21 +19,28 @@ export default function ParticipantCard({
   DeleteFunc = null,
 }) {
   const [animationToggle, setAnimationToggle] = useState(true);
-  const timeoutDuration = 300;
+  const [duration, setDuration] = useState(200);
 
-  // FIXME: I wanna understand why the F this doesn't work?????
-  // function deleteWithTransition() {
-  //   setAnimationToggle(false);
-  //   setTimeout(() => DeleteFunc(index), timeoutDuration);
-  // }
+  function deleteWithTransition() {
+    // I don't understand exactly why my code here works
+    // You can thank React's weird .map rendering 👌
+    const origDur = duration;
+    setAnimationToggle(false);
+    setTimeout(() => DeleteFunc(index), duration);
+    setTimeout(() => {
+      setDuration(1);
+      setAnimationToggle(true);
+      setDuration(origDur);
+    }, duration + 0.01);
+  }
 
   return (
     <Grow
       key={index}
       in={animationToggle}
-      {...(animationToggle ? { timeout: timeoutDuration } : {})}
+      {...(animationToggle ? { timeout: duration } : {})}
     >
-      <Paper elevation={2} className="participantCard">
+      <Paper elevation={1} className="participantCard">
         <div>
           <p className="name">
             <PersonIcon />
@@ -42,10 +49,12 @@ export default function ParticipantCard({
           </p>
           <div className="buttons">
             <Button
+              size="small"
               variant="contained"
-              onClick={() => {
-                DeleteFunc(index);
-              }}
+              // onClick={() => {
+              //   DeleteFunc(index);
+              // }}
+              onClick={deleteWithTransition}
             >
               <DeleteForeverIcon /> Delete
             </Button>

@@ -26,6 +26,11 @@
   color: #2196f3;
 }
 
+.buttonsWrapper {
+  text-align: center;
+  margin: 10px auto;
+}
+
 /*------------------------------*/
 /*Page 2 - Setup*/
 

@@ -18,25 +18,27 @@ export default function InstructionsPage({
         <span className="productName">Stand-Up™</span>
       </h2>
       <p className="stepsTitleText">
-        Fast, engaging, and productive standups. Every time.
+        Our formula for fast and engaging remote standups. Every time.
       </p>
       <div className="stepsWrapper">
         <Grow in={true} {...(true ? { timeout: 1000 } : {})}>
           <div className="stepContainer">
             <span className="stepNumber">1</span>
-            <p className="stepText">Enter your meeting participants</p>
+            <p className="stepText">Set up the timing for your standup</p>
           </div>
         </Grow>
         <Grow in={true} {...(true ? { timeout: 1500 } : {})}>
           <div className="stepContainer">
             <span className="stepNumber">2</span>
-            <p className="stepText">Set your desired timing per person</p>
+            <p className="stepText">Enter your standup participants</p>
           </div>
         </Grow>
         <Grow in={true} {...(true ? { timeout: 2000 } : {})}>
           <div className="stepContainer">
             <span className="stepNumber">3</span>
-            <p className="stepText">Enjoy a quick, producitve meeting!</p>
+            <p className="stepText">
+              Share your screen, and enjoy a fast, engaging standup!
+            </p>
           </div>
         </Grow>
       </div>

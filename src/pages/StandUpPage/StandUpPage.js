@@ -30,6 +30,8 @@ export default function StandUpPage() {
 
   const [meeting, setMeeting] = useState({
     meetingParticipants: [],
+    meetingStartTime: null,
+    meetingEndTime: null,
   });
 
   /*Steps*/
@@ -90,13 +92,6 @@ export default function StandUpPage() {
     setParticipantToAdd("");
     // Set new state
     setMeeting(newState);
-  }
-
-  function inputFieldParticipantChange(event) {
-    setMeeting({
-      ...meeting,
-      participantBeingEntered: event.target.value,
-    });
   }
 
   return (
@@ -175,35 +170,38 @@ export default function StandUpPage() {
             elevation={3}
             style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
           >
-            <h3>Meeting participants</h3>
+            <h3 style={{ textAlign: "center" }}>Meeting participants</h3>
 
-            <TextField
-              label="Participant name"
-              // helperText="Enter one participant at a time"
-              variant="outlined"
-              value={participantToAdd}
-              onChange={(e) => setParticipantToAdd(e.target.value)}
-            />
+            <section style={{ margin: "30px" }}>
+              <TextField
+                label="Participant name"
+                // helperText="Enter one participant at a time"
+                variant="outlined"
+                value={participantToAdd}
+                onChange={(e) => setParticipantToAdd(e.target.value)}
+                style={{ width: "calc(100% - 100px)" }}
+              />
 
-            <Button
-              type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              style={{ margin: "5px 10px" }}
-            >
-              Add
-            </Button>
+              <Button
+                type="submit"
+                size="large"
+                variant="contained"
+                color="primary"
+                style={{ margin: "5px 10px" }}
+              >
+                Add
+              </Button>
 
-            {meeting.meetingParticipants
-              ? meeting.meetingParticipants.map((obj, i) => (
-                  <ParticipantCard
-                    index={i}
-                    name={obj.name}
-                    DeleteFunc={DeleteFunc}
-                  />
-                ))
-              : null}
+              {meeting.meetingParticipants
+                ? meeting.meetingParticipants.map((obj, i) => (
+                    <ParticipantCard
+                      index={i}
+                      name={obj.name}
+                      DeleteFunc={DeleteFunc}
+                    />
+                  ))
+                : null}
+            </section>
           </Paper>
         </form>
 

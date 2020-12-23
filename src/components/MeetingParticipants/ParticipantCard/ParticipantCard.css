@@ -1,8 +1,8 @@
 .participantCard {
-  padding: 20px !important;
-  margin: 5px;
+  padding: 13px !important;
+  margin: 12px;
   display: block;
-  width: 80%;
+  width: calc(100% - 60px);
 }
 
 .name {
