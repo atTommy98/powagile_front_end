@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 
 // Material UI
-import { Input } from "@material-ui/core";
-import { DialogTitle } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import React from "react";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import TimelapseIcon from "@material-ui/icons/Timelapse";
+import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 
 // CSS
 import "./StandUpPage.css";
@@ -16,20 +18,21 @@ import ParticipantCard from "../../components/MeetingParticipants/ParticipantCar
 import Randomiser from "../../components/Randomiser/randomiser.js";
 
 export default function StandUpPage() {
+  /*Steps*/
   const [standUpStep, setStandUpStep] = useState(1);
 
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(0.5);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(5);
-  const [totalMeetingTime, setTotalMeetingTime] = useState(0);
-
+  /*Meeting Setup*/
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(15);
   const [participants, setParticipants] = useState({
     participantBeingEntered: "",
     listOfParticipants: [],
   });
 
-  const [meetingActive, setMeetingActive] = useState(false);
+  /*Steps*/
+  const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
-  // FIXME: Delete, Edit, Toggle functions not working
+  const [meetingActive, setMeetingActive] = useState(false);
 
   function DeleteFunc(i) {
     console.log(i);
@@ -47,21 +50,6 @@ export default function StandUpPage() {
     // Delete participant
     newState.listOfParticipants.splice(i, 1);
 
-    // Set new state
-    setParticipants(newState);
-  }
-
-  function ToggleBeingEditedFunc(i) {
-    // Don't toggle if no index
-    if (i === undefined) {
-      console.log("No index passed to toggleBeingEditedFunc");
-      return;
-    }
-    // New state
-    const newState = { ...participants };
-    // Toggle participant edit status
-    const participant = newState.listOfParticipants[i];
-    participant.beingEdited = !participant.beingEdited;
     // Set new state
     setParticipants(newState);
   }
@@ -119,40 +107,117 @@ export default function StandUpPage() {
   }
   return (
     <div>
-      <div className="participantsSection">
-        <DialogTitle>Pow!Agile® StandUp™</DialogTitle>
+      <section className="getStartedPage">
+        <h2 className="pageTitle" style={{ textAlign: "center" }}>
+          <span className="companyName">Pow!Agile</span>{" "}
+          <span className="productName">StandUp™</span>
+        </h2>
+        <p className="stepsTitleText">
+          Tired of unproductive stand-ups that drag on for ages?
+          <br />
+          With StandUp™, you'll be done in no time at all! It's easy:
+        </p>
+        <div className="stepsWrapper">
+          <div className="stepContainer">
+            <span className="stepNumber">1</span>
+            <p className="stepText">Enter your meeting participants</p>
+          </div>
+          <div className="stepContainer">
+            <span className="stepNumber">2</span>
+            <p className="stepText">Set your desired timing per person</p>
+          </div>
+          <div className="stepContainer">
+            <span className="stepNumber">3</span>
+            <p className="stepText">Enjoy a quick, producitve meeting!</p>
+          </div>
+        </div>
 
-        <p>Minutes per participant</p>
-
-        <Input
-          type="number"
-          variant="outlined"
-          defaultValue={minutesPerParticipant}
-          onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
-        />
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => setStandUpStep(2)}
+        >
+          Get Started &rarr;
+        </Button>
         <br />
         <br />
-        <p>Time between speakers (in seconds)</p>
-        <Input
-          type="number"
-          variant="outlined"
-          defaultValue={timeBetweenSpeakers}
-          onChange={(e) => setTimeBetweenSpeakers(Number(e.target.value))}
-        />
-        <br />
-        <br />
-
+        <Button color="secondary" size="medium">
+          &larr; Back
+        </Button>
+      </section>
+      <section className="setupPage">
+        <h2 className="pageTitle" style={{ textAlign: "left" }}>
+          <span className="companyName">Pow!Agile</span>{" "}
+          <span className="productName">StandUp™</span>
+        </h2>
+        <div className="meetingTimeSettingsWrapper">
+          <Paper
+            elevation={3}
+            style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
+          >
+            <h3>Timing</h3>
+            <TextField
+              type="number"
+              variant="filled"
+              label="Minutes per participant"
+              defaultValue={minutesPerParticipant}
+              onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TimelapseIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">min</InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              type="number"
+              variant="filled"
+              label="Time between speakers"
+              defaultValue={timeBetweenSpeakers}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PauseCircleOutlineIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">sec</InputAdornment>
+                ),
+              }}
+              onChange={(e) => setTimeBetweenSpeakers(Number(e.target.value))}
+            />
+            <br />
+            <p style={{ color: "rgba(0,0,0,0.5)" }}>
+              We recommend making your meeting no longer than 15 minutes.
+            </p>
+          </Paper>
+        </div>
         <form onSubmit={addParticipant}>
-          <Paper elevation={3}>
+          <Paper
+            elevation={3}
+            style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
+          >
+            <h3>Meeting Participants</h3>
             <TextField
               label="Participant name"
               helperText="Enter one participant at a time"
-              variant="outlined"
+              variant="filled"
               value={participants.participantBeingEntered}
               onChange={inputFieldParticipantChange}
             />
 
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px 10px" }}
+            >
               Add
             </Button>
 
@@ -177,18 +242,20 @@ export default function StandUpPage() {
 
         {totalMeetingTime !== 0 ? (
           <div>
-            <Button size="medium" color="secondary">
-              Go Back
-            </Button>
-            &nbsp;&nbsp;
             <Button
               size="large"
               color="primary"
               variant="contained"
               onClick={startStandUp}
             >
-              Start StandUp™
+              Start StandUp™ &rarr;
             </Button>
+            <br />
+            <br />
+            <Button size="medium" color="secondary">
+              &larr; Back
+            </Button>
+            &nbsp;&nbsp;
           </div>
         ) : null}
 
@@ -202,7 +269,7 @@ export default function StandUpPage() {
             {/* <Timer timeInSeconds={minutesPerParticipant * 60} /> */}
           </div>
         ) : null}
-      </div>
+      </section>
     </div>
   );
 }

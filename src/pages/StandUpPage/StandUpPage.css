@@ -1,5 +1,86 @@
+/*------------------------------*/
+/*Global*/
+
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap");
+
 * {
   font-family: "Roboto";
+}
+
+.pageTitle {
+  font-size: 2.5em;
+  padding: none;
+  margin: none;
+}
+
+.productName {
+  text-align: center;
+  font-family: "Roboto";
+  font-style: italic;
+  color: #0599a9;
+}
+
+.companyName {
+  font-family: "Bowlby One SC", cursive;
+  font-weight: 400;
+  color: #2196f3;
+}
+
+/*------------------------------*/
+/*Page 1 - Instructions*/
+
+.getStartedPage {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.stepsTitleText {
+  font-size: 1.5em;
+}
+
+.stepsWrapper {
+  width: 100%;
+  margin: 20px auto;
+}
+
+.stepContainer {
+  background: rgba(0, 0, 0, 0.015);
+  display: inline-block;
+  padding: 25px;
+  margin: 5px;
+  /*-----*/
+  width: 250px;
+  height: 80px;
+}
+
+.stepNumber {
+  background: rgba(5, 153, 169, 0.25);
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  padding: 6px 12px;
+  color: black;
+  pointer-events: none;
+}
+
+.stepText {
+  font-size: 1.2em;
+}
+
+/*------------------------------*/
+/*Page 2 - Setup*/
+
+.setupPage {
+  margin: 0 auto;
+}
+
+.meetingTimeSettingsWrapper {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.meetingTimeSettingsWrapper .MuiTextField-root {
+  margin: 5px;
 }
 
 .totalStandupTime {
