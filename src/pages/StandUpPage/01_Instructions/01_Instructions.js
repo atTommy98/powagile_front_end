@@ -49,11 +49,6 @@ export default function InstructionsPage({
       >
         Get Started &rarr;
       </Button>
-      <br />
-      <br />
-      <Button color="secondary" size="medium" onClick={backButton}>
-        &larr; Back
-      </Button>
     </section>
   );
 }

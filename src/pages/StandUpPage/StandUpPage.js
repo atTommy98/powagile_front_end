@@ -21,25 +21,20 @@ import Randomiser from "../../components/Randomiser/randomiser.js";
 
 export default function StandUpPage() {
   /*Steps*/
-  // TODO: Finish this
   const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(15);
 
-  // TODO: Refactor This
-  const [participantToAdd, setparticipantToAdd] = useState("");
+  const [participantToAdd, setParticipantToAdd] = useState("");
 
   const [participants, setParticipants] = useState({
-    participantBeingEntered: "",
     listOfParticipants: [],
   });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
-
-  const [meetingActive, setMeetingActive] = useState(false);
 
   function DeleteFunc(i) {
     console.log(i);
@@ -83,19 +78,19 @@ export default function StandUpPage() {
   function addParticipant(event) {
     event.preventDefault();
     // Don't add if field is empty
-    if (participants.participantBeingEntered === "") {
+    if (participantToAdd === "") {
       return;
     }
     // New state
     const newState = { ...participants };
     // Add paticipant to list
     newState.listOfParticipants.push({
-      name: participants.participantBeingEntered,
+      name: participantToAdd,
       hasHadTurn: false,
       timeLeft: null,
     });
     // Set input field to blank
-    newState.participantBeingEntered = "";
+    setParticipantToAdd("");
     // Set new state
     setParticipants(newState);
   }
@@ -106,17 +101,12 @@ export default function StandUpPage() {
       participantBeingEntered: event.target.value,
     });
   }
-  function startStandUp() {
-    setMeetingActive(true);
-  }
+
   return (
     <div>
       {/* TODO: GET RID OF THIS ONCE DONE SPLITTING UP THE STEPS */}
       <h1 style={{ textAlign: "center" }}>STEP {standUpStep}</h1>
-      <InstructionsPage
-        backButton={null}
-        nextButton={() => setStandUpStep(2)}
-      />
+      <InstructionsPage nextButton={() => setStandUpStep(2)} />
 
       <section className="setupPage">
         <h2 className="pageTitle" style={{ textAlign: "left" }}>
@@ -194,8 +184,8 @@ export default function StandUpPage() {
               label="Participant name"
               // helperText="Enter one participant at a time"
               variant="outlined"
-              value={participants.participantBeingEntered}
-              onChange={inputFieldParticipantChange}
+              value={participantToAdd}
+              onChange={(e) => setParticipantToAdd(e.target.value)}
             />
 
             <Button
@@ -221,13 +211,13 @@ export default function StandUpPage() {
         </form>
 
         {totalMeetingTime <= 0 ? null : totalMeetingTime <= 15 ? (
-          <p className="totalStandupTime goodMeetingLength">
+          <p className="totalStandupTime">
             You'll be done in about <b>{totalMeetingTime} minutes.</b>
             <br />
             Ready to start?
           </p>
         ) : totalMeetingTime > 15 ? (
-          <p className="totalStandupTime badMeetingLength">
+          <p className="totalStandupTime">
             You'll be done in about <b>{totalMeetingTime} minutes.</b>
             <br />
             Try aiming for a shorter time, if you can.
@@ -240,20 +230,24 @@ export default function StandUpPage() {
               size="large"
               color="primary"
               variant="contained"
-              onClick={startStandUp}
+              onClick={() => setStandUpStep(3)}
             >
               Start Stand-Up™ &rarr;
             </Button>
             <br />
             <br />
-            <Button size="medium" color="secondary">
+            <Button
+              size="medium"
+              color="secondary"
+              onClick={() => setStandUpStep(1)}
+            >
               &larr; Back
             </Button>
             &nbsp;&nbsp;
           </div>
         ) : null}
 
-        {meetingActive ? (
+        {standUpStep === 3 ? (
           <div>
             <Randomiser
               array={participants.listOfParticipants}
