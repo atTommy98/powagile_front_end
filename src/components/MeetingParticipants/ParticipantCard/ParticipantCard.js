@@ -16,17 +16,24 @@ import "./ParticipantCard.css";
 export default function ParticipantCard({
   index,
   name = "Sample Name",
-  DeleteFunc,
+  DeleteFunc = null,
 }) {
   const [animationToggle, setAnimationToggle] = useState(true);
-  const timeoutDuration = 250;
+  const timeoutDuration = 300;
+
+  // FIXME: I wanna understand why the F this doesn't work?????
+  // function deleteWithTransition() {
+  //   setAnimationToggle(false);
+  //   setTimeout(() => DeleteFunc(index), timeoutDuration);
+  // }
 
   return (
     <Grow
+      key={index}
       in={animationToggle}
       {...(animationToggle ? { timeout: timeoutDuration } : {})}
     >
-      <Paper key={index} elevation={2} className="participantCard">
+      <Paper elevation={2} className="participantCard">
         <div>
           <p className="name">
             <PersonIcon />
@@ -34,13 +41,6 @@ export default function ParticipantCard({
             {name}
           </p>
           <div className="buttons">
-            {/* <Button
-            variant="contained"
-            onClick={(index) => ToggleBeingEditedFunc(index)}
-          >
-            <EditIcon /> Edit
-          </Button> */}
-            &nbsp;&nbsp;
             <Button
               variant="contained"
               onClick={() => {

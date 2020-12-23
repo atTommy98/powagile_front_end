@@ -9,7 +9,6 @@ import React from "react";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
-import Container from "@material-ui/core/Container";
 
 // CSS
 import "./StandUpPage.css";
@@ -29,32 +28,30 @@ export default function StandUpPage() {
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  const [participants, setParticipants] = useState({
-    listOfParticipants: [],
+  const [meeting, setMeeting] = useState({
+    meetingParticipants: [],
   });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
   function DeleteFunc(i) {
-    console.log(i);
-
     // Don't delete if no index
     if (i === undefined) {
       console.error("No index passed to DeleteFunc");
       return;
     }
     // New state
-    const newState = { ...participants };
+    const newState = { ...meeting };
     // Delete participant
-    newState.listOfParticipants.splice(i, 1);
+    newState.meetingParticipants.splice(i, 1);
     // Set new state
-    setParticipants(newState);
+    setMeeting(newState);
   }
 
   function calculateMeetingTime() {
     // How manu people?
-    const people = participants.listOfParticipants.length;
+    const people = meeting.meetingParticipants.length;
     // How many minutes per person?
     const minutes = minutesPerParticipant;
     // How much time between speakers?
@@ -82,9 +79,9 @@ export default function StandUpPage() {
       return;
     }
     // New state
-    const newState = { ...participants };
+    const newState = { ...meeting };
     // Add paticipant to list
-    newState.listOfParticipants.push({
+    newState.meetingParticipants.push({
       name: participantToAdd,
       hasHadTurn: false,
       timeLeft: null,
@@ -92,12 +89,12 @@ export default function StandUpPage() {
     // Set input field to blank
     setParticipantToAdd("");
     // Set new state
-    setParticipants(newState);
+    setMeeting(newState);
   }
 
   function inputFieldParticipantChange(event) {
-    setParticipants({
-      ...participants,
+    setMeeting({
+      ...meeting,
       participantBeingEntered: event.target.value,
     });
   }
@@ -127,7 +124,7 @@ export default function StandUpPage() {
               error={minutesPerParticipant < 1}
               helperText={
                 minutesPerParticipant < 1
-                  ? "Please give participants at least 1 minute"
+                  ? "Please give meeting at least 1 minute"
                   : minutesPerParticipant > 10
                   ? "Aim for a shorter standup, if possible"
                   : null
@@ -178,7 +175,7 @@ export default function StandUpPage() {
             elevation={3}
             style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
           >
-            <h3>Meeting Participants</h3>
+            <h3>Meeting participants</h3>
 
             <TextField
               label="Participant name"
@@ -198,8 +195,8 @@ export default function StandUpPage() {
               Add
             </Button>
 
-            {participants.listOfParticipants
-              ? participants.listOfParticipants.map((obj, i) => (
+            {meeting.meetingParticipants
+              ? meeting.meetingParticipants.map((obj, i) => (
                   <ParticipantCard
                     index={i}
                     name={obj.name}
@@ -224,33 +221,32 @@ export default function StandUpPage() {
           </p>
         ) : null}
 
-        {totalMeetingTime > 0 ? (
-          <div>
-            <Button
-              size="large"
-              color="primary"
-              variant="contained"
-              onClick={() => setStandUpStep(3)}
-            >
-              Start Stand-Up™ &rarr;
-            </Button>
-            <br />
-            <br />
-            <Button
-              size="medium"
-              color="secondary"
-              onClick={() => setStandUpStep(1)}
-            >
-              &larr; Back
-            </Button>
-            &nbsp;&nbsp;
-          </div>
-        ) : null}
+        <div>
+          <Button
+            size="large"
+            color="primary"
+            variant="contained"
+            disabled={totalMeetingTime <= 0}
+            onClick={() => setStandUpStep(3)}
+          >
+            Start Stand-Up™ &rarr;
+          </Button>
+          <br />
+          <br />
+          <Button
+            size="medium"
+            color="secondary"
+            onClick={() => setStandUpStep(1)}
+          >
+            &larr; Back
+          </Button>
+          &nbsp;&nbsp;
+        </div>
 
         {standUpStep === 3 ? (
           <div>
             <Randomiser
-              array={participants.listOfParticipants}
+              array={meeting.meetingParticipants}
               timeInSeconds={minutesPerParticipant * 60}
               timeBetweenSpeakers={timeBetweenSpeakers}
             />
