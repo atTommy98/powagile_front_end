@@ -9,21 +9,28 @@ import React from "react";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
+import Container from "@material-ui/core/Container";
 
 // CSS
 import "./StandUpPage.css";
 
 // Custom Componenets
+import InstructionsPage from "./01_Instructions/01_Instructions";
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 import Randomiser from "../../components/Randomiser/randomiser.js";
 
 export default function StandUpPage() {
   /*Steps*/
+  // TODO: Finish this
   const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(15);
+
+  // TODO: Refactor This
+  const [participantToAdd, setparticipantToAdd] = useState("");
+
   const [participants, setParticipants] = useState({
     participantBeingEntered: "",
     listOfParticipants: [],
@@ -39,24 +46,16 @@ export default function StandUpPage() {
 
     // Don't delete if no index
     if (i === undefined) {
-      console.log("No index passed to DeleteFunc");
+      console.error("No index passed to DeleteFunc");
       return;
     }
     // New state
     const newState = { ...participants };
-
-    console.log(i.target);
-
     // Delete participant
     newState.listOfParticipants.splice(i, 1);
-
     // Set new state
     setParticipants(newState);
   }
-
-  useEffect(() => {
-    calculateMeetingTime();
-  });
 
   function calculateMeetingTime() {
     // How manu people?
@@ -77,6 +76,10 @@ export default function StandUpPage() {
     setTotalMeetingTime(totalTimeInMinutes);
   }
 
+  useEffect(() => {
+    calculateMeetingTime();
+  });
+
   function addParticipant(event) {
     event.preventDefault();
     // Don't add if field is empty
@@ -88,7 +91,8 @@ export default function StandUpPage() {
     // Add paticipant to list
     newState.listOfParticipants.push({
       name: participants.participantBeingEntered,
-      beingEdited: false,
+      hasHadTurn: false,
+      timeLeft: null,
     });
     // Set input field to blank
     newState.participantBeingEntered = "";
@@ -107,45 +111,11 @@ export default function StandUpPage() {
   }
   return (
     <div>
-      <section className="getStartedPage">
-        <h2 className="pageTitle" style={{ textAlign: "center" }}>
-          <span className="companyName">Pow!Agile</span>{" "}
-          <span className="productName">StandUp™</span>
-        </h2>
-        <p className="stepsTitleText">
-          Tired of unproductive stand-ups that drag on for ages?
-          <br />
-          With StandUp™, you'll be done in no time at all! It's easy:
-        </p>
-        <div className="stepsWrapper">
-          <div className="stepContainer">
-            <span className="stepNumber">1</span>
-            <p className="stepText">Enter your meeting participants</p>
-          </div>
-          <div className="stepContainer">
-            <span className="stepNumber">2</span>
-            <p className="stepText">Set your desired timing per person</p>
-          </div>
-          <div className="stepContainer">
-            <span className="stepNumber">3</span>
-            <p className="stepText">Enjoy a quick, producitve meeting!</p>
-          </div>
-        </div>
+      <InstructionsPage
+        backButton={null}
+        nextButton={() => setStandUpStep(2)}
+      />
 
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={() => setStandUpStep(2)}
-        >
-          Get Started &rarr;
-        </Button>
-        <br />
-        <br />
-        <Button color="secondary" size="medium">
-          &larr; Back
-        </Button>
-      </section>
       <section className="setupPage">
         <h2 className="pageTitle" style={{ textAlign: "left" }}>
           <span className="companyName">Pow!Agile</span>{" "}
@@ -203,24 +173,25 @@ export default function StandUpPage() {
             style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
           >
             <h3>Meeting Participants</h3>
-            <TextField
-              label="Participant name"
-              helperText="Enter one participant at a time"
-              variant="filled"
-              value={participants.participantBeingEntered}
-              onChange={inputFieldParticipantChange}
-            />
+            <Container fixed>
+              <TextField
+                label="Participant name"
+                // helperText="Enter one participant at a time"
+                variant="filled"
+                value={participants.participantBeingEntered}
+                onChange={inputFieldParticipantChange}
+              />
 
-            <Button
-              type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              style={{ margin: "5px 10px" }}
-            >
-              Add
-            </Button>
-
+              <Button
+                type="submit"
+                size="large"
+                variant="contained"
+                color="primary"
+                style={{ margin: "5px 10px" }}
+              >
+                Add
+              </Button>
+            </Container>
             {participants.listOfParticipants
               ? participants.listOfParticipants.map((obj, i) => (
                   <ParticipantCard
@@ -233,10 +204,17 @@ export default function StandUpPage() {
           </Paper>
         </form>
 
-        {totalMeetingTime !== 0 ? (
-          <p className="totalStandupTime">
-            With this setup, you'll be done in about{" "}
-            <b>{totalMeetingTime} minutes.</b> Ready to start?
+        {totalMeetingTime === 0 ? null : totalMeetingTime <= 15 ? (
+          <p className="totalStandupTime goodMeetingLength">
+            You'll be done in about <b>{totalMeetingTime} minutes.</b>
+            <br />
+            Ready to start?
+          </p>
+        ) : totalMeetingTime > 15 ? (
+          <p className="totalStandupTime badMeetingLength">
+            You'll be done in about <b>{totalMeetingTime} minutes.</b>
+            <br />
+            Try aiming for a shorter time, if you can.
           </p>
         ) : null}
 
@@ -266,7 +244,6 @@ export default function StandUpPage() {
               timeInSeconds={minutesPerParticipant * 60}
               timeBetweenSpeakers={timeBetweenSpeakers}
             />
-            {/* <Timer timeInSeconds={minutesPerParticipant * 60} /> */}
           </div>
         ) : null}
       </section>
