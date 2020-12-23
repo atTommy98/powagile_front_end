@@ -175,7 +175,6 @@ export default function StandUpPage() {
             <section style={{ margin: "30px" }}>
               <TextField
                 label="Participant name"
-                // helperText="Enter one participant at a time"
                 variant="outlined"
                 value={participantToAdd}
                 onChange={(e) => setParticipantToAdd(e.target.value)}

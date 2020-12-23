@@ -37,7 +37,7 @@ export default function InstructionsPage({
           <div className="stepContainer">
             <span className="stepNumber">3</span>
             <p className="stepText">
-              Share your screen, and enjoy a fast, engaging standup!
+              Share your screen and enjoy a fast, engaging standup!
             </p>
           </div>
         </Grow>
