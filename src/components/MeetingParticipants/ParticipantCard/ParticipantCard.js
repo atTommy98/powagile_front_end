@@ -16,7 +16,7 @@ import "./ParticipantCard.css";
 export default function ParticipantCard({
   index,
   name = "Sample Name",
-  DeleteFunc = null,
+  deleteParticipant = null,
 }) {
   const [animationToggle, setAnimationToggle] = useState(true);
   const [duration, setDuration] = useState(200);
@@ -26,7 +26,7 @@ export default function ParticipantCard({
     // You can thank React's weird .map rendering 👌
     const origDur = duration;
     setAnimationToggle(false);
-    setTimeout(() => DeleteFunc(index), duration);
+    setTimeout(() => deleteParticipant(index), duration);
     setTimeout(() => {
       setDuration(1);
       setAnimationToggle(true);
@@ -51,9 +51,6 @@ export default function ParticipantCard({
             <Button
               size="small"
               variant="contained"
-              // onClick={() => {
-              //   DeleteFunc(index);
-              // }}
               onClick={deleteWithTransition}
             >
               <DeleteForeverIcon /> Delete

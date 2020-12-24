@@ -16,7 +16,7 @@ import "./StandUpPage.css";
 // Custom Componenets
 import InstructionsPage from "./01_Instructions/01_Instructions";
 import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
-import Randomiser from "../../components/Randomiser/randomiser.js";
+import Randomiser from "../../components/Randomiser/randomiser2.js";
 
 export default function StandUpPage() {
   /*Steps*/
@@ -37,33 +37,20 @@ export default function StandUpPage() {
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
-  function DeleteFunc(i) {
-    // Don't delete if no index
+  function deleteParticipant(i) {
     if (i === undefined) {
-      console.error("No index passed to DeleteFunc");
+      console.error("No index passed to deleteParticipant");
       return;
     }
-    // New state
     const newState = { ...meeting };
-    // Delete participant
     newState.meetingParticipants.splice(i, 1);
-    // Set new state
     setMeeting(newState);
   }
 
   function calculateMeetingTime() {
-    // How manu people?
     const people = meeting.meetingParticipants.length;
-    // How many minutes per person?
-    const minutes = minutesPerParticipant;
-    // How much time between speakers?
-    const bufferTime = timeBetweenSpeakers;
-
-    // Calculate (in seconds)
-    const speakingTimeInSeconds = people * minutes * 60;
-    const timeBetweenSpeakersInSeconds = people * bufferTime;
-
-    // Sum, and convert to minutes
+    const speakingTimeInSeconds = people * minutesPerParticipant * 60;
+    const timeBetweenSpeakersInSeconds = people * timeBetweenSpeakers;
     const totalTimeInMinutes = Math.round(
       (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
     );
@@ -76,21 +63,16 @@ export default function StandUpPage() {
 
   function addParticipant(event) {
     event.preventDefault();
-    // Don't add if field is empty
     if (participantToAdd === "") {
       return;
     }
-    // New state
     const newState = { ...meeting };
-    // Add paticipant to list
     newState.meetingParticipants.push({
       name: participantToAdd,
       hasHadTurn: false,
       timeLeft: null,
     });
-    // Set input field to blank
     setParticipantToAdd("");
-    // Set new state
     setMeeting(newState);
   }
 
@@ -196,7 +178,7 @@ export default function StandUpPage() {
                     <ParticipantCard
                       index={i}
                       name={obj.name}
-                      DeleteFunc={DeleteFunc}
+                      deleteParticipant={deleteParticipant}
                     />
                   ))
                 : null}
@@ -218,7 +200,7 @@ export default function StandUpPage() {
           </p>
         ) : null}
 
-        <div>
+        <center>
           <Button
             size="large"
             color="primary"
@@ -238,9 +220,9 @@ export default function StandUpPage() {
             &larr; Back
           </Button>
           &nbsp;&nbsp;
-        </div>
+        </center>
 
-        {standUpStep === 3 ? (
+        {standUpStep ? (
           <div>
             <Randomiser
               array={meeting.meetingParticipants}
