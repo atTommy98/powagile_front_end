@@ -30,26 +30,3 @@
   text-align: center;
   margin: 10px auto;
 }
-
-/*------------------------------*/
-/*Page 2 - Setup*/
-
-.setupPage {
-  margin: 0 auto;
-}
-
-.meetingTimeSettingsWrapper {
-  margin: 0 auto;
-  text-align: center;
-}
-
-.meetingTimeSettingsWrapper .MuiTextField-root {
-  margin: 5px;
-}
-
-.totalStandupTime {
-  margin: 20px auto;
-  font-size: 22px;
-  max-width: 80%;
-  text-align: center;
-}

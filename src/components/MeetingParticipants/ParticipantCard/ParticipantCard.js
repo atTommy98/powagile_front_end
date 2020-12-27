@@ -49,6 +49,7 @@ export default function ParticipantCard({
           </p>
           <div className="buttons">
             <Button
+              disableElevation
               size="small"
               variant="contained"
               onClick={deleteWithTransition}
