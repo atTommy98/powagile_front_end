@@ -1,0 +1,30 @@
+.circularTimerWrapper {
+  display: block;
+  height: 250px;
+}
+
+.partyParrot {
+  position: relative;
+  top: -45px;
+  right: -100px;
+  transform: scale(0.85);
+  opacity: 0.25;
+}
+
+.circularTimer {
+  position: relative;
+  top: 0px;
+  right: 60px;
+}
+
+.timerCard {
+  padding: 20px;
+  max-width: 600px;
+  margin: 15px auto;
+  text-align: center;
+}
+
+.textTimer {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 1.5em;
+}

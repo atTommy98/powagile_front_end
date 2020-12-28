@@ -11,7 +11,7 @@ import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(3);
+  const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);

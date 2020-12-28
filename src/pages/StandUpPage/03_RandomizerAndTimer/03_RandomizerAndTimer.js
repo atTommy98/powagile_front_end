@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,19 +9,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 // Icons
-import PauseIcon from "@material-ui/icons/Pause";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-
-// Parrots
-import SlowParrot from "../../../components/Parrots/hd/slowparrot.gif";
-import FastParrot from "../../../components/Parrots/hd/fastparrot.gif";
 
 // CSS
 import "./03_RandomizerAndTimer.css";
 
 // Custom components
 import RandomizerCard from "../../../components/RandomizerCard/RandomizerCard";
+import TimerPartyParrot from "../../../components/TimerPartyParrot/TimerPartyParrot";
 
 export default function RandomizerAndTimer({ props }) {
   const {
@@ -114,59 +107,16 @@ export default function RandomizerAndTimer({ props }) {
           props={{ activeParticipants, timeBetweenSpeakers, activeStage }}
         />
 
-        <Paper className="randomizerCard" elevation={2}>
-          <div className="circularTimerWrapper">
-            <img
-              className="partyParrot"
-              src={
-                activeParticipants[0].timeLeft >= 15 ? SlowParrot : FastParrot
-              }
-              alt={
-                activeParticipants[0].timeLeft >= 15
-                  ? "Party parrot moving slowly"
-                  : "Party parrot moving very quickly"
-              }
-            ></img>
-
-            <CircularProgress
-              className="circularTimer"
-              variant="determinate"
-              color={
-                activeParticipants[0].timeLeft >= 0 ? "primary" : "secondary"
-              }
-              value={(100 / speakerTime) * activeParticipants[0].timeLeft}
-              size={175}
-              thickness={1.75}
-            />
-            <p className="textTimer">
-              {array[0].timeLeft > 0
-                ? new Date(array[0].timeLeft * 1000).toISOString().substr(14, 5)
-                : "00:00"}
-            </p>
-          </div>
-          <br />
-
-          {activeStage.timerActive === true ? (
-            <Fab
-              color="secondary"
-              onClick={() =>
-                setActiveStage({ ...activeStage, timerActive: false })
-              }
-            >
-              <PauseIcon />
-            </Fab>
-          ) : (
-            <Fab
-              disabled={!activeStage.timerStage}
-              color="primary"
-              onClick={() =>
-                setActiveStage({ ...activeStage, timerActive: true })
-              }
-            >
-              <PlayArrowIcon />
-            </Fab>
-          )}
-        </Paper>
+        <TimerPartyParrot
+          props={{
+            array,
+            activeStage,
+            setActiveStage,
+            activeParticipants,
+            speakerTime,
+          }}
+          helperText={<p>I am a child!</p>}
+        ></TimerPartyParrot>
       </Grid>
     </Grid>
   );

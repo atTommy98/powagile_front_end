@@ -26,20 +26,3 @@
   font-weight: bold;
   font-size: 0.9em;
 }
-
-/*------------------------------*/
-
-.circularTimerWrapper {
-}
-
-.timerCard {
-  padding: 20px;
-  max-width: 600px;
-  margin: 15px auto;
-  text-align: center;
-}
-
-.textTimer {
-  color: rgba(0, 0, 0, 0.45);
-  font-size: 1.5em;
-}

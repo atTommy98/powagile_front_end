@@ -1,0 +1,14 @@
+html {
+  background: rgba(0, 0, 0, 0.04);
+  height: calc(100vh);
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  padding: 5px 25px;
+}
