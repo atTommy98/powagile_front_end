@@ -62,12 +62,14 @@ export default function RandomizerAndTimer({ props }) {
         timerActive: true,
       });
     }
+  }, [activeStage]);
 
+  useEffect(() => {
     // Circular Timer
     if (activeStage.timerStage === true && activeStage.timerActive === true) {
-      circularTimerCountDown();
+      setTimeout(circularTimerCountDown, 1000);
     }
-  });
+  }, [activeStage, activeParticipants]);
 
   function progressBarTimeBetweenParticipants() {
     setTimeout(function () {
@@ -81,11 +83,10 @@ export default function RandomizerAndTimer({ props }) {
   }
 
   function circularTimerCountDown() {
-    setTimeout(function () {
-      const newState = [...array];
-      newState[0].timeLeft -= 1;
-      setActiveParticipants([...newState]);
-    }, 1000);
+    let newState = [...array];
+    newState[0].timeLeft -= 1;
+    setActiveParticipants([...newState]);
+    return;
   }
 
   return (
@@ -114,21 +115,37 @@ export default function RandomizerAndTimer({ props }) {
         />
 
         <Paper className="randomizerCard" elevation={2}>
-          <CircularProgress
-            className="circularTimer"
-            variant="determinate"
-            value={100}
-            size={100}
-            thickness={2.5}
-          />
-          <p className="textTimer">
-            {array[0].timeLeft > 0
-              ? new Date(array[0].timeLeft * 1000).toISOString().substr(14, 5)
-              : "00:00"}
-          </p>
+          <div className="circularTimerWrapper">
+            <img
+              className="partyParrot"
+              src={
+                activeParticipants[0].timeLeft >= 15 ? SlowParrot : FastParrot
+              }
+              alt={
+                activeParticipants[0].timeLeft >= 15
+                  ? "Party parrot moving slowly"
+                  : "Party parrot moving very quickly"
+              }
+            ></img>
+
+            <CircularProgress
+              className="circularTimer"
+              variant="determinate"
+              color={
+                activeParticipants[0].timeLeft >= 0 ? "primary" : "secondary"
+              }
+              value={(100 / speakerTime) * activeParticipants[0].timeLeft}
+              size={175}
+              thickness={1.75}
+            />
+            <p className="textTimer">
+              {array[0].timeLeft > 0
+                ? new Date(array[0].timeLeft * 1000).toISOString().substr(14, 5)
+                : "00:00"}
+            </p>
+          </div>
           <br />
-          <br />
-          {/*Some shit here to track paused/playing state idk*/}
+
           {activeStage.timerActive === true ? (
             <Fab
               color="secondary"
