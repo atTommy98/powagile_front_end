@@ -157,7 +157,11 @@ export default function SetupPage({ props }) {
           size="large"
           color="primary"
           variant="contained"
-          disabled={totalMeetingTime <= 0 && timeBetweenSpeakers >= 10}
+          disabled={
+            minutesPerParticipant < 1 ||
+            timeBetweenSpeakers < 10 ||
+            totalMeetingTime <= 0
+          }
           onClick={startMeeting}
         >
           Start Stand-Up™ &rarr;

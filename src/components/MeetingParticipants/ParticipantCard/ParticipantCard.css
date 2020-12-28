@@ -10,6 +10,8 @@
   font-size: 25px;
   padding: 10px;
   text-transform: capitalize;
+  word-wrap: break-word;
+  max-width: 50%;
 }
 
 .buttons {

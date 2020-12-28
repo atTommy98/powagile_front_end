@@ -19,7 +19,7 @@ export default function ParticipantCard({
   deleteParticipant = null,
 }) {
   const [animationToggle, setAnimationToggle] = useState(true);
-  const [duration, setDuration] = useState(200);
+  const [duration, setDuration] = useState(350);
 
   function deleteWithTransition() {
     // I don't understand exactly why my code here works

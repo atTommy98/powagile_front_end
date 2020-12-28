@@ -7,26 +7,26 @@ import "./StandUpPage.css";
 // Custom Componenets
 import InstructionsPage from "./01_Instructions/01_Instructions";
 import SetupPage from "./02_Setup/02_Setup";
-import Randomiser from "../../components/Randomiser/randomiser2.js";
+import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 
 export default function StandUpPage() {
   /*Steps*/
   const [standUpStep, setStandUpStep] = useState(3);
 
   /*Meeting Setup*/
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(15);
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
   /*🔴🔴🔴🔴🔴*/
   const dummyMeeting = {
     meetingParticipants: [
-      { name: "Daniela", hasHadTurn: false, timeLeft: null },
-      { name: "Stefan", hasHadTurn: false, timeLeft: null },
-      { name: "Tommy", hasHadTurn: false, timeLeft: null },
-      { name: "Kawalpreet", hasHadTurn: false, timeLeft: null },
-      { name: "Jon", hasHadTurn: false, timeLeft: null },
+      { name: "Daniela", hasHadTurn: false, timeLeft: 20 },
+      { name: "Stefan", hasHadTurn: false, timeLeft: 20 },
+      { name: "Tommy", hasHadTurn: false, timeLeft: 20 },
+      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 20 },
+      { name: "Jon", hasHadTurn: false, timeLeft: 20 },
     ],
     meetingStartTime: null,
     meetingEndTime: null,
@@ -85,6 +85,13 @@ export default function StandUpPage() {
   }
 
   function startMeeting() {
+    // Give each participant their time
+    const myArr = meeting.meetingParticipants.map((el) => {
+      el.timeLeft = minutesPerParticipant * 60;
+      return el;
+    });
+    setMeeting({ ...meeting, meetingParticipants: [...myArr] });
+
     const newState = { ...meeting };
     newState.meetingStartTime = Date.now();
     setMeeting(newState);
@@ -109,7 +116,6 @@ export default function StandUpPage() {
             deleteParticipant,
             setParticipantToAdd,
             meeting,
-
             totalMeetingTime,
             setStandUpStep,
             startMeeting,
@@ -119,11 +125,12 @@ export default function StandUpPage() {
 
       {standUpStep === 3 ? (
         <div>
-          <Randomiser
+          <RandomizerAndTimer
             props={{
+              meeting,
               setMeeting,
               array: meeting.meetingParticipants,
-              timeInSeconds: minutesPerParticipant * 60,
+              speakerTime: minutesPerParticipant * 60,
               timeBetweenSpeakers,
             }}
           />
