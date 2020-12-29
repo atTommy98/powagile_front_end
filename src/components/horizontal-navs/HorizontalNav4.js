@@ -22,9 +22,8 @@ import { Link, useHistory } from "react-router-dom";
 import "./HorizontalNav4.css";
 
 // Custom Components
-// import LogInButton from "../Login/LoginButton.js";
-// import LogOutButton from "../Login/LogOutButton.js";
-// import UserInfo from "../Login/UserInfo.js";
+import LogInButton from "../Login/LogInButton/LogInButton";
+import LogOutButton from "../Login/LogOutButton/LogOutButton";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -106,6 +105,10 @@ export default function Navigation(props) {
             Retro
           </Link>
         </div>
+
+        {/* If the user is logged in */}
+        <LogInButton />
+        <LogOutButton />
 
         <IconButton color="inherit" className="avatar">
           <Avatar alt="" src={content["avatar"]} />
