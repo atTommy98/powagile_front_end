@@ -15,6 +15,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AppsIcon from "@material-ui/icons/Apps";
 import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
+
 // React Router
 import { Link, useHistory } from "react-router-dom";
 
@@ -48,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navigation(props) {
+  const { user, isAuthenticated } = useAuth0();
+  console.log(isAuthenticated);
+
   const history = useHistory();
   const classes = useStyles();
 
@@ -61,10 +67,14 @@ export default function Navigation(props) {
     link2: "Enterprise",
     link3: "Support",
     link4: "ICO",
-    avatar:
-      "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    avatar: "",
     ...props.content,
   };
+
+  // Add avatar, if present
+  if (user?.picture) {
+    content.avatar = user.picture;
+  }
 
   const [state, setState] = React.useState({ open: false });
 
@@ -106,14 +116,15 @@ export default function Navigation(props) {
           </Link>
         </div>
 
-        {/* If the user is logged in */}
-        <LogInButton />
-        <LogOutButton />
+        <div className="navbarUserSection">
+          {isAuthenticated ? <LogOutButton /> : <LogInButton />}
 
-        <IconButton color="inherit" className="avatar">
-          <Avatar alt="" src={content["avatar"]} />
-        </IconButton>
+          <IconButton color="inherit" className="avatar">
+            <Avatar alt="" src={content["avatar"]} />
+          </IconButton>
+        </div>
       </Toolbar>
+
       <Drawer anchor="left" open={state.open} onClose={toggleDrawer(false)}>
         <div className={classes.drawerContainer}>
           <List>

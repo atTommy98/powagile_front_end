@@ -4,17 +4,11 @@ import React, { useContext } from "react";
 // CSS
 import "./UserPage.css";
 
-// Context
-// FIXME: OLD CONTEXT, MUST IMPORT NEW ONE HERE!!
-// import { UserContext } from "../../UserContext";
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function UserPage() {
-  // FIXME: OLD CONTEXT, MUST IMPORT NEW ONE HERE!!
-  // const user = useContext(UserContext);
-
-  const user = null;
-
-  console.log(user);
+  const { user, isAuthenticated } = useAuth0();
 
   return (
     <div>
