@@ -8,7 +8,7 @@ import FastParrot from "../../components/Parrots/hd/fastparrot.gif";
 export default function Timer({ timeInSeconds = 20 }) {
   const [counter, setCounter] = useState(timeInSeconds);
   useEffect(() => {
-    const timer = setTimeout(() => setCounter(counter - 1), 1000);
+    setTimeout(() => setCounter(counter - 1), 1000);
   }, [counter]);
   console.log(counter);
   return (
