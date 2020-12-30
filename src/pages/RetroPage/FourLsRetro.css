@@ -40,9 +40,9 @@
   outline: none;
 }
 
-button {
+/* button {
   cursor: pointer;
-}
+} */
 
 .BoardCntr {
   display: flex;
@@ -127,12 +127,12 @@ button {
   flex-direction: column;
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4 {
   text-align: center;
-}
+} */
 
 .btn-cntr {
   text-align: center;

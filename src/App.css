@@ -6,9 +6,11 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 0 !important;
+  background: none !important;
 }
 
 main {
-  padding: 5px 25px;
+  padding: 5px 25px !important;
+  background: none !important;
 }
