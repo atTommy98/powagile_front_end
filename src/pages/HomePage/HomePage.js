@@ -1,15 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import Features4 from "../../components/features/Features4";
 import Team2 from "../../components/team/Team2";
 import Gallery2 from "../../components/gallery/Gallery2";
 import Footer3 from "../../components/footers/Footer3";
 
-// Auth0
-import { useAuth0 } from "@auth0/auth0-react";
-
 export default function Index(props) {
-  const { user, isAuthenticated } = useAuth0();
 
   return (
     <React.Fragment>
