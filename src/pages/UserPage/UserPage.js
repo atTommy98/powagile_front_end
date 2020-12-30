@@ -5,10 +5,14 @@ import React, { useContext } from "react";
 import "./UserPage.css";
 
 // Context
-import { UserContext } from "../../UserContext";
+// FIXME: OLD CONTEXT, MUST IMPORT NEW ONE HERE!!
+// import { UserContext } from "../../UserContext";
 
 export default function UserPage() {
-  const user = useContext(UserContext);
+  // FIXME: OLD CONTEXT, MUST IMPORT NEW ONE HERE!!
+  // const user = useContext(UserContext);
+
+  const user = null;
 
   console.log(user);
 

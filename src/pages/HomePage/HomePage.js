@@ -5,19 +5,24 @@ import Team2 from "../../components/team/Team2";
 import Gallery2 from "../../components/gallery/Gallery2";
 import Footer3 from "../../components/footers/Footer3";
 
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function Index(props) {
-  const { UserContext } = props;
-  const [user, isAuthenticated] = useContext(UserContext);
+  const { user, isAuthenticated } = useAuth0();
 
   return (
     <React.Fragment>
-      <div>
-        <div id="userInfo">
-          <img src={user.picture} alt={user.name} id="userImg" />
-          <h4>{user.name}</h4>
-          <p>{user.email}</p>
+      {user ? (
+        <div>
+          <div id="userInfo">
+            <img src={user.picture} alt={user.name} id="userImg" />
+            <h4>{user.name}</h4>
+            <p>{user.email}</p>
+          </div>
         </div>
-      </div>
+      ) : null}
+
       <Features4
         content={{
           header: "There's no I in PowerShell Rangers",

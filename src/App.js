@@ -7,11 +7,10 @@ import RetroPage from "./pages/RetroPage/RetroPage";
 import UserPage from "./pages/UserPage/UserPage";
 
 // React
-import React from "react";
+import React, { createContext } from "react";
 
 // Components
 import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4";
-import { UserContext } from "./UserContext.js";
 
 // Router
 import { Route, Switch } from "react-router-dom";
@@ -21,6 +20,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
   const { user, isAuthenticated } = useAuth0();
+  const UserContext = createContext("loggedIn");
 
   return (
     <UserContext.Provider value={[user, isAuthenticated]}>
