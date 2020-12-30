@@ -10,11 +10,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function UserPage() {
   const { user, isAuthenticated } = useAuth0();
 
-  return (
+  return isAuthenticated ? (
     <div>
-      <h1>User Information</h1>
-      <p>{user[0] === undefined ? `Please Log In` : user[0].email}</p>
-      <p>{`User logged in: ${user[1]}`}</p>
+      <div id="userInfo">
+        <img src={user.picture} alt={user.name} id="userImg" />
+        <h4>{user.name}</h4>
+        <p>{user.email}</p>
+      </div>
     </div>
+  ) : (
+    <h2>🤔 You don't seem to be logged in!</h2>
   );
 }

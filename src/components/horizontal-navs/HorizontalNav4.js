@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navigation(props) {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   console.log(isAuthenticated);
 
   const history = useHistory();
@@ -118,10 +118,15 @@ export default function Navigation(props) {
 
         <div className="navbarUserSection">
           {isAuthenticated ? <LogOutButton /> : <LogInButton />}
-
-          <IconButton color="inherit" className="avatar">
-            <Avatar alt="" src={content["avatar"]} />
-          </IconButton>
+          <Link to={isAuthenticated ? "/user" : null}>
+            <IconButton
+              color="inherit"
+              className="avatar"
+              onClick={isAuthenticated ? null : () => loginWithRedirect()}
+            >
+              <Avatar alt="User Avatar" src={content["avatar"]} />
+            </IconButton>
+          </Link>
         </div>
       </Toolbar>
 

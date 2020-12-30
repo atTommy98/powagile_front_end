@@ -13,16 +13,6 @@ export default function Index(props) {
 
   return (
     <React.Fragment>
-      {user ? (
-        <div>
-          <div id="userInfo">
-            <img src={user.picture} alt={user.name} id="userImg" />
-            <h4>{user.name}</h4>
-            <p>{user.email}</p>
-          </div>
-        </div>
-      ) : null}
-
       <Features4
         content={{
           header: "There's no I in PowerShell Rangers",
