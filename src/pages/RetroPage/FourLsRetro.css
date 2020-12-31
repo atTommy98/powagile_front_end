@@ -7,39 +7,6 @@
   font-family: "Roboto", sans-serif;
 }
 
-/* Styling the placeholder for each browser */
-::-webkit-input-placeholder {
-  color: inherit;
-  opacity: 0.65;
-}
-::-moz-placeholder {
-  color: inherit;
-  opacity: 0.65;
-}
-:-ms-input-placeholder {
-  color: inherit;
-  opacity: 0.65;
-}
-:-moz-placeholder {
-  color: inherit;
-  opacity: 0.65;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-*:focus {
-  outline: none;
-}
-
 /* button {
   cursor: pointer;
 } */

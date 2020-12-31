@@ -32,11 +32,11 @@ export default function StandUpPage() {
     meetingEndTime: null,
   };
 
-  const properMeeting = {
-    meetingParticipants: [],
-    meetingStartTime: null,
-    meetingEndTime: null,
-  };
+  // const properMeeting = {
+  //   meetingParticipants: [],
+  //   meetingStartTime: null,
+  //   meetingEndTime: null,
+  // };
   /*🔴🔴🔴🔴🔴*/
 
   const [meeting, setMeeting] = useState({ ...dummyMeeting });
