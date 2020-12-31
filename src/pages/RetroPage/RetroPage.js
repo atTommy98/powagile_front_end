@@ -7,7 +7,6 @@ import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import TextField from "@material-ui/core/TextField";
 import { Input } from "@material-ui/core";
 
 // Icons
@@ -19,15 +18,20 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 // Customer Components
 import FourLsRetro from "./FourLsRetro";
+import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
 
 function Retro() {
-  const [retro, setRetro] = useState({
-    retroType: null,
-    retroStarted: null,
-    retroEnded: null,
-  });
+  const dummyMeeting = {
+    type: "retro",
+    subtype: null,
+    cards: [],
+    meetingStartTime: null,
+    meetingEndTime: null,
+  };
 
-  const retroTypes = {
+  const [meeting, setMeeting] = useState(dummyMeeting);
+
+  const retroColumns = {
     fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
     starfishSmall: ["Keep", "More Of", "Less Of / Stop"],
     starfishLarge: [
@@ -43,30 +47,36 @@ function Retro() {
     KALM: ["Keep", "Add", "More", "Less"],
   };
 
-  const [fourLsRetroActive, setFourLsRetroActive] = useState(false);
-  const [speedCarActive, setSpeedCarActive] = useState(false);
+  const retroSpecial = {
+    sailboat: true,
+    speedcar: true,
+  };
 
-  function startFourLsRetro() {
-    setFourLsRetroActive(true);
-    setSpeedCarActive(false);
-  }
-  function startSpeedCarActive() {
-    setSpeedCarActive(true);
-    setFourLsRetroActive(false);
-  }
   return (
     <div className="Retro">
       <h2>Pow!Agile Retrospective Board™</h2>
+      <p>Pick your retro type:</p>
       <div>
-        <h4>4Ls Retrospective</h4>
-        <button onClick={startFourLsRetro}>Play 4Ls</button>
-
-        {fourLsRetroActive ? <FourLsRetro /> : null}
-
+        <Button color="primary">Four Ls (4Ls)</Button>
+        <Button color="primary">Starfish (Small)</Button>
+        <Button color="primary">Starfish (Large)</Button>
+        <Button color="primary">Start, Stop, Continue</Button>
+        <Button color="primary">Mad, Sad, Glad</Button>
+        <Button color="primary">One Word Retrospective</Button>
+        <Button color="primary">KALM Retrospective</Button>
+      </div>
+      <div>
+        <FourLsRetro />
+        <TimerPartyParrotHorizontal
+          props={{
+            totalTime: 600,
+            timeLeft: 600,
+          }}
+        />
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <Paper>
-              <h3>Liked</h3>
+              <h3 className="columnTitle">Liked</h3>
               <Card className="participantCard">
                 <Input
                   disableUnderline
@@ -121,12 +131,6 @@ function Retro() {
           </Grid>
         </Grid>
       </div>
-
-      {/* <div>
-        <h4>Speed Car</h4>
-        <button onClick={startSpeedCarActive}>Play SpeedCar</button>
-        {speedCarActive ? <SpeedCar /> : null}
-      </div> */}
     </div>
   );
 }

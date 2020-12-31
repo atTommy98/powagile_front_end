@@ -1,24 +1,15 @@
 // React
 import React, { useState } from "react";
 
-// CSS
-import "./FourLsRetro.css";
-
 //Customer Component
 import Card from "../../components/CardRetro";
 import CheckboxList from "./instructions";
 import Timer from "../../components/Timer/Timer";
 
 function FourLsRetro() {
-  // const [categories, setCategories] = useState({
-  //   wentWell: [],
-  //   toImprove: [],
-  //   actionItems: [],
-  // });
   const [retroActive, setRetroActive] = useState(false);
   const [instructions, setInstructions] = useState(false);
   const [addClass, setAddClass] = useState(false);
-  // const [userInput, setUserInput] = useState("");
   const [id, setId] = useState(0);
   const [Cards, setCards] = useState([]);
   const [likes, setLikes] = useState(0);

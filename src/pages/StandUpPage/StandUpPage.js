@@ -21,6 +21,7 @@ export default function StandUpPage() {
 
   /*🔴🔴🔴🔴🔴*/
   const dummyMeeting = {
+    type: "standup",
     meetingParticipants: [
       { name: "Daniela", hasHadTurn: false, timeLeft: 60 },
       { name: "Stefan", hasHadTurn: false, timeLeft: 60 },
