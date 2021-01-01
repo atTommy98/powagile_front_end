@@ -16,6 +16,7 @@ import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 
 // Customer Components
+import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
 import RetroCard from "../../components/RetroCard/RetroCard";
 import RetroColumn from "../../components/RetroColumn/RetroColumn";
@@ -51,12 +52,21 @@ function Retro() {
     setMeeting({ ...meeting, subtype: type, columns: retroColumns[type] });
   }
 
+  function addCard(colIndex, colName) {
+    const newState = { ...meeting };
+    newState.cards.push({
+      columnIndex: colIndex,
+      columnName: colName,
+      content: "",
+      thumbsUp: 0,
+      thumbsDown: 0,
+    });
+    setMeeting(newState);
+  }
+
   return (
     <div className="Retro">
-      <h2 className="pageTitle" style={{ textAlign: "center" }}>
-        <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productName">Retrospective™</span>
-      </h2>
+      <ProductTitle title="Retrospective" />
       <p>Pick your retro type:</p>
       <div>
         <Button
@@ -133,7 +143,16 @@ function Retro() {
         />
         <Grid className="retroBoardContainer" container spacing={2}>
           {meeting.columns.map((columnTitle, index) => (
-            <RetroColumn props={{ columnTitle, index }} />
+            <RetroColumn
+              props={{
+                columnTitle,
+                index,
+                addCard,
+                cards: meeting.cards.filter((card) =>
+                  card.columnIndex === index ? true : false
+                ),
+              }}
+            ></RetroColumn>
           ))}
         </Grid>
       </div>

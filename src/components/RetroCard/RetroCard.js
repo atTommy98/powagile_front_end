@@ -14,7 +14,9 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 // CSS
 import "./RetroCard.css";
 
-export default function RetroCard() {
+export default function RetroCard({ props }) {
+  const { content, thumbsUp, thumbsDown } = props;
+
   return (
     <Card className="participantCard">
       <Input

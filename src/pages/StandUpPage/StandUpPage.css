@@ -1,22 +1,3 @@
-.pageTitle {
-  font-size: 2.5em;
-  padding: none;
-  margin: none;
-}
-
-.productNameStandUp {
-  text-align: center;
-  font-family: "Roboto";
-  font-style: italic;
-  color: #0599a9;
-}
-
-.companyName {
-  font-family: "Bowlby One SC", cursive;
-  font-weight: 400;
-  color: #2196f3;
-}
-
 .buttonsWrapper {
   text-align: center;
   margin: 10px auto;

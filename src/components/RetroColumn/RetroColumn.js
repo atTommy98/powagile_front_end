@@ -10,7 +10,14 @@ import "./RetroColumn.css";
 import RetroCard from "../RetroCard/RetroCard";
 
 export default function RetroColumn({ props = {} }) {
-  const { columnTitle = "Column Title", index = 0, children = [] } = props;
+  const {
+    columnTitle = "Column Title",
+    index = 0,
+    cards,
+    addCard = () => {
+      return;
+    },
+  } = props;
 
   return (
     <Grid item xs={3} key={"column" + index}>
@@ -18,8 +25,15 @@ export default function RetroColumn({ props = {} }) {
         <h3 className="columnTitle">
           {columnTitle} {index}
         </h3>
-        {children}
-        <Button style={{ width: "100%" }}>Add Card +</Button>
+        {cards.map((card, index) => (
+          <RetroCard key={"card" + card.index} props={card} />
+        ))}
+        <Button
+          style={{ width: "100%" }}
+          onClick={() => addCard(index, columnTitle)}
+        >
+          Add Card +
+        </Button>
       </Paper>
     </Grid>
   );
