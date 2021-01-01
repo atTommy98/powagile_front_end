@@ -15,21 +15,28 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+// Retro Types Icons
+import Looks4Icon from "@material-ui/icons/Looks4";
+import StarRateIcon from "@material-ui/icons/StarRate";
+import StarIcon from "@material-ui/icons/Star";
+import TrafficIcon from "@material-ui/icons/Traffic";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 // Customer Components
 import FourLsRetro from "./FourLsRetro";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
 
 function Retro() {
-  const dummyMeeting = {
+  const [meeting, setMeeting] = useState({
     type: "retro",
     subtype: null,
+    columns: [],
     cards: [],
     meetingStartTime: null,
     meetingEndTime: null,
-  };
-
-  const [meeting, setMeeting] = useState(dummyMeeting);
+  });
 
   const retroColumns = {
     fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
@@ -47,26 +54,73 @@ function Retro() {
     KALM: ["Keep", "Add", "More", "Less"],
   };
 
-  const retroSpecial = {
-    sailboat: true,
-    speedcar: true,
-  };
-
   return (
     <div className="Retro">
-      <h2>Pow!Agile Retrospective Board™</h2>
+      <h2 className="pageTitle" style={{ textAlign: "center" }}>
+        <span className="companyName">Pow!Agile</span>{" "}
+        <span className="productName">Retrospective™</span>
+      </h2>
       <p>Pick your retro type:</p>
       <div>
-        <Button color="primary">Four Ls (4Ls)</Button>
-        <Button color="primary">Starfish (Small)</Button>
-        <Button color="primary">Starfish (Large)</Button>
-        <Button color="primary">Start, Stop, Continue</Button>
-        <Button color="primary">Mad, Sad, Glad</Button>
-        <Button color="primary">One Word Retrospective</Button>
-        <Button color="primary">KALM Retrospective</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<Looks4Icon />}
+        >
+          Four Ls (4Ls)
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<StarRateIcon />}
+        >
+          Starfish (Small)
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<StarIcon />}
+        >
+          Starfish (Large)
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<TrafficIcon />}
+        >
+          Start, Stop, Continue
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<EmojiEmotionsIcon />}
+        >
+          Mad, Sad, Glad
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<ChatBubbleIcon />}
+        >
+          One Word Retro
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<AssignmentIcon />}
+        >
+          KALM Retro
+        </Button>
       </div>
       <div>
-        <FourLsRetro />
         <TimerPartyParrotHorizontal
           props={{
             totalTime: 600,
