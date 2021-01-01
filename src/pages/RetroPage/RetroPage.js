@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 
 // Material UI
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
@@ -18,15 +17,22 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroCard from "../../components/RetroCard/RetroCard";
 import RetroColumn from "../../components/RetroColumn/RetroColumn";
 
 function Retro() {
   const [meeting, setMeeting] = useState({
     type: "retro",
     subtype: null,
-    columns: [],
-    cards: [],
+    columns: ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"],
+    cards: [
+      {
+        columnIndex: 0,
+        columnName: "Test",
+        content: "",
+        thumbsUp: 5,
+        thumbsDown: 1,
+      },
+    ],
     meetingStartTime: null,
     meetingEndTime: null,
   });
@@ -43,7 +49,7 @@ function Retro() {
     ],
     startStopContinue: ["Start", "Stop", "Continue"],
     madSadGlad: ["Mad", "Sad", "Glad"],
-    oneWord: ["Thoughts"],
+    oneWord: ["Your Thoughts In One Word"],
     KALM: ["Keep", "Add", "More", "Less"],
   };
 
@@ -62,6 +68,29 @@ function Retro() {
       thumbsDown: 0,
     });
     setMeeting(newState);
+  }
+
+  function deleteCard(index) {
+    console.log({ index });
+    const newCards = meeting.cards.filter((_, i) =>
+      i !== index ? true : false
+    );
+    setMeeting({ ...meeting, cards: newCards });
+  }
+
+  function moveCard(index, direction) {
+    const newCard = meeting.cards[index];
+    switch (direction) {
+      case "left":
+        newCard.columnIndex -= 1;
+        break;
+      case "right":
+        newCard.columnIndex += 1;
+        break;
+      default:
+        break;
+    }
+    setMeeting({ ...meeting, cards: meeting.cards.splice(index, 1, newCard) });
   }
 
   return (
@@ -145,9 +174,13 @@ function Retro() {
           {meeting.columns.map((columnTitle, index) => (
             <RetroColumn
               props={{
+                meeting,
+                setMeeting,
                 columnTitle,
                 index,
                 addCard,
+                deleteCard,
+                moveCard,
                 cards: meeting.cards.filter((card) =>
                   card.columnIndex === index ? true : false
                 ),
