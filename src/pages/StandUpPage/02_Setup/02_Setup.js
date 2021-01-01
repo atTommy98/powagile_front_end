@@ -33,7 +33,7 @@ export default function SetupPage({ props }) {
     <section className="setupPage">
       <h2 className="pageTitle" style={{ textAlign: "left" }}>
         <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productName">Stand-Up™</span>
+        <span className="productNameStandUp">Stand-Up™</span>
       </h2>
       <div className="meetingTimeSettingsWrapper">
         <Paper

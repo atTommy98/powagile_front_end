@@ -1,12 +1,7 @@
 // Material UI
-import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
-
-// Icons
-import PauseIcon from "@material-ui/icons/Pause";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
 // Parrots
 import SlowParrot from "../Parrots/hd/slowparrot.gif";
@@ -20,7 +15,7 @@ export default function TimerPartyParrotHorizontal({ props, helperText }) {
 
   return (
     <Collapse in timeout={1500}>
-      <Paper className="randomizerCard" elevation={2}>
+      <Paper className="randomizerCard horizontal" elevation={2}>
         <div className="circularTimerWrapper">
           <img
             className="partyParrot"

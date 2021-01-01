@@ -3,18 +3,9 @@ import React, { useState } from "react";
 
 // Material UI
 import Paper from "@material-ui/core/Paper";
-import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import { Input } from "@material-ui/core";
 
-// Icons
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 // Retro Types Icons
 import Looks4Icon from "@material-ui/icons/Looks4";
 import StarRateIcon from "@material-ui/icons/StarRate";
@@ -25,8 +16,9 @@ import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 
 // Customer Components
-import FourLsRetro from "./FourLsRetro";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
+import RetroCard from "../../components/RetroCard/RetroCard";
+import RetroColumn from "../../components/RetroColumn/RetroColumn";
 
 function Retro() {
   const [meeting, setMeeting] = useState({
@@ -54,6 +46,11 @@ function Retro() {
     KALM: ["Keep", "Add", "More", "Less"],
   };
 
+  function setRetroType(type = "fourLs") {
+    // Set the meeting columns, default to 4Ls
+    setMeeting({ ...meeting, subtype: type, columns: retroColumns[type] });
+  }
+
   return (
     <div className="Retro">
       <h2 className="pageTitle" style={{ textAlign: "center" }}>
@@ -67,6 +64,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<Looks4Icon />}
+          onClick={() => setRetroType("fourLs")}
         >
           Four Ls (4Ls)
         </Button>
@@ -75,6 +73,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<StarRateIcon />}
+          onClick={() => setRetroType("starfishSmall")}
         >
           Starfish (Small)
         </Button>
@@ -83,6 +82,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<StarIcon />}
+          onClick={() => setRetroType("starfishLarge")}
         >
           Starfish (Large)
         </Button>
@@ -91,6 +91,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<TrafficIcon />}
+          onClick={() => setRetroType("startStopContinue")}
         >
           Start, Stop, Continue
         </Button>
@@ -99,6 +100,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<EmojiEmotionsIcon />}
+          onClick={() => setRetroType("madSadGlad")}
         >
           Mad, Sad, Glad
         </Button>
@@ -107,6 +109,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<ChatBubbleIcon />}
+          onClick={() => setRetroType("oneWord")}
         >
           One Word Retro
         </Button>
@@ -116,6 +119,7 @@ function Retro() {
           color="primary"
           size="large"
           startIcon={<AssignmentIcon />}
+          onClick={() => setRetroType("KALM")}
         >
           KALM Retro
         </Button>
@@ -127,62 +131,10 @@ function Retro() {
             timeLeft: 600,
           }}
         />
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <Paper>
-              <h3 className="columnTitle">Liked</h3>
-              <Card className="participantCard">
-                <Input
-                  disableUnderline
-                  multiline
-                  rows={2}
-                  placeholder="Your card text goes here..."
-                />
-                <Button>
-                  <DeleteForeverIcon size="large" />
-                </Button>
-
-                <ButtonGroup
-                  fullWidth
-                  variant="text"
-                  size="small"
-                  color="black"
-                >
-                  <Button>
-                    <ChevronLeftIcon />
-                  </Button>
-                  <Button>
-                    <ThumbDownIcon />
-                  </Button>
-                  <Button>
-                    <ThumbUpIcon />
-                  </Button>
-                  <Button>
-                    <ChevronRightIcon />
-                  </Button>
-                </ButtonGroup>
-              </Card>
-              <Button style={{ width: "100%" }}>+</Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper>
-              <h3>Learned</h3>
-              <Button style={{ width: "100%" }}>+</Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper>
-              <h3>Lacked</h3>
-              <Button style={{ width: "100%" }}>+</Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper>
-              <h3>Longed For</h3>
-              <Button style={{ width: "100%" }}>+</Button>
-            </Paper>
-          </Grid>
+        <Grid className="retroBoardContainer" container spacing={2}>
+          {meeting.columns.map((columnTitle, index) => (
+            <RetroColumn props={{ columnTitle, index }} />
+          ))}
         </Grid>
       </div>
     </div>
