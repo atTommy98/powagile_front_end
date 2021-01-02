@@ -176,7 +176,7 @@ function Retro() {
         }}
       />
 
-      <div style={{ overflow: "scroll" }}>
+      <div>
         <Grid
           className="retroBoardContainer"
           container

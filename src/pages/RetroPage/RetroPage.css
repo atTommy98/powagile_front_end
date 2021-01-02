@@ -1,4 +1,3 @@
-/*------------------------------*/
 /*Global*/
 
 .pageTitle {
@@ -28,5 +27,5 @@
 .retroBoardContainer {
   height: auto;
   width: 100%;
-  overflow-y: hidden;
+  overflow: scroll !important;
 }
