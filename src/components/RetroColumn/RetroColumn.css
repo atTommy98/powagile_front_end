@@ -1,7 +1,7 @@
 .columnWrapper {
   margin: 0px;
   padding: 0px;
-  min-width: 200px;
+  min-width: 270px;
 }
 
 .columnTitle {
@@ -18,6 +18,6 @@
 
 .columnHelperText {
   text-align: center;
-  font-size: 0.8em;
+  font-size: 1em;
   color: darkgray;
 }

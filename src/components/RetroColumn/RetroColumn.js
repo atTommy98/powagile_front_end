@@ -23,7 +23,7 @@ export default function RetroColumn({ props = {} }) {
   } = props;
 
   return (
-    <Grid item xs={3} key={"column" + index}>
+    <Grid item sm={3} key={"column" + index}>
       <Collapse in>
         <Paper className="columnWrapper">
           <h3 className="columnTitle">{columnTitle}</h3>

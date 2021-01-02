@@ -24,3 +24,9 @@
   text-align: center;
   margin: 10px auto;
 }
+
+.retroBoardContainer {
+  height: auto;
+  width: 100%;
+  overflow-y: hidden;
+}

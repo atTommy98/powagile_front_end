@@ -4,13 +4,14 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { Input } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 // Icons
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 // CSS
 import "./RetroCard.css";
@@ -22,11 +23,9 @@ export default function RetroCard({ props, functions }) {
 
   return (
     <Card className="retroCard">
-      <Input
+      <TextareaAutosize
         className="retroCardTextField"
-        disableUnderline
-        multiline
-        rows={2}
+        rowsMin={4}
         placeholder="Your card text goes here..."
         onChange={(e) => console.log(e.target.value)}
       />
@@ -35,7 +34,7 @@ export default function RetroCard({ props, functions }) {
         size="small"
         onClick={() => deleteCard(index)}
       >
-        <DeleteForeverIcon size="small" />
+        <DeleteIcon size="small" />
       </IconButton>
 
       <ButtonGroup fullWidth variant="text" size="small" color="black">

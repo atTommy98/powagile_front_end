@@ -62,7 +62,6 @@ function Retro() {
     const newState = { ...meeting };
     newState.cards.push({
       columnIndex: colIndex,
-      columnName: colName,
       content: "",
       thumbsUp: 0,
       thumbsDown: 0,
@@ -79,6 +78,7 @@ function Retro() {
   }
 
   function moveCard(index, direction) {
+    const newCards = meeting.cards;
     const newCard = meeting.cards[index];
     switch (direction) {
       case "left":
@@ -90,7 +90,12 @@ function Retro() {
       default:
         break;
     }
-    setMeeting({ ...meeting, cards: meeting.cards.splice(index, 1, newCard) });
+    newCards[index] = newCard;
+
+    setMeeting({
+      ...meeting,
+      cards: meeting.cards.splice(index, 1, newCard),
+    });
   }
 
   return (
@@ -163,14 +168,21 @@ function Retro() {
           KALM Retro
         </Button>
       </div>
-      <div>
-        <TimerPartyParrotHorizontal
-          props={{
-            totalTime: 600,
-            timeLeft: 600,
-          }}
-        />
-        <Grid className="retroBoardContainer" container spacing={2}>
+
+      <TimerPartyParrotHorizontal
+        props={{
+          totalTime: 600,
+          timeLeft: 600,
+        }}
+      />
+
+      <div style={{ overflow: "scroll" }}>
+        <Grid
+          className="retroBoardContainer"
+          container
+          spacing={2}
+          wrap="nowrap"
+        >
           {meeting.columns.map((columnTitle, index) => (
             <RetroColumn
               props={{
