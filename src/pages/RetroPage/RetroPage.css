@@ -10,7 +10,7 @@
   text-align: center;
   font-family: "Roboto";
   font-style: italic;
-  color: #0599a9;
+  color: #ff94fb;
 }
 
 .companyName {
@@ -27,5 +27,32 @@
 .retroBoardContainer {
   height: auto;
   width: 100%;
-  overflow: scroll !important;
+  overflow-x: scroll !important;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 15%,
+    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* width */
+.retroBoardContainer::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+.retroBoardContainer::-webkit-scrollbar-track {
+  background: #d7d7d7;
+}
+
+/* Handle */
+.retroBoardContainer::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.retroBoardContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

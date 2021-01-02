@@ -19,6 +19,9 @@ import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
 import RetroColumn from "../../components/RetroColumn/RetroColumn";
 
+// CSS
+import "./RetroPage.css";
+
 function Retro() {
   const [meeting, setMeeting] = useState({
     type: "retro",
