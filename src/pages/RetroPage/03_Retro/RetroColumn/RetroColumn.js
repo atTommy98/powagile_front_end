@@ -18,6 +18,8 @@ export default function RetroColumn({ props = {} }) {
     index,
     cards,
     addCard,
+    updateCardText,
+    updateCardVotes,
     deleteCard,
     moveCard,
   } = props;
@@ -30,13 +32,17 @@ export default function RetroColumn({ props = {} }) {
           {cards.length > 0 ? (
             cards.map((card, index) => (
               <RetroCard
-                key={"card" + card.index}
                 props={{ card, index, meeting, setMeeting }}
-                functions={{ deleteCard, moveCard }}
+                functions={{
+                  updateCardText,
+                  updateCardVotes,
+                  deleteCard,
+                  moveCard,
+                }}
               />
             ))
           ) : (
-            <p className="columnHelperText">Add your first card here...</p>
+            <p className="columnHelperText">This column has no cards</p>
           )}
           <Button
             style={{ width: "100%" }}

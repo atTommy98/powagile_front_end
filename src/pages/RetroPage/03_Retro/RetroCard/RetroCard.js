@@ -16,23 +16,24 @@ import DeleteIcon from "@material-ui/icons/Delete";
 // CSS
 import "./RetroCard.css";
 
-export default function RetroCard({ props, functions }) {
+export default function RetroCard({ key, props, functions }) {
   const { index, card, meeting, setMeeting } = props;
-  const { columnIndex, columnName, content, thumbsUp, thumbsDown } = card;
-  const { deleteCard, moveCard } = functions;
+  const { id, columnIndex, columnName, content, thumbsUp, thumbsDown } = card;
+  const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;
 
   return (
     <Card className="retroCard">
       <TextareaAutosize
         className="retroCardTextField"
         rowsMin={4}
-        placeholder="Your card text goes here..."
-        onChange={(e) => console.log(e.target.value)}
+        placeholder="Your card text"
+        value={content}
+        onChange={(e) => updateCardText({ id, content: e.target.value })}
       />
       <IconButton
         className="retroCardDeleteButton"
         size="small"
-        onClick={() => deleteCard(index)}
+        onClick={() => deleteCard(id)}
       >
         <DeleteIcon size="small" />
       </IconButton>
@@ -40,21 +41,21 @@ export default function RetroCard({ props, functions }) {
       <ButtonGroup fullWidth variant="text" size="small" color="black">
         <Button
           disabled={columnIndex === 0}
-          onClick={() => moveCard(index, "left")}
+          onClick={() => moveCard(id, "left")}
         >
           <ChevronLeftIcon />
         </Button>
-        <Button>
+        <Button onClick={() => console.log("thumb_down")}>
           {thumbsDown}&nbsp;
           <ThumbDownIcon />
         </Button>
-        <Button>
+        <Button onClick={() => console.log("thumb_up")}>
           {thumbsUp}&nbsp;
           <ThumbUpIcon />
         </Button>
         <Button
           disabled={columnIndex === meeting.columns.length - 1}
-          onClick={() => moveCard(index, "right")}
+          onClick={() => moveCard(id, "right")}
         >
           <ChevronRightIcon />
         </Button>

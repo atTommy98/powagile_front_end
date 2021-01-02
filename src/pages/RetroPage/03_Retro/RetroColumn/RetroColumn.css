@@ -4,6 +4,10 @@
   min-width: 270px;
 }
 
+.lastCol {
+  margin-right: 50px;
+}
+
 .columnTitle {
   text-align: center;
   margin: 0px;
@@ -18,6 +22,8 @@
 
 .columnHelperText {
   text-align: center;
-  font-size: 1em;
-  color: darkgray;
+  font-size: 0.85em;
+  color: lightgrey;
+  user-select: none;
+  pointer-events: none;
 }

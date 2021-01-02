@@ -17,7 +17,10 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroColumn from "../../components/RetroColumn/RetroColumn";
+import RetroColumn from "./03_Retro/RetroColumn/RetroColumn";
+
+// uuid
+import { v4 as uuidv4 } from "uuid";
 
 // CSS
 import "./RetroPage.css";
@@ -25,17 +28,9 @@ import "./RetroPage.css";
 function Retro() {
   const [meeting, setMeeting] = useState({
     type: "retro",
-    subtype: null,
+    subtype: undefined,
     columns: ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"],
-    cards: [
-      {
-        columnIndex: 0,
-        columnName: "Test",
-        content: "",
-        thumbsUp: 5,
-        thumbsDown: 1,
-      },
-    ],
+    cards: [],
     meetingStartTime: null,
     meetingEndTime: null,
   });
@@ -64,6 +59,7 @@ function Retro() {
   function addCard(colIndex, colName) {
     const newState = { ...meeting };
     newState.cards.push({
+      id: uuidv4(),
       columnIndex: colIndex,
       content: "",
       thumbsUp: 0,
@@ -72,17 +68,36 @@ function Retro() {
     setMeeting(newState);
   }
 
-  function deleteCard(index) {
-    console.log({ index });
-    const newCards = meeting.cards.filter((_, i) =>
-      i !== index ? true : false
-    );
-    setMeeting({ ...meeting, cards: newCards });
+  function deleteCard(id) {
+    setMeeting({
+      ...meeting,
+      cards: meeting.cards.filter((el) => (el.id !== id ? true : false)),
+    });
   }
 
-  function moveCard(index, direction) {
-    const newCards = meeting.cards;
+  function updateCardText({ id, content }) {
+    const index = meeting.cards.findIndex((card) => card.id === id);
     const newCard = meeting.cards[index];
+    // Move the card
+    newCard.content = content;
+    const newCards = [...meeting.cards];
+    newCards[index] = newCard;
+    setMeeting({
+      ...meeting,
+      cards: newCards,
+    });
+  }
+
+  function updateCardVotes({ id, thumb, value }) {
+    // text
+    // thumbs (votes)
+  }
+
+  function moveCard(id, direction) {
+    // Find the card
+    const index = meeting.cards.findIndex((card) => card.id === id);
+    const newCard = meeting.cards[index];
+    // Move the card
     switch (direction) {
       case "left":
         newCard.columnIndex -= 1;
@@ -93,11 +108,11 @@ function Retro() {
       default:
         break;
     }
+    const newCards = [...meeting.cards];
     newCards[index] = newCard;
-
     setMeeting({
       ...meeting,
-      cards: meeting.cards.splice(index, 1, newCard),
+      cards: newCards,
     });
   }
 
@@ -194,6 +209,8 @@ function Retro() {
                 columnTitle,
                 index,
                 addCard,
+                updateCardText,
+                updateCardVotes,
                 deleteCard,
                 moveCard,
                 cards: meeting.cards.filter((card) =>
