@@ -6,20 +6,22 @@
   height: auto;
 }
 
+.deleteButtonContainer {
+  width: 20px !important;
+  display: inline;
+}
+
 .retroCardTextField {
-  width: 85%;
+  display: inline;
+  width: 85% !important;
   height: auto;
   font-size: 18px;
   border: none;
-}
-
-.retroCardTextField:active {
-  border: none !important;
+  resize: vertical;
 }
 
 .retroCardDeleteButton {
   display: block;
   position: absolute;
-  right: 0px;
-  top: -30px;
+  align-items: center;
 }

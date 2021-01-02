@@ -1,7 +1,6 @@
 // Material UI
 import Card from "@material-ui/core/Card";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import { Input } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
@@ -23,20 +22,24 @@ export default function RetroCard({ key, props, functions }) {
 
   return (
     <Card className="retroCard">
+      <div className="deleteIconContainer">
+        <IconButton
+          className="retroCardDeleteButton"
+          size="small"
+          onClick={() => deleteCard(id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
+
       <TextareaAutosize
         className="retroCardTextField"
         rowsMin={4}
         placeholder="Your card text"
+        varian="standard"
         value={content}
         onChange={(e) => updateCardText({ id, content: e.target.value })}
       />
-      <IconButton
-        className="retroCardDeleteButton"
-        size="small"
-        onClick={() => deleteCard(id)}
-      >
-        <DeleteIcon size="small" />
-      </IconButton>
 
       <ButtonGroup fullWidth variant="text" size="small" color="black">
         <Button
@@ -49,6 +52,7 @@ export default function RetroCard({ key, props, functions }) {
           {thumbsDown}&nbsp;
           <ThumbDownIcon />
         </Button>
+
         <Button onClick={() => console.log("thumb_up")}>
           {thumbsUp}&nbsp;
           <ThumbUpIcon />
