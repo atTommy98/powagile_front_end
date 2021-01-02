@@ -15,7 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 // CSS
 import "./RetroCard.css";
 
-export default function RetroCard({ key, props, functions }) {
+export default function RetroCard({ props, functions }) {
   const { index, card, meeting, setMeeting } = props;
   const { id, columnIndex, columnName, content, thumbsUp, thumbsDown } = card;
   const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;

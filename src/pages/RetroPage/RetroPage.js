@@ -82,15 +82,26 @@ function Retro() {
     newCard.content = content;
     const newCards = [...meeting.cards];
     newCards[index] = newCard;
+    // Set state
     setMeeting({
       ...meeting,
       cards: newCards,
     });
   }
 
-  function updateCardVotes({ id, thumb, value }) {
-    // text
-    // thumbs (votes)
+  function updateCardVotes({ id, thumb }) {
+    // Find Card
+    const index = meeting.cards.findIndex((card) => card.id === id);
+    const newCard = meeting.cards[index];
+    // Move the card
+    newCard[thumb] += 1;
+    const newCards = [...meeting.cards];
+    newCards[index] = newCard;
+    // Set state
+    setMeeting({
+      ...meeting,
+      cards: newCards,
+    });
   }
 
   function moveCard(id, direction) {

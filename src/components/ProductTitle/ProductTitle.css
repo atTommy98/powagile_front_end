@@ -11,6 +11,13 @@
   color: #0599a9;
 }
 
+.productNameRetrospective {
+  text-align: center;
+  font-family: "Roboto";
+  font-style: italic;
+  color: #fe99bb;
+}
+
 .companyName {
   font-family: "Bowlby One SC", cursive;
   font-weight: 400;

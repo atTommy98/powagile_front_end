@@ -6,11 +6,6 @@
   height: auto;
 }
 
-.deleteButtonContainer {
-  width: 20px !important;
-  display: inline;
-}
-
 .retroCardTextField {
   display: inline;
   width: 85% !important;
@@ -18,10 +13,11 @@
   font-size: 18px;
   border: none;
   resize: vertical;
+  margin-top: -25px;
 }
 
 .retroCardDeleteButton {
   display: block;
-  position: absolute;
-  align-items: center;
+  position: relative;
+  left: 220px;
 }
