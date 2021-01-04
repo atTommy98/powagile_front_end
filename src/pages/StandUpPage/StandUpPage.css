@@ -1,10 +1,4 @@
-* {
-  font-family: "Roboto";
-}
-
-.totalStandupTime {
-  margin: 20px auto;
-  font-size: 22px;
-  max-width: 80%;
+.buttonsWrapper {
   text-align: center;
+  margin: 10px auto;
 }

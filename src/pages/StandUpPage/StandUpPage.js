@@ -1,224 +1,142 @@
 // React
 import { useState, useEffect } from "react";
 
-// Material UI
-import { Input } from "@material-ui/core";
-import { DialogTitle } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-
 // CSS
 import "./StandUpPage.css";
 
 // Custom Componenets
-import ParticipantCard from "../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
-import Randomiser from "../../components/Randomiser/randomiser.js";
-// import Timer from "../../components/Timer/Timer.js";
+import InstructionsPage from "./01_Instructions/01_Instructions";
+import SetupPage from "./02_Setup/02_Setup";
+import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 
 export default function StandUpPage() {
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(0.5);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(5);
+  /*Steps*/
+  const [standUpStep, setStandUpStep] = useState(1);
+
+  /*Meeting Setup*/
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
+
+  const [participantToAdd, setParticipantToAdd] = useState("");
+
+  /*🔴🔴🔴🔴🔴*/
+  const dummyMeeting = {
+    type: "standup",
+    meetingParticipants: [
+      { name: "Daniela", hasHadTurn: false, timeLeft: 60 },
+      { name: "Stefan", hasHadTurn: false, timeLeft: 60 },
+      { name: "Tommy", hasHadTurn: false, timeLeft: 60 },
+      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 60 },
+      { name: "Jon", hasHadTurn: false, timeLeft: 60 },
+    ],
+    meetingStartTime: null,
+    meetingEndTime: null,
+  };
+
+  // const properMeeting = {
+  //   meetingParticipants: [],
+  //   meetingStartTime: null,
+  //   meetingEndTime: null,
+  // };
+  /*🔴🔴🔴🔴🔴*/
+
+  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+
+  /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
 
-  const [participants, setParticipants] = useState({
-    participantBeingEntered: "",
-    listOfParticipants: [],
-  });
-
-  const [meetingActive, setMeetingActive] = useState(false);
-
-  // FIXME: Delete, Edit, Toggle functions not working
-
-  function DeleteFunc(i) {
-    console.log(i);
-
-    // Don't delete if no index
+  function deleteParticipant(i) {
     if (i === undefined) {
-      console.log("No index passed to DeleteFunc");
+      console.error("No index passed to deleteParticipant");
       return;
     }
-    // New state
-    const newState = { ...participants };
-
-    console.log(i);
-
-    // Delete participant
-    newState.listOfParticipants.splice(i, 1);
-
-    // Set new state
-    setParticipants(newState);
+    const newState = { ...meeting };
+    newState.meetingParticipants.splice(i, 1);
+    setMeeting(newState);
   }
-
-  function EditNameFunc(i, name) {
-    // Don't edit if no index
-    // if (i === undefined) {
-    //   console.log("No index passed to EditNameFunc");
-    //   return;
-    // }
-    // // New state
-    // const newState = { ...participants };
-    // // Add paticipant to list
-    // newState.listOfParticipants[i] = name;
-    // // Set new state
-    // setParticipants(newState);
-  }
-
-  function ToggleBeingEditedFunc(i) {
-    // Don't toggle if no index
-    if (i === undefined) {
-      console.log("No index passed to toggleBeingEditedFunc");
-      return;
-    }
-    // New state
-    const newState = { ...participants };
-    // Toggle participant edit status
-    const participant = newState.listOfParticipants[i];
-    participant.beingEdited = !participant.beingEdited;
-    // Set new state
-    setParticipants(newState);
-  }
-
-  useEffect(() => {
-    calculateMeetingTime();
-  });
 
   function calculateMeetingTime() {
-    // How manu people?
-    const people = participants.listOfParticipants.length;
-    // How many minutes per person?
-    const minutes = minutesPerParticipant;
-    // How much time between speakers?
-    const bufferTime = timeBetweenSpeakers;
-
-    // Calculate (in seconds)
-    const speakingTimeInSeconds = people * minutes * 60;
-    const timeBetweenSpeakersInSeconds = people * bufferTime;
-
-    // Sum, and convert to minutes
+    const people = meeting.meetingParticipants.length;
+    const speakingTimeInSeconds = people * minutesPerParticipant * 60;
+    const timeBetweenSpeakersInSeconds = people * timeBetweenSpeakers;
     const totalTimeInMinutes = Math.round(
       (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
     );
     setTotalMeetingTime(totalTimeInMinutes);
   }
 
+  useEffect(() => {
+    calculateMeetingTime();
+  });
+
   function addParticipant(event) {
     event.preventDefault();
-    // Don't add if field is empty
-    if (participants.participantBeingEntered === "") {
+    if (participantToAdd === "") {
       return;
     }
-    // New state
-    const newState = { ...participants };
-    // Add paticipant to list
-    newState.listOfParticipants.push({
-      name: participants.participantBeingEntered,
-      beingEdited: false,
+    const newState = { ...meeting };
+    newState.meetingParticipants.push({
+      name: participantToAdd,
+      hasHadTurn: false,
+      timeLeft: null,
+      timesPaused: [],
     });
-    // Set input field to blank
-    newState.participantBeingEntered = "";
-    // Set new state
-    setParticipants(newState);
+    setParticipantToAdd("");
+    setMeeting(newState);
   }
 
-  function inputFieldParticipantChange(event) {
-    setParticipants({
-      ...participants,
-      participantBeingEntered: event.target.value,
+  function startMeeting() {
+    // Give each participant their time
+    const myArr = meeting.meetingParticipants.map((el) => {
+      el.timeLeft = minutesPerParticipant * 60;
+      return el;
     });
+    setMeeting({ ...meeting, meetingParticipants: [...myArr] });
+
+    const newState = { ...meeting };
+    newState.meetingStartTime = Date.now();
+    setMeeting(newState);
+    setStandUpStep(3);
   }
-  function startStandUp() {
-    setMeetingActive(true);
-  }
+
   return (
     <div>
-      <div className="participantsSection">
-        <DialogTitle>Pow!Agile® StandUp™</DialogTitle>
+      {standUpStep === 1 ? (
+        <InstructionsPage nextButton={() => setStandUpStep(2)} />
+      ) : null}
 
-        <p>Minutes per participant</p>
-
-        <Input
-          type="number"
-          variant="outlined"
-          defaultValue={minutesPerParticipant}
-          onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
+      {standUpStep === 2 ? (
+        <SetupPage
+          props={{
+            minutesPerParticipant,
+            setMinutesPerParticipant,
+            timeBetweenSpeakers,
+            setTimeBetweenSpeakers,
+            participantToAdd,
+            addParticipant,
+            deleteParticipant,
+            setParticipantToAdd,
+            meeting,
+            totalMeetingTime,
+            setStandUpStep,
+            startMeeting,
+          }}
         />
-        <br />
-        <br />
-        <p>Time between speakers (in seconds)</p>
-        <Input
-          type="number"
-          variant="outlined"
-          defaultValue={timeBetweenSpeakers}
-          onChange={(e) => setTimeBetweenSpeakers(Number(e.target.value))}
-        />
-        <br />
-        <br />
+      ) : null}
 
-        <form onSubmit={addParticipant}>
-          <Paper elevation={3}>
-            <TextField
-              label="Participant name"
-              helperText="Enter one participant at a time"
-              variant="outlined"
-              value={participants.participantBeingEntered}
-              onChange={inputFieldParticipantChange}
-            />
-
-            <Button type="submit" variant="contained" color="primary">
-              Add
-            </Button>
-
-            {participants.listOfParticipants
-              ? participants.listOfParticipants.map((obj, i) => (
-                  <ParticipantCard
-                    index={i}
-                    name={obj.name}
-                    beingEdited={obj.beingEdited}
-                    EditNameFunc={EditNameFunc}
-                    DeleteFunc={DeleteFunc}
-                    ToggleBeingEditedFunc={ToggleBeingEditedFunc}
-                  />
-                ))
-              : null}
-          </Paper>
-        </form>
-
-        {totalMeetingTime !== 0 ? (
-          <p className="totalStandupTime">
-            With this setup, you'll be done in about{" "}
-            <b>{totalMeetingTime} minutes.</b> Ready to start?
-          </p>
-        ) : null}
-
-        {totalMeetingTime !== 0 ? (
-          <div>
-            <Button size="medium" color="secondary">
-              Go Back
-            </Button>
-            &nbsp;&nbsp;
-            <Button
-              size="large"
-              color="primary"
-              variant="contained"
-              onClick={startStandUp}
-            >
-              Start StandUp™
-            </Button>
-          </div>
-        ) : null}
-
-        {meetingActive ? (
-          <div>
-            <Randomiser
-              array={participants.listOfParticipants}
-              timeInSeconds={minutesPerParticipant * 60}
-              timeBetweenSpeakers={timeBetweenSpeakers}
-            />
-            {/* <Timer timeInSeconds={minutesPerParticipant * 60} /> */}
-          </div>
-        ) : null}
-      </div>
+      {standUpStep === 3 ? (
+        <div>
+          <RandomizerAndTimer
+            props={{
+              meeting,
+              setMeeting,
+              array: meeting.meetingParticipants,
+              speakerTime: minutesPerParticipant * 60,
+              timeBetweenSpeakers,
+            }}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

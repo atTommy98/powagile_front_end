@@ -1,8 +1,8 @@
 .participantCard {
-  padding: 20px !important;
-  margin: 5px;
+  padding: 13px !important;
+  margin: 12px;
   display: block;
-  width: 80%;
+  width: calc(100% - 60px);
 }
 
 .name {
@@ -10,6 +10,8 @@
   font-size: 25px;
   padding: 10px;
   text-transform: capitalize;
+  word-wrap: break-word;
+  max-width: 50%;
 }
 
 .buttons {
