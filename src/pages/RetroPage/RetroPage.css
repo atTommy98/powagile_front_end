@@ -24,8 +24,7 @@
   -webkit-mask-image: linear-gradient(
     90deg,
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 1) 90%,
     rgba(0, 0, 0, 0.2) 100%
   );
 }
@@ -37,11 +36,13 @@
 
 /* Track */
 .retroBoardContainer::-webkit-scrollbar-track {
+  border-radius: 15em;
   background: #d7d7d7;
 }
 
 /* Handle */
 .retroBoardContainer::-webkit-scrollbar-thumb {
+  border-radius: 15em;
   background: #888;
 }
 

@@ -31,6 +31,7 @@ function Retro() {
     subtype: undefined,
     columns: ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"],
     cards: [],
+    meetingStarted: false,
     meetingStartTime: null,
     meetingEndTime: null,
   });
@@ -56,7 +57,7 @@ function Retro() {
     setMeeting({ ...meeting, subtype: type, columns: retroColumns[type] });
   }
 
-  function addCard(colIndex, colName) {
+  function addCard(colIndex) {
     const newState = { ...meeting };
     newState.cards.push({
       id: uuidv4(),
