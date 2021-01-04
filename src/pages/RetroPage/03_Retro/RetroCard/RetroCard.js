@@ -48,12 +48,12 @@ export default function RetroCard({ props, functions }) {
         >
           <ChevronLeftIcon />
         </Button>
-        <Button onClick={() => console.log("thumb_down")}>
+        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsDown" })}>
           {thumbsDown}&nbsp;
           <ThumbDownIcon />
         </Button>
 
-        <Button onClick={() => console.log("thumb_up")}>
+        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsUp" })}>
           {thumbsUp}&nbsp;
           <ThumbUpIcon />
         </Button>
