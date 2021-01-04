@@ -1,0 +1,23 @@
+.retroCard {
+  margin: 10px;
+  padding: 10px;
+  width: calc(100%-10px);
+  min-width: 250px;
+  height: auto;
+}
+
+.retroCardTextField {
+  display: inline;
+  width: 85% !important;
+  height: auto;
+  font-size: 18px;
+  border: none;
+  resize: vertical;
+  margin-top: -25px;
+}
+
+.retroCardDeleteButton {
+  display: block;
+  position: relative;
+  left: 220px;
+}

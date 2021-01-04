@@ -55,14 +55,14 @@ export default function RandomizerAndTimer({ props }) {
         timerActive: true,
       });
     }
-  }, [activeStage]);
+  }, [activeStage, progressBarTimeBetweenParticipants, timeBetweenSpeakers]);
 
   useEffect(() => {
     // Circular Timer
     if (activeStage.timerStage === true && activeStage.timerActive === true) {
       setTimeout(circularTimerCountDown, 1000);
     }
-  }, [activeStage, activeParticipants]);
+  }, [activeStage, activeParticipants, circularTimerCountDown]);
 
   function progressBarTimeBetweenParticipants() {
     setTimeout(function () {

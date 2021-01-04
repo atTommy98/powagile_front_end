@@ -14,7 +14,6 @@
     "@testing-library/user-event": "^12.6.0",
     "react": "^17.0.1",
     "react-countdown-circle-timer": "^2.3.7",
-    "react-custom-roulette": "^1.1.5",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

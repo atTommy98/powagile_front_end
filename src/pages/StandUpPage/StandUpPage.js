@@ -21,6 +21,7 @@ export default function StandUpPage() {
 
   /*🔴🔴🔴🔴🔴*/
   const dummyMeeting = {
+    type: "standup",
     meetingParticipants: [
       { name: "Daniela", hasHadTurn: false, timeLeft: 60 },
       { name: "Stefan", hasHadTurn: false, timeLeft: 60 },
@@ -32,11 +33,11 @@ export default function StandUpPage() {
     meetingEndTime: null,
   };
 
-  const properMeeting = {
-    meetingParticipants: [],
-    meetingStartTime: null,
-    meetingEndTime: null,
-  };
+  // const properMeeting = {
+  //   meetingParticipants: [],
+  //   meetingStartTime: null,
+  //   meetingEndTime: null,
+  // };
   /*🔴🔴🔴🔴🔴*/
 
   const [meeting, setMeeting] = useState({ ...dummyMeeting });

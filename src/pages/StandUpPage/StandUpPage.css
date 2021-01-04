@@ -1,31 +1,3 @@
-/*------------------------------*/
-/*Global*/
-
-@import url("https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap");
-
-* {
-  font-family: "Roboto";
-}
-
-.pageTitle {
-  font-size: 2.5em;
-  padding: none;
-  margin: none;
-}
-
-.productName {
-  text-align: center;
-  font-family: "Roboto";
-  font-style: italic;
-  color: #0599a9;
-}
-
-.companyName {
-  font-family: "Bowlby One SC", cursive;
-  font-weight: 400;
-  color: #2196f3;
-}
-
 .buttonsWrapper {
   text-align: center;
   margin: 10px auto;

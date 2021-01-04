@@ -52,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navigation(props) {
   const { user, isAuthenticated, loginWithRedirect } = useAuth0();
-  console.log(isAuthenticated);
-
   const history = useHistory();
   const classes = useStyles();
 

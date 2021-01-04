@@ -1,0 +1,29 @@
+.columnWrapper {
+  margin: 0px;
+  padding: 0px;
+  min-width: 270px;
+}
+
+.lastCol {
+  margin-right: 50px;
+}
+
+.columnTitle {
+  text-align: center;
+  margin: 0px;
+  padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 1em;
+  background: rgba(0, 0, 200, 0.05);
+  border-radius: 0em 0em 0.7em 0.7em;
+}
+
+.columnHelperText {
+  text-align: center;
+  font-size: 0.85em;
+  color: lightgrey;
+  user-select: none;
+  pointer-events: none;
+}
