@@ -9,8 +9,6 @@ export default function RandomizerCard({ props }) {
 
   const upNext = meetingParticipants.find((el) => el.hasHadTurn === false);
 
-  console.log(upNext);
-
   return (
     <Collapse in={activeStage.randomizerStage} timeout={1500}>
       <Paper className="randomizerCard" elevation={2}>

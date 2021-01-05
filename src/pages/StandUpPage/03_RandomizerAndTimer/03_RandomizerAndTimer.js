@@ -86,9 +86,11 @@ export default function RandomizerAndTimer({ props }) {
               <ListItem>
                 <ListItemText primary={el.name} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    {el.hasHadTurn ? <CheckCircleIcon color="primary" /> : null}
-                  </IconButton>
+                  {el.hasHadTurn ? (
+                    <IconButton edge="end" aria-label="delete">
+                      <CheckCircleIcon color="primary" />
+                    </IconButton>
+                  ) : null}
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
