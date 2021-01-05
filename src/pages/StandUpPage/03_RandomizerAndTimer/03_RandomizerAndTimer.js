@@ -81,7 +81,7 @@ export default function RandomizerAndTimer({ props }) {
       <Grid item xs={4}>
         <Paper className="participantsTracker" elevation={2}>
           <h3>Meeting tracker</h3>
-          <List dense={true}>
+          <List dense={false}>
             {meeting.meetingParticipants.map((el) => (
               <ListItem>
                 <ListItemText primary={el.name} />

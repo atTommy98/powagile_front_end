@@ -44,13 +44,17 @@ export default function TimerPartyParrot({ props, children }) {
 
   function nextParticipant() {
     setActiveStage({
+      ...activeStage,
       timerStage: false,
       randomizerStage: true,
       timerActive: false,
     });
 
     const newParticipants = [...meeting.meetingParticipants];
-    newParticipants[0].hasHadTurn = true;
+    const index = newParticipants.findIndex(
+      (participant) => participant.hasHadTurn === false
+    );
+    newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
 
