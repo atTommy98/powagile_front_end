@@ -3,6 +3,7 @@ import Fab from "@material-ui/core/Fab";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
+import Button from "@material-ui/core/Button";
 
 // Icons
 import PauseIcon from "@material-ui/icons/Pause";
@@ -15,14 +16,30 @@ import FastParrot from "../Parrots/hd/fastparrot.gif";
 // CSS
 import "./TimerPartyParrot.css";
 
-export default function TimerPartyParrot({ props, helperText }) {
+export default function TimerPartyParrot({ props, children }) {
   const {
-    array,
     activeStage,
     setActiveStage,
-    activeParticipants,
+    meetingParticipants,
     speakerTime,
   } = props;
+
+  function timerThirds() {
+    const oneThird = speakerTime / 3;
+    const timeLeft = meetingParticipants[0].timeLeft;
+
+    if (timeLeft >= oneThird * 2) {
+      return 1;
+    }
+    if (timeLeft <= oneThird * 2 && timeLeft >= oneThird) {
+      return 2;
+    }
+    if (timeLeft <= oneThird && timeLeft > 0) {
+      return 3;
+    }
+  }
+
+  function nextParticipant() {}
 
   return (
     <Collapse in={activeStage.timerStage} timeout={1500}>
@@ -30,9 +47,11 @@ export default function TimerPartyParrot({ props, helperText }) {
         <div className="circularTimerWrapper">
           <img
             className="partyParrot"
-            src={activeParticipants[0].timeLeft >= 15 ? SlowParrot : FastParrot}
+            src={
+              meetingParticipants[0].timeLeft >= 15 ? SlowParrot : FastParrot
+            }
             alt={
-              activeParticipants[0].timeLeft >= 15
+              meetingParticipants[0].timeLeft >= 15
                 ? "Party parrot moving slowly"
                 : "Party parrot moving very quickly"
             }
@@ -42,21 +61,58 @@ export default function TimerPartyParrot({ props, helperText }) {
             className="circularTimer"
             variant="determinate"
             color={
-              activeParticipants[0].timeLeft >= 0 ? "primary" : "secondary"
+              meetingParticipants[0].timeLeft >= 0 ? "primary" : "secondary"
             }
-            value={(100 / speakerTime) * activeParticipants[0].timeLeft}
+            value={(100 / speakerTime) * meetingParticipants[0].timeLeft}
             size={175}
             thickness={1.75}
           />
           <p className="textTimer">
-            {array[0].timeLeft > 0
-              ? new Date(array[0].timeLeft * 1000).toISOString().substr(14, 5)
+            {meetingParticipants[0].timeLeft > 0
+              ? new Date(meetingParticipants[0].timeLeft * 1000)
+                  .toISOString()
+                  .substr(14, 5)
               : "00:00"}
           </p>
         </div>
-        <br />
 
-        <div className="supportingComponents">{helperText}</div>
+        <div className="standUpCardsWrapper">
+          <Paper
+            className={
+              timerThirds() === 1 ? "activeCard standUpCard" : "standUpCard"
+            }
+            elevation={0}
+          >
+            <div className="centerVertically">
+              <p className="helperCardTitle">Accomplishments</p>
+              <p>What did you achieve yesterday?</p>
+            </div>
+          </Paper>
+          <Paper
+            className={
+              timerThirds() === 2 ? "activeCard standUpCard" : "standUpCard"
+            }
+            elevation={0}
+          >
+            <div className="centerVertically">
+              <p className="helperCardTitle">Goals</p>
+              <p>What are you doing today?</p>
+            </div>
+          </Paper>
+          <Paper
+            className={
+              timerThirds() === 3 ? "activeCard standUpCard" : "standUpCard"
+            }
+            elevation={0}
+          >
+            <div className="centerVertically">
+              <p className="helperCardTitle">Blockers</p>
+              <p>Any blockers in your way?</p>
+            </div>
+          </Paper>
+        </div>
+
+        <div className="supportingComponents">{children}</div>
 
         {activeStage.timerActive === true ? (
           <Fab
@@ -78,6 +134,9 @@ export default function TimerPartyParrot({ props, helperText }) {
             <PlayArrowIcon />
           </Fab>
         )}
+        <br />
+        <br />
+        <Button onClick={console.log("Next")}>Next Participant &rarr;</Button>
       </Paper>
     </Collapse>
   );

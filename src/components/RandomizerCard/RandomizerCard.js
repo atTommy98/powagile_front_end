@@ -5,7 +5,7 @@ import Fade from "@material-ui/core/Fade";
 import Collapse from "@material-ui/core/Collapse";
 
 export default function RandomizerCard({ props }) {
-  const { activeParticipants, timeBetweenSpeakers, activeStage } = props;
+  const { meetingParticipants, timeBetweenSpeakers, activeStage } = props;
 
   return (
     <Collapse in={activeStage.randomizerStage} timeout={1500}>
@@ -18,7 +18,7 @@ export default function RandomizerCard({ props }) {
               timeout={1000}
               style={{ transitionDelay: "1000ms" }}
             >
-              <span className="upNextName">{activeParticipants[0].name}!</span>
+              <span className="upNextName">{meetingParticipants[0].name}!</span>
             </Fade>
           </p>
         </Fade>

@@ -11,35 +11,34 @@ import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(1);
+  const [standUpStep, setStandUpStep] = useState(2);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(2);
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  /*🔴🔴🔴🔴🔴*/
   const dummyMeeting = {
     type: "standup",
     meetingParticipants: [
-      { name: "Daniela", hasHadTurn: false, timeLeft: 60 },
-      { name: "Stefan", hasHadTurn: false, timeLeft: 60 },
-      { name: "Tommy", hasHadTurn: false, timeLeft: 60 },
-      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 60 },
-      { name: "Jon", hasHadTurn: false, timeLeft: 60 },
+      { name: "Daniela", hasHadTurn: false, timeLeft: 12 },
+      { name: "Stefan", hasHadTurn: false, timeLeft: 12 },
+      { name: "Tommy", hasHadTurn: false, timeLeft: 12 },
+      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 12 },
+      { name: "Jon", hasHadTurn: false, timeLeft: 12 },
     ],
     meetingStartTime: null,
     meetingEndTime: null,
   };
 
-  // const properMeeting = {
+  // const blankMeeting = {
   //   meetingParticipants: [],
   //   meetingStartTime: null,
   //   meetingEndTime: null,
   // };
-  /*🔴🔴🔴🔴🔴*/
 
+  // FIXME: Change to "blankMeeting" before testing
   const [meeting, setMeeting] = useState({ ...dummyMeeting });
 
   /*Steps*/
@@ -85,7 +84,24 @@ export default function StandUpPage() {
     setMeeting(newState);
   }
 
+  function shuffleParticipants() {
+    const array = [...meeting.meetingParticipants];
+
+    //Fisher Yates algorithm - Shuffle Array
+    for (let i = array.length; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+
+    setMeeting({ ...meeting, meetingParticipants: array });
+  }
+
   function startMeeting() {
+    // Always shuffle participants
+    shuffleParticipants();
+
     // Give each participant their time
     const myArr = meeting.meetingParticipants.map((el) => {
       el.timeLeft = minutesPerParticipant * 60;
@@ -130,7 +146,6 @@ export default function StandUpPage() {
             props={{
               meeting,
               setMeeting,
-              array: meeting.meetingParticipants,
               speakerTime: minutesPerParticipant * 60,
               timeBetweenSpeakers,
             }}
