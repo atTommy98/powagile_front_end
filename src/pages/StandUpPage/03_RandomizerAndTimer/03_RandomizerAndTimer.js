@@ -48,7 +48,8 @@ export default function RandomizerAndTimer({ props }) {
         timerActive: true,
       });
     }
-  }, [activeStage, progressBarTimeBetweenParticipants, timeBetweenSpeakers]);
+  });
+  //[activeStage, progressBarTimeBetweenParticipants, timeBetweenSpeakers]
 
   useEffect(() => {
     // Circular Timer
@@ -108,7 +109,8 @@ export default function RandomizerAndTimer({ props }) {
           props={{
             activeStage,
             setActiveStage,
-            meetingParticipants: meeting.meetingParticipants,
+            meeting,
+            setMeeting,
             speakerTime,
           }}
         ></TimerPartyParrot>

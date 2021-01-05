@@ -43,9 +43,10 @@
   padding: 33.5px 15px;
 }
 
-.standUpCardsWrapper .standUpCard {
+.standUpCard {
   width: 180px;
   height: 180px;
+
   transition: all 0.5s ease;
   background: hsl(0, 0%, 98%);
   border: 1px solid rgba(0, 0, 0, 0.05);

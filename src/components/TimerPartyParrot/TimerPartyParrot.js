@@ -20,9 +20,12 @@ export default function TimerPartyParrot({ props, children }) {
   const {
     activeStage,
     setActiveStage,
-    meetingParticipants,
+    meeting,
+    setMeeting,
     speakerTime,
   } = props;
+
+  const meetingParticipants = meeting.meetingParticipants;
 
   function timerThirds() {
     const oneThird = speakerTime / 3;
@@ -39,7 +42,19 @@ export default function TimerPartyParrot({ props, children }) {
     }
   }
 
-  function nextParticipant() {}
+  function nextParticipant() {
+    setActiveStage({
+      randomizerStage: true,
+      timerStage: false,
+      timerActive: false,
+    });
+
+    const newParticipants = [...meeting.meetingParticipants];
+    const previousParticipant = newParticipants.shift();
+    previousParticipant.hasHadTurn = true;
+    newParticipants.push(previousParticipant);
+    setMeeting({ ...meeting, meetingParticipants: newParticipants });
+  }
 
   return (
     <Collapse in={activeStage.timerStage} timeout={1500}>
@@ -136,7 +151,9 @@ export default function TimerPartyParrot({ props, children }) {
         )}
         <br />
         <br />
-        <Button onClick={console.log("Next")}>Next Participant &rarr;</Button>
+        {"if the meeting has been finished, replace the button below"}
+        <br />
+        <Button onClick={nextParticipant}>Next Participant &rarr;</Button>
       </Paper>
     </Collapse>
   );
