@@ -11,21 +11,21 @@ import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(2);
+  const [standUpStep, setStandUpStep] = useState(3);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
-  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(2);
+  const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(3);
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
   const dummyMeeting = {
     type: "standup",
     meetingParticipants: [
-      { name: "Daniela", hasHadTurn: false, timeLeft: 12 },
-      { name: "Stefan", hasHadTurn: false, timeLeft: 12 },
-      { name: "Tommy", hasHadTurn: false, timeLeft: 12 },
-      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 12 },
+      { name: "Daniela", hasHadTurn: true, timeLeft: 12 },
+      { name: "Stefan", hasHadTurn: true, timeLeft: 12 },
+      { name: "Tommy", hasHadTurn: true, timeLeft: 12 },
+      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 12 },
       { name: "Jon", hasHadTurn: false, timeLeft: 12 },
     ],
     meetingStartTime: null,
@@ -84,24 +84,31 @@ export default function StandUpPage() {
     setMeeting(newState);
   }
 
-  function shuffleParticipants() {
-    const array = [...meeting.meetingParticipants];
+  // FIXME: Not working
+  // function shuffleParticipants() {
+  //   // Generate array of indices
+  //   const indices = meeting.meetingParticipants.map((el, i) => i);
 
-    //Fisher Yates algorithm - Shuffle Array
-    for (let i = array.length; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
+  //   //Fisher Yates algorithm - Shuffle Array
+  //   for (let i = indices.length; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     const temp = indices[i];
+  //     indices[i] = indices[j];
+  //     indices[j] = temp;
+  //   }
 
-    setMeeting({ ...meeting, meetingParticipants: array });
-  }
+  //   // Shuffle participants via shuffled indices
+  //   const shuffledParticipants = indices.map(
+  //     (el) => meeting.meetingParticipants[el]
+  //   );
+
+  //   console.log(indices);
+  //   console.log(shuffledParticipants);
+
+  //   setMeeting({ ...meeting, meetingParticipants: shuffledParticipants });
+  // }
 
   function startMeeting() {
-    // Always shuffle participants
-    shuffleParticipants();
-
     // Give each participant their time
     const myArr = meeting.meetingParticipants.map((el) => {
       el.timeLeft = minutesPerParticipant * 60;

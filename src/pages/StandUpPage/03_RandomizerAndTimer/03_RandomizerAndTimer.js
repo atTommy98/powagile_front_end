@@ -35,8 +35,7 @@ export default function RandomizerAndTimer({ props }) {
       activeStage.randomizerTime > 0
     ) {
       progressBarTimeBetweenParticipants();
-    }
-    if (
+    } else if (
       activeStage.randomizerStage === true &&
       activeStage.randomizerTime === 0
     ) {
@@ -54,9 +53,9 @@ export default function RandomizerAndTimer({ props }) {
   useEffect(() => {
     // Circular Timer
     if (activeStage.timerStage === true && activeStage.timerActive === true) {
-      setTimeout(circularTimerCountDown, 1000);
+      setTimeout(() => circularTimerCountDown(), 1000);
     }
-  }, [activeStage, meeting, circularTimerCountDown]);
+  });
 
   function progressBarTimeBetweenParticipants() {
     setTimeout(function () {
@@ -70,14 +69,20 @@ export default function RandomizerAndTimer({ props }) {
   }
 
   function circularTimerCountDown() {
-    let newState = [...meeting.meetingParticipants];
-    newState[0].timeLeft -= 1;
+    console.log("I was called!");
+    const newState = [...meeting.meetingParticipants];
+    const index = newState.findIndex((participant) => !participant.hasHadTurn);
+    try {
+      newState[index].timeLeft -= 1;
+    } catch {
+      return;
+    }
     setMeeting({ ...meeting, meetingParticipants: newState });
     return;
   }
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid item xs={4}>
         <Paper className="participantsTracker" elevation={2}>
           <h3>Meeting tracker</h3>
@@ -87,7 +92,7 @@ export default function RandomizerAndTimer({ props }) {
                 <ListItemText primary={el.name} />
                 <ListItemSecondaryAction>
                   {el.hasHadTurn ? (
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton edge="end" aria-label="completed">
                       <CheckCircleIcon color="primary" />
                     </IconButton>
                   ) : null}

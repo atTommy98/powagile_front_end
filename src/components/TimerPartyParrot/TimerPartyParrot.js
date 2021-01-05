@@ -29,7 +29,7 @@ export default function TimerPartyParrot({ props, children }) {
 
   function timerThirds() {
     const oneThird = speakerTime / 3;
-    const timeLeft = meetingParticipants[0].timeLeft;
+    const timeLeft = findWhoIsNext().timeLeft;
 
     if (timeLeft >= oneThird * 2) {
       return 1;
@@ -42,33 +42,45 @@ export default function TimerPartyParrot({ props, children }) {
     }
   }
 
-  function nextParticipant() {
-    setActiveStage({
-      ...activeStage,
-      timerStage: false,
-      randomizerStage: true,
-      timerActive: false,
-    });
-
-    const newParticipants = [...meeting.meetingParticipants];
-    const index = newParticipants.findIndex(
+  function findWhoIsNext() {
+    const index = meetingParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
-    newParticipants[index].hasHadTurn = true;
-    setMeeting({ ...meeting, meetingParticipants: newParticipants });
+    const upNext = meetingParticipants[index];
+
+    return upNext !== undefined
+      ? upNext
+      : { timeLeft: 0, meetingFinished: true };
+  }
+
+  function nextParticipant() {
+    setActiveStage({ ...activeStage, timerActive: false });
+
+    setTimeout(() => {
+      setActiveStage({
+        ...activeStage,
+        timerStage: false,
+        randomizerStage: true,
+      });
+
+      const newParticipants = [...meetingParticipants];
+      const index = newParticipants.findIndex(
+        (participant) => participant.hasHadTurn === false
+      );
+      newParticipants[index].hasHadTurn = true;
+      setMeeting({ ...meeting, meetingParticipants: newParticipants });
+    }, 10);
   }
 
   return (
-    <Collapse in={activeStage.timerStage} timeout={1500}>
+    <Collapse in={activeStage.timerStage} timeout={2000}>
       <Paper className="randomizerCard" elevation={2}>
         <div className="circularTimerWrapper">
           <img
             className="partyParrot"
-            src={
-              meetingParticipants[0].timeLeft >= 15 ? SlowParrot : FastParrot
-            }
+            src={findWhoIsNext().timeLeft >= 15 ? SlowParrot : FastParrot}
             alt={
-              meetingParticipants[0].timeLeft >= 15
+              findWhoIsNext().timeLeft >= 15
                 ? "Party parrot moving slowly"
                 : "Party parrot moving very quickly"
             }
@@ -77,16 +89,14 @@ export default function TimerPartyParrot({ props, children }) {
           <CircularProgress
             className="circularTimer"
             variant="determinate"
-            color={
-              meetingParticipants[0].timeLeft >= 0 ? "primary" : "secondary"
-            }
-            value={(100 / speakerTime) * meetingParticipants[0].timeLeft}
+            color={findWhoIsNext().timeLeft >= 0 ? "primary" : "secondary"}
+            value={(100 / speakerTime) * findWhoIsNext().timeLeft}
             size={175}
             thickness={1.75}
           />
           <p className="textTimer">
-            {meetingParticipants[0].timeLeft > 0
-              ? new Date(meetingParticipants[0].timeLeft * 1000)
+            {findWhoIsNext().timeLeft > 0
+              ? new Date(findWhoIsNext().timeLeft * 1000)
                   .toISOString()
                   .substr(14, 5)
               : "00:00"}
@@ -153,9 +163,12 @@ export default function TimerPartyParrot({ props, children }) {
         )}
         <br />
         <br />
-        {"if the meeting has been finished, replace the button below"}
-        <br />
-        <Button onClick={nextParticipant}>Next Participant &rarr;</Button>
+
+        {findWhoIsNext().meetingFinished ? (
+          <Button color="primary">Finish Meeting &rarr;</Button>
+        ) : (
+          <Button onClick={nextParticipant}>Next Participant &rarr;</Button>
+        )}
       </Paper>
     </Collapse>
   );
