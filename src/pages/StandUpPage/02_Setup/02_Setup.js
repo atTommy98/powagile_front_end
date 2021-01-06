@@ -159,7 +159,7 @@ export default function SetupPage({ props }) {
           variant="contained"
           disabled={
             minutesPerParticipant < 1 ||
-            timeBetweenSpeakers < 10 ||
+            timeBetweenSpeakers < 1 ||
             totalMeetingTime <= 0
           }
           onClick={startMeeting}
