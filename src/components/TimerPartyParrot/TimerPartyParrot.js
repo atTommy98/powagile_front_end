@@ -43,6 +43,7 @@ export default function TimerPartyParrot({ props, children }) {
   }
 
   function findWhoIsNext() {
+    // Find next participant
     const index = meetingParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
@@ -53,27 +54,59 @@ export default function TimerPartyParrot({ props, children }) {
       : { timeLeft: 0, meetingFinished: true };
   }
 
+  function areTheyLast() {
+    // Are they the last one?
+    const list = meetingParticipants.filter(
+      (participant) => participant.hasHadTurn === false
+    );
+    const length = list.length;
+
+    return length === 1 ? true : false;
+  }
+
   function nextParticipant() {
-    setActiveStage({ ...activeStage, timerActive: false });
+    setActiveStage({
+      ...activeStage,
+      timerActive: false,
+      timerStage: false,
+      randomizerStage: true,
+    });
 
-    setTimeout(() => {
-      setActiveStage({
-        ...activeStage,
-        timerStage: false,
-        randomizerStage: true,
-      });
+    const newParticipants = [...meetingParticipants];
+    const index = newParticipants.findIndex(
+      (participant) => participant.hasHadTurn === false
+    );
+    newParticipants[index].hasHadTurn = true;
+    setMeeting({ ...meeting, meetingParticipants: newParticipants });
+  }
 
-      const newParticipants = [...meetingParticipants];
-      const index = newParticipants.findIndex(
-        (participant) => participant.hasHadTurn === false
-      );
-      newParticipants[index].hasHadTurn = true;
-      setMeeting({ ...meeting, meetingParticipants: newParticipants });
-    }, 10);
+  function finishMeeting() {
+    // Set last participant's hasHadTurn to true
+    const newParticipants = [...meetingParticipants];
+    const index = newParticipants.findIndex(
+      (participant) => participant.hasHadTurn === false
+    );
+    newParticipants[index].hasHadTurn = true;
+
+    // Stop all timers
+    setActiveStage({
+      ...activeStage,
+      timerActive: false,
+      timerStage: false,
+      randomizerStage: false,
+    });
+
+    // Update main "meeeting" state
+    setMeeting({
+      ...meeting,
+      meetingParticipants: newParticipants,
+      meetingEndTime: Date.now(),
+      meetingFinished: true,
+    });
   }
 
   return (
-    <Collapse in={activeStage.timerStage} timeout={2000}>
+    <Collapse in={activeStage.timerStage} timeout={800}>
       <Paper className="randomizerCard" elevation={2}>
         <div className="circularTimerWrapper">
           <img
@@ -164,8 +197,15 @@ export default function TimerPartyParrot({ props, children }) {
         <br />
         <br />
 
-        {findWhoIsNext().meetingFinished ? (
-          <Button color="primary">Finish Meeting &rarr;</Button>
+        {areTheyLast() ? (
+          <Button
+            onClick={finishMeeting}
+            color="primary"
+            variant="contained"
+            size="large"
+          >
+            Finish Meeting &rarr;
+          </Button>
         ) : (
           <Button onClick={nextParticipant}>Next Participant &rarr;</Button>
         )}

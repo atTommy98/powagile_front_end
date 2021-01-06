@@ -29,6 +29,16 @@ export default function RandomizerAndTimer({ props }) {
   });
 
   useEffect(() => {
+    function progressBarTimeBetweenParticipants() {
+      setTimeout(function () {
+        let newTime = Number((activeStage.randomizerTime - 0.1).toFixed(2));
+
+        setActiveStage({
+          ...activeStage,
+          randomizerTime: newTime,
+        });
+      }, 100);
+    }
     // Randomizer
     if (
       activeStage.randomizerStage === true &&
@@ -47,39 +57,27 @@ export default function RandomizerAndTimer({ props }) {
         timerActive: true,
       });
     }
-  });
-  //[activeStage, progressBarTimeBetweenParticipants, timeBetweenSpeakers]
+  }, [activeStage, timeBetweenSpeakers]);
 
   useEffect(() => {
+    function circularTimerCountDown() {
+      const newState = [...meeting.meetingParticipants];
+      const index = newState.findIndex(
+        (participant) => !participant.hasHadTurn
+      );
+      try {
+        newState[index].timeLeft -= 1;
+      } catch {
+        return;
+      }
+      setMeeting({ ...meeting, meetingParticipants: newState });
+      return;
+    }
     // Circular Timer
     if (activeStage.timerStage === true && activeStage.timerActive === true) {
       setTimeout(() => circularTimerCountDown(), 1000);
     }
-  });
-
-  function progressBarTimeBetweenParticipants() {
-    setTimeout(function () {
-      let newTime = Number((activeStage.randomizerTime - 0.1).toFixed(2));
-
-      setActiveStage({
-        ...activeStage,
-        randomizerTime: newTime,
-      });
-    }, 100);
-  }
-
-  function circularTimerCountDown() {
-    console.log("I was called!");
-    const newState = [...meeting.meetingParticipants];
-    const index = newState.findIndex((participant) => !participant.hasHadTurn);
-    try {
-      newState[index].timeLeft -= 1;
-    } catch {
-      return;
-    }
-    setMeeting({ ...meeting, meetingParticipants: newState });
-    return;
-  }
+  }, [meeting, setMeeting, activeStage.timerActive, activeStage.timerStage]);
 
   return (
     <Grid container spacing={2}>
