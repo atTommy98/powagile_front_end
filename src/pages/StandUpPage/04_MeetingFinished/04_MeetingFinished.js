@@ -1,7 +1,11 @@
 export default function MeetingFinished() {
   return (
     <div>
-      <p>You finished the meeting!</p>
+      <p>
+        StandUp finished!
+        <br />
+        Stay tuned for our exciting changes on this page 🦜
+      </p>
     </div>
   );
 }
