@@ -7,26 +7,25 @@ import "./UserPage.css";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
+import DateFilter from "./dateFilter";
 const moment = require("moment");
 
 export default function UserPage() {
   const { user, isAuthenticated } = useAuth0();
-
-  // state for all previous meetings
+  const [meeting, setMeeting] = useState([]);
   const [meetingHistory, setMeetingHistory] = useState([]);
-
-  // const [date, setDate] = useState(null);
-
-  // state for filtered date
-  const [dateFilter, setDateFilter] = useState(null);
+  const [date, setDate] = useState("");
   const [isDateFilter, setIsDateFilter] = useState(false);
+  const [dateFilter, setDateFilter] = useState(null);
 
-  function filterHistoryDate(date) {
-    setIsDateFilter(true);
-    setDateFilter(date);
-  }
+  // function filterHistoryDate(date) {
+  //   setIsDateFilter(true);
+  //   setDateFilter(date);
+  // }
+  console.log(date);
+  console.log(isDateFilter);
+  console.log(dateFilter);
 
-  // get all meetings and
   async function getAllMeetings() {
     const res = await fetch("http://localhost:8080/meeting");
     const data = await res.json();
@@ -34,7 +33,6 @@ export default function UserPage() {
     setMeeting(payload);
   }
 
-  // get all meetings filtered by date
   async function getMeetingDate(date) {
     const res = await fetch(
       `http://localhost:8080/meeting?meetingStartTime=${dateFilter}`
@@ -45,14 +43,12 @@ export default function UserPage() {
     setIsDateFilter(true);
     setDateFilter(date);
     console.log(data);
-    console.log(dateFilter);
   }
 
-  // function removeDateFilter() {
-  //   setIsDateFilter(false);
-  //   setDateFilter("1970-01-01");
-  // }
-
+  function removeDateFilter() {
+    setIsDateFilter(false);
+    setDateFilter("1970-01-01");
+  }
   return isAuthenticated ? (
     <div>
       <div id="userInfo">
@@ -62,7 +58,7 @@ export default function UserPage() {
       </div>
       <div className="input-container">
         <div className="notes inner2">
-          <h2>Filter your meeting by Date</h2>
+          <h2>Filter by Date</h2>
           <br></br>
           <span>
             <input
