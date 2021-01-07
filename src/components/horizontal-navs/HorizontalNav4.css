@@ -1,5 +1,11 @@
 .navbarUserSection {
   margin-left: auto;
+  transition: 0.5s all ease;
+  opacity: 1;
+}
+
+.hideWhileLoading {
+  opacity: 0;
 }
 
 .navbarUserSection .btn {

@@ -1,6 +1,9 @@
 // React
 import React, { useState, useEffect } from "react";
 
+// Cookies
+import Cookies from "universal-cookie";
+
 // CSS
 import "./UserPage.css";
 
@@ -10,7 +13,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function UserPage() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
+  const cookies = new Cookies();
 
+  // Get and set user metadata, cookie
   useEffect(() => {
     const getUserMetadata = async () => {
       const domain = "powershellrangers.eu.auth0.com";
@@ -19,6 +24,12 @@ export default function UserPage() {
         const accessToken = await getAccessTokenSilently({
           audience: `https://${domain}/api/v2/`,
           scope: "read:current_user",
+        });
+
+        // Add token to cookie
+        cookies.set("powAgile_user", accessToken, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 86400000),
         });
 
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
@@ -30,8 +41,7 @@ export default function UserPage() {
         });
 
         const { user_metadata } = await metadataResponse.json();
-        //FIXME: Remove this console log after
-        console.log(user_metadata);
+
         setUserMetadata(user_metadata);
       } catch (e) {
         console.log(e.message);
@@ -39,7 +49,7 @@ export default function UserPage() {
     };
 
     if (user) {
-      getUserMetadata();
+      setTimeout(() => getUserMetadata(), 1000);
     }
   }, [getAccessTokenSilently, user]);
 
