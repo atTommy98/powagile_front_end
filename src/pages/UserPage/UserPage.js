@@ -131,12 +131,12 @@ export default function UserPage() {
         )}
         {isDateFilter && (
           <div>
-            <br></br>
+
             <h2>
               Showing all meetings since{" "}
               {moment(dateFilter).format("YYYY-MM-DD")} 📅
             </h2>
-            <br></br>
+     
             <button
               style={{
                 backgroundColor: "rgb(120, 130, 134)",
@@ -146,7 +146,7 @@ export default function UserPage() {
             >
               Remove Filter`
             </button>
-            <br></br>
+
           </div>
         )}
         <div>
@@ -155,22 +155,13 @@ export default function UserPage() {
               <div key={meetingHistory.id} className="notes inner">
                 <div className="row">
                   <h2>Type: {meetingHistory.type}</h2>
-                  <br></br>
+
                   <p className="column">
                     <b>Date: </b>
                     {moment(meetingHistory.meeting_date).format("Do MMMM YYYY")}
                   </p>
                 </div>
-                <div className="row">
-                  <p className="column">
-                    <br></br>
-                    <a href="#top">Return to Top of Page</a>
-                    <br></br>
-                    <button onClick={() => handleDelete(meetingHistory.id)}>
-                      Delete
-                    </button>
-                  </p>
-                </div>
+
               </div>
             );
           })}
