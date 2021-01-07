@@ -7,13 +7,14 @@ import "./UserPage.css";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
-const moment = require("moment");
+import Button from "@material-ui/core/Button";
+import ParticipantCard from "../../../src/components/MeetingParticipants/ParticipantCard/ParticipantCard";
 
 export default function UserPage() {
   const { user, isAuthenticated } = useAuth0();
 
   // state for all previous meetings
-  const [meetingHistory, setMeetingHistory] = useState([]);
+  const [meetingHistory, setMeetingHistory] = useState({});
 
   // const [date, setDate] = useState(null);
 
@@ -21,32 +22,46 @@ export default function UserPage() {
   const [dateFilter, setDateFilter] = useState(null);
   const [isDateFilter, setIsDateFilter] = useState(false);
 
-  function filterHistoryDate(date) {
-    setIsDateFilter(true);
-    setDateFilter(date);
-  }
+  // function filterHistoryDate(date) {
+  //   setIsDateFilter(true);
+  //   setDateFilter(date);
+  // }
 
-  // get all meetings and
+  // get all meetings
+
+  const meeting = {
+    type: "",
+    meetingParticipants: [],
+    meetingStartTime: null,
+    meetingEndTime: null,
+    meetingFinished: false,
+  };
+
   async function getAllMeetings() {
-    const res = await fetch("http://localhost:8080/meeting");
-    const data = await res.json();
-    const { payload } = data;
-    setMeeting(payload);
+    if (isAuthenticated) {
+      const res = await fetch("http://localhost:8080/meeting/getAll");
+      const data = await res.json();
+
+      setMeetingHistory({ data });
+
+      console.log(data);
+      console.log(meetingHistory);
+    }
   }
 
   // get all meetings filtered by date
-  async function getMeetingDate(date) {
-    const res = await fetch(
-      `http://localhost:8080/meeting?meetingStartTime=${dateFilter}`
-    );
-    const data = await res.json();
-    const { payload } = data;
-    setMeetingHistory(payload);
-    setIsDateFilter(true);
-    setDateFilter(date);
-    console.log(data);
-    console.log(dateFilter);
-  }
+  // async function getMeetingByDate(date) {
+  //   const res = await fetch(
+  //     `http://localhost:8080/meeting/getByDate?meetingStartTime=${dateFilter}`
+  //   );
+  //   const data = await res.json();
+  //   const { payload } = data;
+  //   setMeetingHistory(payload);
+  //   setIsDateFilter(true);
+  //   setDateFilter(date);
+  //   console.log(data);
+  //   console.log(dateFilter);
+  // }
 
   // function removeDateFilter() {
   //   setIsDateFilter(false);
@@ -61,23 +76,35 @@ export default function UserPage() {
         <p>{user.email}</p>
       </div>
       <div className="input-container">
-        <div className="notes inner2">
-          <h2>Filter your meeting by Date</h2>
-          <br></br>
-          <span>
-            <input
-              style={{
-                width: "175px",
-                align: "center",
-                display: "inline-block",
-              }}
-              className="form-control-homepage"
-              type="date"
-              onChange={(event) => setDate(event.target.value)}
-              placeholder="filter"
-              name="filter-date"
-            ></input>
-            <button
+        <h2>Filter your meeting by Date</h2>
+        <br></br>
+        <span>
+          <input
+            style={{
+              width: "175px",
+              align: "center",
+              display: "inline-block",
+            }}
+            className="form-control-homepage"
+            type="date"
+            onChange={(event) => setDateFilter(event.target.value)}
+            placeholder="filter"
+            name="filter-date"
+          ></input>
+        </span>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={getAllMeetings}
+        >
+          Get all Meetings
+        </Button>
+        {meeting.meetingParticipants.map((obj, i) => (
+          <ParticipantCard key={i} name={obj.name} />
+        ))}
+        {console.log(meetingParticipants)}
+        {/* <button
               style={{
                 display: "inline-block",
                 fontSize: "10px",
@@ -92,8 +119,8 @@ export default function UserPage() {
             </button>
           </span>
         </div>
-      </div>
-      {/* {isDateFilter === false && (
+      </div> */}
+        {/* {isDateFilter === false && (
           <div>
             <br></br>
             <DateFilter filterHistoryDate={filterHistoryDate} />
@@ -151,6 +178,7 @@ export default function UserPage() {
         <br></br>
       </div>
     </div> */}
+      </div>
     </div>
   ) : (
     <h2>🤔 You don't seem to be logged in!</h2>
