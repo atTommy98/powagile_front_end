@@ -12,7 +12,9 @@ ReactDOM.render(
       <Auth0Provider
         domain="powershellrangers.eu.auth0.com"
         clientId="KCdCzlv4xxT7ZjkI3uxMsVEqjCZu7YV6"
-        redirectUri={window.location.origin}
+        redirectUri={`${window.location.origin}/user`}
+        audience="https://powershellrangers.eu.auth0.com/api/v2/"
+        scope="read:current_user update:current_user_metadata"
       >
         <App />
       </Auth0Provider>
