@@ -28,6 +28,23 @@ export default function SetupPage({ props }) {
     startMeeting,
   } = props;
 
+  const [meeting, setMeeting] = useState([]);
+
+  //If we want to display the participants from last meeting
+  async function getParticipants() {
+    const res = await fetch("http://localhost:8080/meeting/getAll");
+    const data = await res.json();
+
+    const fetchedParticipants = [];
+    data[0].meetingParticipants.forEach((participant) =>
+      fetchedParticipants.push({
+        name: participant.name,
+      })
+    );
+    setMeeting({ ...meeting, meetingParticipants: fetchedParticipants });
+
+    console.log(data);
+  }
   return (
     //TODO: Inline styles here should be moved to 02_Setup.CSS
     <section className="setupPage">
@@ -118,7 +135,14 @@ export default function SetupPage({ props }) {
             >
               Add
             </Button>
-
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={getParticipants}
+            >
+              Get participants
+            </Button>
             {meeting.meetingParticipants
               ? meeting.meetingParticipants.map((obj, i) => (
                   <ParticipantCard
