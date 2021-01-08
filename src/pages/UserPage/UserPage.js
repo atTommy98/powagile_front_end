@@ -1,20 +1,25 @@
 // React
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // CSS
 import "./UserPage.css";
 
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
+import Box from "@material-ui/core/Box";
 
 import Button from "@material-ui/core/Button";
-import DatePickers from "../../../src/components/datePicker";
-export default function UserPage() {
+import DateProvider from "../../../src/components/datePicker";
+import FormPropsTextFields from "../../components/TextField/Text";
+
+export default function UserPage(props) {
+  const { value, label, defaultValue } = props;
   const { user, isAuthenticated } = useAuth0();
 
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
   const [isDateFilter, setIsDateFilter] = useState(false);
+
   const [isCLicked, setIsClicked] = useState(false);
 
   // state for all previous meetings
@@ -51,6 +56,7 @@ export default function UserPage() {
   function input(event) {
     setDateFilter(event.target.value);
   }
+
   // function removeDateFilter() {
   //   setIsDateFilter(false);
   //   setDateFilter("1970-01-01");
@@ -63,25 +69,25 @@ export default function UserPage() {
         <h4>{user.name}</h4>
         <p>{user.email}</p>
       </div>
-      <div className="input-container">
-        <h2>Filter your meeting by Date</h2>
-        <br></br>
-        <span>
-          <DatePickers />
 
-          <input
-            style={{
-              width: "175px",
-              align: "center",
-              display: "inline-block",
-            }}
-            className="form-control-homepage"
-            type="date"
-            onChange={(event) => setDateFilter(event.target.value)}
-            placeholder="filter"
-            name="filter-date"
-          ></input>
-        </span>
+      <div className="input-container">
+        <h3>Filter your meeting by Date</h3>
+        <DateProvider
+          value={dateFilter}
+          onChange={(event) => setDateFilter(event.target.value)}
+        />
+        <input
+          style={{
+            width: "175px",
+            align: "center",
+            display: "inline-block",
+          }}
+          className="form-control-homepage"
+          type="date"
+          onChange={(event) => setDateFilter(event.target.value)}
+          placeholder="filter"
+          name="filter-date"
+        ></input>
 
         <Button
           variant="contained"
@@ -92,28 +98,37 @@ export default function UserPage() {
           Get all Meetings
         </Button>
 
-        <h2>Showing all meetings since {dateFilter} 📅</h2>
+        <h3>Showing all meetings from: {dateFilter} 📅</h3>
+
         {meetingHistory.map((obj, i) => {
           return (
             <div className="notes inner">
               <div key={i}>
-                <h2>Type: {obj.type}</h2>
-                <p>
-                  <b>Date: </b>
-                  {obj.meetingStartTime}
-                </p>
+                <FormPropsTextFields
+                  index={i}
+                  label="Meeting Type"
+                  defaultValue={obj.type}
+                />
+                <FormPropsTextFields
+                  index={i}
+                  label="Meeting Date"
+                  defaultValue={dateFilter}
+                />
+
                 <Button
                   variant="contained"
                   color="primary"
                   size="large"
-                  key={i}
+                  key={obj.id}
                   onClick={displayDataBtn}
                 >
                   {obj.type} on {dateFilter}
                 </Button>
+                <br></br>
+                <br></br>
                 {isCLicked ? (
                   <div className="row table">
-                    <div className="column">
+                    <div className="column" key={i}>
                       <p>
                         <b>Participants: </b>
                         {obj.meetingParticipants.map((ojs) => {
@@ -121,15 +136,15 @@ export default function UserPage() {
                         })}
                       </p>
                     </div>
-                    <div className="column">
+                    <div className="column" key={i}>
                       <p>
-                        <b>Had their Turn:: </b>
+                        <b>Had their Turn: </b>
                         {obj.meetingParticipants.map((ojs) => {
-                          return <div>Had Turn:: {ojs.hasHadTurn}</div>;
+                          return <div>Had Turn: {ojs.hasHadTurn}</div>;
                         })}
                       </p>
                     </div>
-                    <div className="column">
+                    <div className="column" key={i}>
                       <p>
                         <b>Time Left: </b>
                         {obj.meetingParticipants.map((ojs) => {
