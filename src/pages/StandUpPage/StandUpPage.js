@@ -12,27 +12,27 @@ import MeetingFinished from "./04_MeetingFinished/04_MeetingFinished";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(1);
+  const [standUpStep, setStandUpStep] = useState(3);
 
   /*Meeting Setup*/
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);
+  const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  // const dummyMeeting = {
-  //   type: "standup",
-  //   meetingParticipants: [
-  //     { name: "Daniela", hasHadTurn: true, timeLeft: 60 },
-  //     { name: "Stefan", hasHadTurn: true, timeLeft: 60 },
-  //     { name: "Tommy", hasHadTurn: true, timeLeft: 60 },
-  //     { name: "Kawalpreet", hasHadTurn: true, timeLeft: 60 },
-  //     { name: "Jon", hasHadTurn: false, timeLeft: 60 },
-  //   ],
-  //   meetingStartTime: null,
-  //   meetingEndTime: null,
-  //   meetingFinished: false,
-  // };
+  const dummyMeeting = {
+    type: "standup",
+    meetingParticipants: [
+      { name: "Daniela", hasHadTurn: true, timeLeft: 60 },
+      { name: "Stefan", hasHadTurn: true, timeLeft: 60 },
+      { name: "Tommy", hasHadTurn: true, timeLeft: 60 },
+      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 60 },
+      { name: "Jon", hasHadTurn: false, timeLeft: 60 },
+    ],
+    meetingStartTime: null,
+    meetingEndTime: null,
+    meetingFinished: false,
+  };
 
   const blankMeeting = {
     type: "standup",
@@ -42,7 +42,7 @@ export default function StandUpPage() {
     meetingFinished: false,
   };
 
-  const [meeting, setMeeting] = useState({ ...blankMeeting });
+  const [meeting, setMeeting] = useState({ ...dummyMeeting });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
