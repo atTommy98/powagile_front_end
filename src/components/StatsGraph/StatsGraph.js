@@ -48,6 +48,7 @@ export default function StatsGraph() {
     let meetingDate = createDateObject(obj.createdAt);
     for (let i = 0; i < previousWeek.length; i++) {
       if (meetingDate.day === previousWeek[i].day) {
+        // TODO: Currently setting to 0 every time same date is found, want to have cumulative addition, not most recent. I think?
         let newState = [0, 0, 0, 0, 0, 0, 0, 0];
         newState[i] = Math.round(
           newState[i] +
