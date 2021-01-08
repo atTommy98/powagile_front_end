@@ -53,10 +53,6 @@ export default function SetupPage({ props }) {
   return (
     //TODO: Inline styles here should be moved to 02_Setup.CSS
     <section className="setupPage">
-      <h2 className="pageTitle" style={{ textAlign: "left" }}>
-        <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productNameStandUp">Stand-Up™</span>
-      </h2>
       <div className="meetingTimeSettingsWrapper">
         <Paper
           elevation={3}
@@ -91,11 +87,9 @@ export default function SetupPage({ props }) {
             variant="outlined"
             label="Time between speakers"
             defaultValue={timeBetweenSpeakers}
-            error={timeBetweenSpeakers < 10}
+            error={timeBetweenSpeakers < 5}
             helperText={
-              timeBetweenSpeakers < 10
-                ? "We recommend at least 10 seconds"
-                : null
+              timeBetweenSpeakers < 5 ? "We recommend at least 5 seconds" : null
             }
             InputProps={{
               startAdornment: (

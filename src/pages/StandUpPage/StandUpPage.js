@@ -4,15 +4,22 @@ import { useState, useEffect } from "react";
 // CSS
 import "./StandUpPage.css";
 
+// Material UI
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Collapse from "@material-ui/core/Collapse";
+
 // Custom Componenets
 import InstructionsPage from "./01_Instructions/01_Instructions";
 import SetupPage from "./02_Setup/02_Setup";
 import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 import MeetingFinished from "./04_MeetingFinished/04_MeetingFinished";
+import ProductTitle from "../../components/ProductTitle/ProductTitle";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(3);
+  const [standUpStep, setStandUpStep] = useState(4);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
@@ -139,8 +146,31 @@ export default function StandUpPage() {
     setStandUpStep(3);
   }
 
+  const steps = [
+    "Review instructions",
+    "Pick settings, add participants",
+    "Run your StandUp",
+    "Finish!",
+  ];
+
   return (
     <div>
+      <Collapse in={standUpStep === 1} timeout={800}>
+        <ProductTitle title="StandUp" />
+      </Collapse>
+
+      <Stepper activeStep={standUpStep - 1} style={{ background: "none" }}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+
       {standUpStep === 1 ? (
         <InstructionsPage nextButton={() => setStandUpStep(2)} />
       ) : null}
@@ -178,7 +208,14 @@ export default function StandUpPage() {
         </div>
       ) : null}
 
-      {standUpStep === 4 ? <MeetingFinished /> : null}
+      {standUpStep === 4 ? (
+        <MeetingFinished
+          props={{
+            minutesPerParticipant,
+            meeting,
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -13,10 +13,6 @@ export default function InstructionsPage({
 }) {
   return (
     <section className="getStartedPage">
-      <h2 className="pageTitle" style={{ textAlign: "center" }}>
-        <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productNameStandUp">Stand-Up™</span>
-      </h2>
       <p className="stepsTitleText">
         Our formula for fast and engaging remote standups. Every time.
       </p>
