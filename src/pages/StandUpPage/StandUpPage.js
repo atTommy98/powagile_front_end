@@ -30,11 +30,11 @@ export default function StandUpPage() {
   const dummyMeeting = {
     type: "standup",
     meetingParticipants: [
-      { name: "Daniela", hasHadTurn: true, timeLeft: 60 },
-      { name: "Stefan", hasHadTurn: true, timeLeft: 60 },
-      { name: "Tommy", hasHadTurn: true, timeLeft: 60 },
-      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 60 },
-      { name: "Jon", hasHadTurn: false, timeLeft: 60 },
+      { name: "Daniela", hasHadTurn: true, timeLeft: 43 },
+      { name: "Stefan", hasHadTurn: true, timeLeft: -60 },
+      { name: "Tommy", hasHadTurn: true, timeLeft: 50 },
+      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20 },
+      { name: "Jon", hasHadTurn: false, timeLeft: 10 },
     ],
     meetingStartTime: null,
     meetingEndTime: null,

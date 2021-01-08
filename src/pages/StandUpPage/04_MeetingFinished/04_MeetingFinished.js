@@ -10,19 +10,14 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import { CardContent } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
+import { Zoom } from "@material-ui/core";
+import { Fade } from "@material-ui/core";
 
 // Material Icons
 import LockIcon from "@material-ui/icons/Lock";
 
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
-
-  console.log({ minutesPerParticipant, meeting });
-
-  function pickRandom(array) {
-    const index = Math.floor(Math.random() * (array.length - 1));
-    return array[index];
-  }
 
   const congratulationsMessages = [
     "You smashed it! 💪",
@@ -47,9 +42,55 @@ export default function MeetingFinished({ props }) {
     "⏯ Addicted to pausing the timer",
   ];
 
+  function pickRandom(array) {
+    const index = Math.floor(Math.random() * (array.length - 1));
+    return array[index];
+  }
+
+  console.log({ minutesPerParticipant, meeting });
+
+  function calculateTotalMeetingTime() {
+    const { meetingStartTime, meetingEndTime } = meeting;
+    const ms = meetingEndTime - meetingStartTime;
+
+    let seconds = Math.floor(ms / 1000);
+    let minutes = 0;
+
+    while (seconds > 59) {
+      seconds = seconds - 60;
+      minutes = minutes + 1;
+    }
+
+    let str = `${minutes < 10 ? "0" + minutes : minutes}:${
+      seconds < 10 ? "0" + seconds : seconds
+    }`;
+
+    return str.match(/(\d\d:\d\d)/g) && str !== "00:00" ? str : "too quick!";
+  }
+
+  function findFastest() {
+    let arr = meeting.meetingParticipants;
+
+    const fastest = arr.reduce((acc, cur) => {
+      return cur.timeLeft > acc.timeLeft ? cur : acc;
+    });
+
+    return fastest.name;
+  }
+
+  function findSlowest() {
+    let arr = meeting.meetingParticipants;
+
+    const slowest = arr.reduce((acc, cur) => {
+      return cur.timeLeft < acc.timeLeft ? cur : acc;
+    });
+
+    return slowest.name;
+  }
+
   return (
     <div>
-      <Confetti numberOfPieces={150} gravity={0.15} tweenDuration={1000} />
+      <Confetti numberOfPieces={150} recycle={true} />
 
       <section className="finishedTitleArea">
         <h3 className="meetingFinishedTitle">
@@ -66,7 +107,7 @@ export default function MeetingFinished({ props }) {
                 ⌚ Total meeting time
               </Typography>
               <Typography variant="h5" component="h2">
-                07:43
+                {calculateTotalMeetingTime()}
               </Typography>
             </CardContent>
           </Card>
@@ -78,7 +119,7 @@ export default function MeetingFinished({ props }) {
                 ⚡ Life in the fast lane
               </Typography>
               <Typography variant="h5" component="h2">
-                Kawalpreet Kaur
+                {findFastest()}
               </Typography>
             </CardContent>
           </Card>
@@ -90,7 +131,7 @@ export default function MeetingFinished({ props }) {
                 ☕ Could use a coffee
               </Typography>
               <Typography variant="h5" component="h2">
-                Stefan Kudev
+                {findSlowest()}
               </Typography>
             </CardContent>
           </Card>
@@ -98,34 +139,38 @@ export default function MeetingFinished({ props }) {
       </Grid>
 
       <div className="lockedStats">
-        <div className="salesyMarketingMessage">
-          <LockIcon fontSize="large" />
-          <p className="salesyTitle">Unlock even more valuable stats</p>
-          <p className="salesySubtitle">
-            {" "}
-            run better, faster, more productive meetings
-          </p>
+        <Fade in={true} timeout={2500}>
+          <div className="marketingMessage">
+            <LockIcon fontSize="large" />
+            <p className="salesyTitle">Unlock even more valuable stats</p>
+            <p className="salesySubtitle">
+              {" "}
+              run better, faster, more productive meetings
+            </p>
 
-          <Button variant="outlined" size="large">
-            Sign Up for free
-          </Button>
-        </div>
+            <Button variant="contained" color="primary" size="large">
+              Sign Up for free &rarr;
+            </Button>
+          </div>
+        </Fade>
 
         <div className="blurryStats">
           <Grid container spacing={3}>
-            {valuableStats.map((el) => (
-              <Grid item xs={6} sm={3}>
-                <Card className="statCard">
-                  <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                      {el}
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                      ?
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+            {valuableStats.map((el, i) => (
+              <Zoom in={true} timeout={1200 * (i + 1)}>
+                <Grid item xs={6} sm={3}>
+                  <Card className="statCard">
+                    <CardContent>
+                      <Typography color="textSecondary" gutterBottom>
+                        {el}
+                      </Typography>
+                      <Typography variant="h5" component="h2">
+                        ???
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Zoom>
             ))}
           </Grid>
         </div>
