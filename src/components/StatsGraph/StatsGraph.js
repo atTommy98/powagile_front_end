@@ -20,12 +20,19 @@ export default function StatsGraph() {
 
   // when state "stats" is updated, place data in "yAxis" state and calculate the previous week for the x-axis
   useEffect(() => {
+    setyAxis([0, 0, 0, 0, 0, 0, 0, 0]);
     if (stats.length !== 0) {
       let previousWeek = calculatePreviousWeek();
-      stats.map((obj) => {
-        return setYAxisValues(obj, previousWeek);
+      // eslint-disable-next-line array-callback-return
+      stats.map((obj, i) => {
+        console.log({ [i]: stats[i] });
+        if (obj.meetingStartTime === null || obj.meetingEndTime === null) {
+          // eslint-disable-next-line array-callback-return
+          return;
+        } else setYAxisValues(obj, previousWeek);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stats]);
 
   // creates a date object for a specific point in time. allows you to access the date, day, month, year and milliseconds at that point in time.
@@ -52,17 +59,20 @@ export default function StatsGraph() {
   function setYAxisValues(obj, previousWeek) {
     let meetingDate = createDateObject(obj.createdAt);
     for (let i = 0; i < previousWeek.length; i++) {
-      if (meetingDate.day === previousWeek[i].day) {
-        let newState = [0, 0, 0, 0, 0, 0, 0, 0];
+      if (meetingDate.day === previousWeek[i].day && yAxis[i] === 0) {
+        let newState = [...yAxis];
         newState[i] = Math.round(
           newState[i] +
             calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
         );
+        console.log(newState);
         setyAxis(newState);
       }
     }
   }
 
+  console.log("rener");
+  console.log(`Y axis ${yAxis}`);
   // calculates the dates of the past week based on todays date.
   function calculatePreviousWeek() {
     let date = new Date();
