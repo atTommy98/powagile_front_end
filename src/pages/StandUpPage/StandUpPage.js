@@ -160,6 +160,7 @@ export default function StandUpPage() {
             totalMeetingTime,
             setStandUpStep,
             startMeeting,
+            setMeeting,
           }}
         />
       ) : null}

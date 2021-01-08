@@ -26,9 +26,8 @@ export default function SetupPage({ props }) {
     totalMeetingTime,
     setStandUpStep,
     startMeeting,
+    setMeeting,
   } = props;
-
-  const [meeting, setMeeting] = useState([]);
 
   //If we want to display the participants from last meeting
   async function getParticipants() {
@@ -36,11 +35,17 @@ export default function SetupPage({ props }) {
     const data = await res.json();
 
     const fetchedParticipants = [];
-    data[0].meetingParticipants.forEach((participant) =>
-      fetchedParticipants.push({
-        name: participant.name,
-      })
-    );
+    data
+      .slice(-1)
+      .pop()
+      .meetingParticipants.forEach((participant) =>
+        fetchedParticipants.push({
+          name: participant.name,
+          hasHadTurn: false,
+          timeLeft: minutesPerParticipant * 60,
+          timesPaused: [],
+        })
+      );
     setMeeting({ ...meeting, meetingParticipants: fetchedParticipants });
 
     console.log(data);
@@ -135,10 +140,13 @@ export default function SetupPage({ props }) {
             >
               Add
             </Button>
+            <br></br>
+            <br></br>
             <Button
               variant="contained"
               color="primary"
               size="large"
+              style={{ margin: "5px 20px" }}
               onClick={getParticipants}
             >
               Get participants

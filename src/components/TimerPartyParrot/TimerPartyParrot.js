@@ -79,14 +79,25 @@ export default function TimerPartyParrot({ props, children }) {
     newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
-
-  function finishMeeting() {
+  // send POST request to DB
+  async function finishMeeting() {
     // Set last participant's hasHadTurn to true
     const newParticipants = [...meetingParticipants];
     const index = newParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
     newParticipants[index].hasHadTurn = true;
+    const newState = { ...meeting };
+    newState.meetingEndTime = Date.now();
+    newState.meetingParticipants = newParticipants;
+
+    const response = await fetch("http://localhost:8080/meeting", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newState),
+    });
+
+    console.log(response);
 
     // Stop all timers
     setActiveStage({
@@ -96,13 +107,15 @@ export default function TimerPartyParrot({ props, children }) {
       randomizerStage: false,
     });
 
-    // Update main "meeeting" state
-    setMeeting({
-      ...meeting,
-      meetingParticipants: newParticipants,
-      meetingEndTime: Date.now(),
-      meetingFinished: true,
-    });
+    setMeeting(newState);
+
+    // Update main "meeting" state
+    // setMeeting({
+    //   ...meeting,
+    //   meetingParticipants: newParticipants,
+    //   meetingEndTime: Date.now(),
+    //   meetingFinished: true,
+    // });
   }
 
   return (
