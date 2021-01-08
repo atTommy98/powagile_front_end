@@ -12,7 +12,7 @@ import MeetingFinished from "./04_MeetingFinished/04_MeetingFinished";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(2);
+  const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(2);

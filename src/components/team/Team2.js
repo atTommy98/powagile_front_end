@@ -56,7 +56,7 @@ export default function Team(props) {
             <Typography variant="h4" component="h2" gutterBottom={true}>
               {content["header"]}
             </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant="subtitle1" color="primary">
               {content["description"]}
             </Typography>
           </Box>

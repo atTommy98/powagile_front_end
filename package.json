@@ -14,12 +14,16 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
+    "chart.js": "^2.9.4",
     "react": "^17.0.1",
+    "react-chartjs-2": "^2.11.1",
+    "react-charts": "^2.0.0-beta.7",
     "react-countdown-circle-timer": "^2.3.7",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "universal-cookie": "^4.0.4",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
@@ -27,7 +31,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +52,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^6.2.1",
+    "cypress-react-unit-test": "^4.17.2"
   }
 }
