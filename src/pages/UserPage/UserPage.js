@@ -9,11 +9,19 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Box from "@material-ui/core/Box";
 
 import Button from "@material-ui/core/Button";
-import DateProvider from "../../../src/components/datePicker";
 import FormPropsTextFields from "../../components/TextField/Text";
-
+import Paper from "@material-ui/core/Paper";
+import SimpleAccordion from "./Acordion";
 export default function UserPage(props) {
-  const { value, label, defaultValue } = props;
+  const {
+    title,
+    textParticipant,
+    textTurn,
+    textTimePaused,
+    textTimeLeft,
+    label,
+    defaultValue,
+  } = props;
   const { user, isAuthenticated } = useAuth0();
 
   // state for filtered date
@@ -71,63 +79,78 @@ export default function UserPage(props) {
       </div>
 
       <div className="input-container">
-        <h3>Filter your meeting by Date</h3>
-        <DateProvider
-          value={dateFilter}
-          onChange={(event) => setDateFilter(event.target.value)}
-        />
-        <input
-          style={{
-            width: "175px",
-            align: "center",
-            display: "inline-block",
-          }}
-          className="form-control-homepage"
-          type="date"
-          onChange={(event) => setDateFilter(event.target.value)}
-          placeholder="filter"
-          name="filter-date"
-        ></input>
-
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={getMeetingByDate}
+        <Paper
+          elevation={3}
+          style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
         >
-          Get all Meetings
-        </Button>
+          <h3 style={{ textAlign: "center" }}>Filter your meeting by Date</h3>
 
-        <h3>Showing all meetings from: {dateFilter} 📅</h3>
+          <input
+            style={{
+              width: "175px",
+              align: "center",
+              display: "inline-block",
+            }}
+            className="form-control-homepage"
+            type="date"
+            onChange={(event) => setDateFilter(event.target.value)}
+            placeholder="filter"
+            name="filter-date"
+          ></input>
 
-        {meetingHistory.map((obj, i) => {
-          return (
-            <div className="notes inner">
-              <div key={i}>
-                <FormPropsTextFields
-                  index={i}
-                  label="Meeting Type"
-                  defaultValue={obj.type}
-                />
-                <FormPropsTextFields
-                  index={i}
-                  label="Meeting Date"
-                  defaultValue={dateFilter}
-                />
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={getMeetingByDate}
+          >
+            Get all Meetings
+          </Button>
 
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  key={obj.id}
-                  onClick={displayDataBtn}
-                >
-                  {obj.type} on {dateFilter}
-                </Button>
-                <br></br>
-                <br></br>
-                {isCLicked ? (
-                  <div className="row table">
+          <h3>Showing all meetings from: {dateFilter} 📅</h3>
+
+          {meetingHistory.map((obj, i) => {
+            return (
+              <div className="notes inner">
+                <div key={i}>
+                  <FormPropsTextFields
+                    index={i}
+                    label="Meeting Type"
+                    defaultValue={obj.type}
+                  />
+                  <FormPropsTextFields
+                    index={i}
+                    label="Meeting Date"
+                    defaultValue={dateFilter}
+                  />
+                  {/* <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    key={obj.id}
+                    onClick={displayDataBtn}
+                  >
+                    {obj.type} on {dateFilter}
+                  </Button>
+                  <br></br>
+                  <br></br> */}
+                  {/* {isCLicked ? ( */}
+                  <SimpleAccordion
+                    title={obj.type}
+                    textParticipant={obj.meetingParticipants.map((ojs) => {
+                      return <div>Name: {ojs.name}</div>;
+                    })}
+                    textTurn={obj.meetingParticipants.map((ojs) => {
+                      return <div>Had Turn: {ojs.hasHadTurn}</div>;
+                    })}
+                    textTimePaused={obj.meetingParticipants.map((ojs) => {
+                      return <div>Pauses: {ojs.pauses}</div>;
+                    })}
+                    textTimeLeft={obj.meetingParticipants.map((ojs) => {
+                      return <div>Time left: {ojs.timeLeft}</div>;
+                    })}
+                  ></SimpleAccordion>
+                  {/* <div className="row table">
                     <div className="column" key={i}>
                       <p>
                         <b>Participants: </b>
@@ -153,11 +176,12 @@ export default function UserPage(props) {
                       </p>
                     </div>
                   </div>
-                ) : null}
+                  ) : null} */}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </Paper>
       </div>
     </div>
   ) : (
