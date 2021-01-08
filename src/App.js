@@ -7,13 +7,16 @@ import RetroPage from "./pages/RetroPage/RetroPage";
 import UserPage from "./pages/UserPage/UserPage";
 
 // React
-import React from "react";
+import React, { useEffect } from "react";
 
 // Components
 import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4";
 
 // Router
 import { Route, Switch } from "react-router-dom";
+
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
   return (

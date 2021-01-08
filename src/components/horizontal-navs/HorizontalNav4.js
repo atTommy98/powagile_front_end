@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navigation(props) {
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { user, isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
   const history = useHistory();
   const classes = useStyles();
 
@@ -113,10 +113,15 @@ export default function Navigation(props) {
             Retro
           </Link>
         </div>
-
-        <div className="navbarUserSection">
+        <div
+          className={
+            isLoading
+              ? "navbarUserSection hideWhileLoading"
+              : "navbarUserSection"
+          }
+        >
           {isAuthenticated ? <LogOutButton /> : <LogInButton />}
-          <Link to={isAuthenticated ? "/user" : null}>
+          <Link to={isAuthenticated ? "/user" : "/login"}>
             <IconButton
               color="inherit"
               className="avatar"

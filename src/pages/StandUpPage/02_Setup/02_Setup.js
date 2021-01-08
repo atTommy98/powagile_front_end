@@ -100,6 +100,7 @@ export default function SetupPage({ props }) {
 
           <div className="participantCardsList" style={{ margin: "30px" }}>
             <TextField
+              className="inputfield"
               label="Participant name"
               variant="outlined"
               value={participantToAdd}
@@ -108,6 +109,7 @@ export default function SetupPage({ props }) {
             />
 
             <Button
+              className="addButton"
               type="submit"
               size="large"
               variant="contained"
@@ -159,7 +161,7 @@ export default function SetupPage({ props }) {
           variant="contained"
           disabled={
             minutesPerParticipant < 1 ||
-            timeBetweenSpeakers < 10 ||
+            timeBetweenSpeakers < 1 ||
             totalMeetingTime <= 0
           }
           onClick={startMeeting}
