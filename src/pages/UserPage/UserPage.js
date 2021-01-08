@@ -27,10 +27,13 @@ export default function UserPage() {
         });
 
         // Add token to cookie
-        cookies.set("powAgile_user", accessToken, {
-          httpOnly: true,
-          expires: new Date(Date.now() + 86400000),
-        });
+        cookies.set(
+          "powAgile_user",
+          { user, accessToken, userMetadata },
+          {
+            expires: new Date(Date.now() + 86400000),
+          }
+        );
 
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
 
