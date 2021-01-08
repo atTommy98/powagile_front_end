@@ -8,6 +8,7 @@ export default function StatsGraph() {
   const [stats, setStats] = useState([]);
   const [yAxis, setyAxis] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
+  // retrieve all meetings from database
   useEffect(() => {
     function retrieveMeetings() {
       fetch("https://powagile-back-end.herokuapp.com/meeting")
@@ -17,6 +18,7 @@ export default function StatsGraph() {
     retrieveMeetings();
   }, []);
 
+  // when state "stats" is updated, place data in "yAxis" state and calculate the previous week for the x-axis
   useEffect(() => {
     if (stats.length !== 0) {
       let previousWeek = calculatePreviousWeek();
@@ -26,6 +28,7 @@ export default function StatsGraph() {
     }
   }, [stats]);
 
+  // creates a date object for a specific point in time. allows you to access the date, day, month, year and milliseconds at that point in time.
   function createDateObject(time) {
     const date = new Date(time);
     const obj = {
@@ -38,12 +41,14 @@ export default function StatsGraph() {
     return obj;
   }
 
+  // find total time of a meeting using start time and end time of the meeting
   function calculateTotalTime(startTime, endTime) {
     let total = endTime - startTime;
     total = total / 60000;
     return total;
   }
 
+  // create an array for the y-axis data. if the date of a meetings was in the previous week, assign it to the corresponding day (using the index of the array). rounds up to nearest minutes and sets y-axis state.
   function setYAxisValues(obj, previousWeek) {
     let meetingDate = createDateObject(obj.createdAt);
     for (let i = 0; i < previousWeek.length; i++) {
@@ -58,6 +63,7 @@ export default function StatsGraph() {
     }
   }
 
+  // calculates the dates of the past week based on todays date.
   function calculatePreviousWeek() {
     let date = new Date();
     let arrayOfPreviousWeek = [];
@@ -68,6 +74,7 @@ export default function StatsGraph() {
     return arrayOfPreviousWeek;
   }
 
+  // makes labels for x-axis using the day and months.
   function createLabelArray(arr) {
     let labelArray = [];
     for (let i = 0; i < arr.length; i++) {
@@ -80,6 +87,7 @@ export default function StatsGraph() {
   const previousWeek = calculatePreviousWeek();
   const labelArray = createLabelArray(previousWeek);
 
+  // dataset for the graph
   const data = {
     labels: labelArray,
     datasets: [
