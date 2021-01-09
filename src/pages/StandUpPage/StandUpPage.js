@@ -115,7 +115,7 @@ export default function StandUpPage() {
       name: participantToAdd,
       hasHadTurn: false,
       timeLeft: null,
-      timesPaused: [],
+      pauses: [],
     });
     setParticipantToAdd("");
     setMeeting(newState);

@@ -45,11 +45,11 @@ export default function TimerPartyParrot({ props, children }) {
   function storePauses() {
     const newParticipants = [...meetingParticipants];
 
-    const index = meetingParticipants.findIndex(
+    const index = newParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
 
-    meetingParticipants[index].pauses.push(Date.now());
+    newParticipants[index].pauses.push(Date.now());
 
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
     setActiveStage({ ...activeStage, timerActive: false });

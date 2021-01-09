@@ -50,7 +50,7 @@ export default function SetupPage({ props }) {
           name: participant.name,
           hasHadTurn: false,
           timeLeft: minutesPerParticipant * 60,
-          timesPaused: [],
+          pauses: [],
         })
       );
     setMeeting({
@@ -60,6 +60,8 @@ export default function SetupPage({ props }) {
         ...fetchedParticipants,
       ],
     });
+
+    setShowFetcher(false);
   }
 
   return (
