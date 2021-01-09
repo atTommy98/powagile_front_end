@@ -19,8 +19,8 @@ import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
 import RetroColumn from "./03_Retro/RetroColumn/RetroColumn";
 
-// uuid
-import { v4 as uuidv4 } from "uuid";
+// nanoid
+import { nanoid } from "nanoid";
 
 // CSS
 import "./RetroPage.css";
@@ -60,7 +60,7 @@ function Retro() {
   function addCard(colIndex) {
     const newState = { ...meeting };
     newState.cards.push({
-      id: uuidv4(),
+      id: nanoid(),
       columnIndex: colIndex,
       content: "",
       thumbsUp: 0,
@@ -215,6 +215,7 @@ function Retro() {
         >
           {meeting.columns.map((columnTitle, index) => (
             <RetroColumn
+              key={nanoid()}
               props={{
                 meeting,
                 setMeeting,
