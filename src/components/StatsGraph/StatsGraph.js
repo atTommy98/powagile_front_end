@@ -20,7 +20,8 @@ export default function StatsGraph() {
   // generates an array of y-valeus representing the total minutes spent in meetings, corresponds to the last 7 days
   function generateDataset() {
     const values = [0, 0, 0, 0, 0, 0, 0, 0];
-    stats.map((obj, i) => {
+    // eslint-disable-next-line array-callback-return
+    stats.map((obj) => {
       // Check it's a valid meeting
       if (obj.meetingStartTime && obj.meetingEndTime) {
         let meetingDate = createDateObject(obj.createdAt);

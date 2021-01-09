@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // React
 import React, { useState, useEffect } from "react";
 
@@ -9,36 +10,33 @@ import "./UserPage.css";
 
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
-import Box from "@material-ui/core/Box";
-
-// React-Charts
-import StatsGraph from "../../components/StatsGraph/StatsGraph"
 
 // Material UI
 import Button from "@material-ui/core/Button";
 import FormPropsTextFields from "../../components/TextField/Text";
 import Paper from "@material-ui/core/Paper";
 import SimpleAccordion from "./Acordion";
+import StatsGraph from "../../components/StatsGraph/StatsGraph";
 
 export default function UserPage(props) {
-  const {
-    title,
-    textParticipant,
-    textTurn,
-    textTimePaused,
-    textTimeLeft,
-    label,
-    defaultValue,
-  } = props;
+  // const {
+  //   title,
+  //   textParticipant,
+  //   textTurn,
+  //   textTimePaused,
+  //   textTimeLeft,
+  //   label,
+  //   defaultValue,
+  // } = props;
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const cookies = new Cookies();
-  
+
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
-  const [isDateFilter, setIsDateFilter] = useState(false);
+  // const [isDateFilter, setIsDateFilter] = useState(false);
 
-  const [isCLicked, setIsClicked] = useState(false);
+  // const [isClicked, setIsClicked] = useState(false);
 
   // state for all previous meetings
   const [meetingHistory, setMeetingHistory] = useState([]);
@@ -65,12 +63,12 @@ export default function UserPage(props) {
     const { data } = await res.json();
     console.log(data);
     setMeetingHistory(data);
-    setIsDateFilter(true);
+    // setIsDateFilter(true);
   }
 
-  function displayDataBtn() {
-    setIsClicked(true);
-  }
+  // function displayDataBtn() {
+  //   setIsClicked(true);
+  // }
   function input(event) {
     setDateFilter(event.target.value);
   }
@@ -121,7 +119,6 @@ export default function UserPage(props) {
     }
   }, [getAccessTokenSilently, user]);
 
-  
   return isAuthenticated ? (
     <div>
       <div id="userInfo">
@@ -129,7 +126,6 @@ export default function UserPage(props) {
         <h4>{user.name}</h4>
         <p>{user.email}</p>
       </div>
-    
 
       <div className="input-container">
         <Paper

@@ -103,9 +103,6 @@ export default function Navigation(props) {
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/rituals" className="nav-link">
-            Rituals
-          </Link>
           <Link to="/rituals/standup" className="nav-link">
             Stand Up
           </Link>
