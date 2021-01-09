@@ -32,20 +32,20 @@ export default function StandUpPage() {
   /*Logged in user (if any)*/
   const { user } = useAuth0();
 
-  const dummyMeeting = {
-    userId: null,
-    type: "standup",
-    meetingParticipants: [
-      { name: "Daniela", hasHadTurn: true, timeLeft: 43, pauses: [] },
-      { name: "Stefan", hasHadTurn: true, timeLeft: -60, pauses: [] },
-      { name: "Tommy", hasHadTurn: true, timeLeft: 50, pauses: [] },
-      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20, pauses: [] },
-      { name: "Jon", hasHadTurn: false, timeLeft: 10, pauses: [] },
-    ],
-    meetingStartTime: 1610191221089,
-    meetingEndTime: 1610191229759,
-    meetingFinished: false,
-  };
+  // const dummyMeeting = {
+  //   userId: null,
+  //   type: "standup",
+  //   meetingParticipants: [
+  //     { name: "Daniela", hasHadTurn: true, timeLeft: 43, pauses: [] },
+  //     { name: "Stefan", hasHadTurn: true, timeLeft: -60, pauses: [] },
+  //     { name: "Tommy", hasHadTurn: true, timeLeft: 50, pauses: [] },
+  //     { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20, pauses: [] },
+  //     { name: "Jon", hasHadTurn: false, timeLeft: 10, pauses: [] },
+  //   ],
+  //   meetingStartTime: 1610191221089,
+  //   meetingEndTime: 1610191229759,
+  //   meetingFinished: false,
+  // };
 
   const blankMeeting = {
     userId: null,
@@ -56,7 +56,7 @@ export default function StandUpPage() {
     meetingFinished: false,
   };
 
-  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+  const [meeting, setMeeting] = useState({ ...blankMeeting });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
