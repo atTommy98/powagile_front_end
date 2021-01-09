@@ -42,6 +42,19 @@ export default function TimerPartyParrot({ props, children }) {
     }
   }
 
+  function storePauses() {
+    const newParticipants = [...meetingParticipants];
+
+    const index = meetingParticipants.findIndex(
+      (participant) => participant.hasHadTurn === false
+    );
+
+    meetingParticipants[index].pauses.push(Date.now());
+
+    setMeeting({ ...meeting, meetingParticipants: newParticipants });
+    setActiveStage({ ...activeStage, timerActive: false });
+  }
+
   function findWhoIsNext() {
     // Find next participant
     const index = meetingParticipants.findIndex(
@@ -79,8 +92,8 @@ export default function TimerPartyParrot({ props, children }) {
     newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
-  // send POST request to DB
-  async function finishMeeting() {
+
+  function finishMeeting() {
     // Set last participant's hasHadTurn to true
     const newParticipants = [...meetingParticipants];
     const index = newParticipants.findIndex(
@@ -101,14 +114,6 @@ export default function TimerPartyParrot({ props, children }) {
       timerStage: false,
       randomizerStage: false,
     });
-
-    const response = await fetch("http://localhost:8080/meeting", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(meeting),
-    });
-
-    console.log(response);
   }
 
   return (
@@ -181,12 +186,7 @@ export default function TimerPartyParrot({ props, children }) {
         <div className="supportingComponents">{children}</div>
 
         {activeStage.timerActive === true ? (
-          <Fab
-            color="secondary"
-            onClick={() =>
-              setActiveStage({ ...activeStage, timerActive: false })
-            }
-          >
+          <Fab color="secondary" onClick={storePauses}>
             <PauseIcon />
           </Fab>
         ) : (

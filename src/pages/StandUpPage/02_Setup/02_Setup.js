@@ -1,3 +1,6 @@
+// React
+import { useState } from "react";
+
 // Material UI
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -5,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import Collapse from "@material-ui/core/Collapse";
 
 // CSS
 import "./02_Setup.css";
@@ -29,7 +34,9 @@ export default function SetupPage({ props }) {
     setMeeting,
   } = props;
 
-  //If we want to display the participants from last meeting
+  const [showFetcher, setShowFetcher] = useState(true);
+
+  // FIXME: Needs to do a query just for the last meeting for that user
   async function getParticipants() {
     const res = await fetch("http://localhost:8080/meeting/getAll");
     const data = await res.json();
@@ -46,17 +53,18 @@ export default function SetupPage({ props }) {
           timesPaused: [],
         })
       );
-    setMeeting({ ...meeting, meetingParticipants: fetchedParticipants });
-
-    console.log(data);
+    setMeeting({
+      ...meeting,
+      meetingParticipants: [
+        ...meeting.meetingParticipants,
+        ...fetchedParticipants,
+      ],
+    });
   }
+
   return (
     //TODO: Inline styles here should be moved to 02_Setup.CSS
     <section className="setupPage">
-      <h2 className="pageTitle" style={{ textAlign: "left" }}>
-        <span className="companyName">Pow!Agile</span>{" "}
-        <span className="productNameStandUp">Stand-Up™</span>
-      </h2>
       <div className="meetingTimeSettingsWrapper">
         <Paper
           elevation={3}
@@ -91,11 +99,9 @@ export default function SetupPage({ props }) {
             variant="outlined"
             label="Time between speakers"
             defaultValue={timeBetweenSpeakers}
-            error={timeBetweenSpeakers < 10}
+            error={timeBetweenSpeakers < 5}
             helperText={
-              timeBetweenSpeakers < 10
-                ? "We recommend at least 10 seconds"
-                : null
+              timeBetweenSpeakers < 5 ? "We recommend at least 5 seconds" : null
             }
             InputProps={{
               startAdornment: (
@@ -121,6 +127,28 @@ export default function SetupPage({ props }) {
           <h3 style={{ textAlign: "center" }}>Meeting participants</h3>
 
           <div className="participantCardsList" style={{ margin: "30px" }}>
+            {meeting.userId !== null ? (
+              <Collapse in={showFetcher}>
+                <SnackbarContent
+                  className="loadFromPrevious"
+                  message="Load participants from your previous meeting?"
+                  action={
+                    <div>
+                      <Button variant="outlined" onClick={getParticipants}>
+                        Yes
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={() => setShowFetcher(false)}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  }
+                />
+              </Collapse>
+            ) : null}
+
             <TextField
               className="inputfield"
               label="Participant name"
@@ -140,20 +168,11 @@ export default function SetupPage({ props }) {
             >
               Add
             </Button>
-            <br></br>
-            <br></br>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              style={{ margin: "5px 20px" }}
-              onClick={getParticipants}
-            >
-              Get participants
-            </Button>
+
             {meeting.meetingParticipants
               ? meeting.meetingParticipants.map((obj, i) => (
                   <ParticipantCard
+                    key={i}
                     index={i}
                     name={obj.name}
                     deleteParticipant={deleteParticipant}
