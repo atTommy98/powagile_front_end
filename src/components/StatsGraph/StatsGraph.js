@@ -17,6 +17,7 @@ export default function StatsGraph() {
     retrieveMeetings();
   }, []);
 
+  // generates an array of y-valeus representing the total minutes spent in meetings, corresponds to the last 7 days
   function generateDataset() {
     const values = [0, 0, 0, 0, 0, 0, 0, 0];
     stats.map((obj, i) => {
@@ -39,7 +40,7 @@ export default function StatsGraph() {
     return values;
   }
 
-  // creates a date object for a specific point in time. allows you to access the date, day, month, year and milliseconds at that point in time.
+  // creates a date object to allow you to access the date, day, month, year and milliseconds at a point in time.
   function createDateObject(time) {
     const date = new Date(time);
     const obj = {
@@ -52,24 +53,14 @@ export default function StatsGraph() {
     return obj;
   }
 
-  // find total time of a meeting using start time and end time of the meeting
+  // calculate total time of a meeting
   function calculateTotalTime(startTime, endTime) {
     let total = endTime - startTime;
     total = total / 60000;
     return total;
   }
 
-  // create an array for the y-axis data. if the date of a meetings was in the previous week, assign it to the corresponding day (using the index of the array). rounds up to nearest minutes and sets y-axis state.
-  function setYAxisValues(obj, previousWeek) {
-    let meetingDate = createDateObject(obj.createdAt);
-    for (let i = 0; i < previousWeek.length; i++) {
-      if (meetingDate.day === previousWeek[i].day) {
-        return "hello";
-      }
-    }
-  }
-
-  // calculates the dates of the past week based on todays date.
+  // calculates the dates of the past week
   function calculatePreviousWeek() {
     let date = new Date();
     let arrayOfPreviousWeek = [];
