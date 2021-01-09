@@ -17,6 +17,9 @@ import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
 import MeetingFinished from "./04_MeetingFinished/04_MeetingFinished";
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function StandUpPage() {
   /*Steps*/
   const [standUpStep, setStandUpStep] = useState(1);
@@ -24,24 +27,28 @@ export default function StandUpPage() {
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
-
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  // const dummyMeeting = {
-  //   type: "standup",
-  //   meetingParticipants: [
-  //     { name: "Daniela", hasHadTurn: true, timeLeft: 43 },
-  //     { name: "Stefan", hasHadTurn: true, timeLeft: -60 },
-  //     { name: "Tommy", hasHadTurn: true, timeLeft: 50 },
-  //     { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20 },
-  //     { name: "Jon", hasHadTurn: false, timeLeft: 10 },
-  //   ],
-  //   meetingStartTime: null,
-  //   meetingEndTime: null,
-  //   meetingFinished: false,
-  // };
+  /*Logged in user (if any)*/
+  const { user } = useAuth0();
+
+  const dummyMeeting = {
+    userId: null,
+    type: "standup",
+    meetingParticipants: [
+      { name: "Daniela", hasHadTurn: true, timeLeft: 43, pauses: [] },
+      { name: "Stefan", hasHadTurn: true, timeLeft: -60, pauses: [] },
+      { name: "Tommy", hasHadTurn: true, timeLeft: 50, pauses: [] },
+      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20, pauses: [] },
+      { name: "Jon", hasHadTurn: false, timeLeft: 10, pauses: [] },
+    ],
+    meetingStartTime: 1610191221089,
+    meetingEndTime: 1610191229759,
+    meetingFinished: false,
+  };
 
   const blankMeeting = {
+    userId: null,
     type: "standup",
     meetingParticipants: [],
     meetingStartTime: null,
@@ -49,7 +56,7 @@ export default function StandUpPage() {
     meetingFinished: false,
   };
 
-  const [meeting, setMeeting] = useState({ ...blankMeeting });
+  const [meeting, setMeeting] = useState({ ...dummyMeeting });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
@@ -63,6 +70,12 @@ export default function StandUpPage() {
     newState.meetingParticipants.splice(i, 1);
     setMeeting(newState);
   }
+  // Add User ID if logged in
+  useEffect(() => {
+    if (user) {
+      setMeeting({ ...meeting, userId: user.sub });
+    }
+  }, [user]);
 
   // Calculate meeting time
   useEffect(() => {

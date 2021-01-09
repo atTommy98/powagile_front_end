@@ -19,6 +19,9 @@ import { Fade } from "@material-ui/core";
 // Material Icons
 import LockIcon from "@material-ui/icons/Lock";
 
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
 
@@ -68,7 +71,7 @@ export default function MeetingFinished({ props }) {
       }
     }
 
-    console.log(postMeetingToDatabase());
+    postMeetingToDatabase();
   });
 
   console.log({ minutesPerParticipant, meeting });
