@@ -79,8 +79,8 @@ export default function TimerPartyParrot({ props, children }) {
     newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
-  // send POST request to DB
-  async function finishMeeting() {
+
+  function finishMeeting() {
     // Set last participant's hasHadTurn to true
     const newParticipants = [...meetingParticipants];
     const index = newParticipants.findIndex(
@@ -101,14 +101,6 @@ export default function TimerPartyParrot({ props, children }) {
       timerStage: false,
       randomizerStage: false,
     });
-
-    const response = await fetch("http://localhost:8080/meeting", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(meeting),
-    });
-
-    console.log(response);
   }
 
   return (

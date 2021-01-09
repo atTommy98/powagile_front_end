@@ -1,3 +1,6 @@
+// React
+import { useEffect } from "react";
+
 // CSS
 import "./04_MeetingFinished.css";
 
@@ -23,12 +26,15 @@ export default function MeetingFinished({ props }) {
     "You smashed it! 💪",
     "Agile rockstars! 🤘",
     "Way to go! 🎉",
-    "Great job! 😻",
+    "Great job! 😍",
     "Well done! 💃",
     "Hip, hip, hurrah! 🙌",
     "Nice one! 🥳",
     "Oh yeah! 😎",
+    "Awesome! 😃",
     "Great work, team! 😍",
+    "Nice job! 👍",
+    "Great work! 🎊",
   ];
 
   const valuableStats = [
@@ -46,6 +52,24 @@ export default function MeetingFinished({ props }) {
     const index = Math.floor(Math.random() * (array.length - 1));
     return array[index];
   }
+
+  useEffect(() => {
+    function postMeetingToDatabase() {
+      try {
+        fetch("http://localhost:8080/meeting", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(meeting),
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+      } catch (err) {
+        console.log("hi");
+      }
+    }
+
+    console.log(postMeetingToDatabase());
+  });
 
   console.log({ minutesPerParticipant, meeting });
 
@@ -65,7 +89,7 @@ export default function MeetingFinished({ props }) {
       seconds < 10 ? "0" + seconds : seconds
     }`;
 
-    return str.match(/(\d\d:\d\d)/g) && str !== "00:00" ? str : "too quick!";
+    return str.match(/(\d\d:\d\d)/g) && str !== "00:00" ? str : "Too quick!";
   }
 
   function findFastest() {

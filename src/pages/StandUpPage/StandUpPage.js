@@ -19,7 +19,7 @@ import ProductTitle from "../../components/ProductTitle/ProductTitle";
 
 export default function StandUpPage() {
   /*Steps*/
-  const [standUpStep, setStandUpStep] = useState(4);
+  const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
@@ -27,19 +27,19 @@ export default function StandUpPage() {
 
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  const dummyMeeting = {
-    type: "standup",
-    meetingParticipants: [
-      { name: "Daniela", hasHadTurn: true, timeLeft: 43 },
-      { name: "Stefan", hasHadTurn: true, timeLeft: -60 },
-      { name: "Tommy", hasHadTurn: true, timeLeft: 50 },
-      { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20 },
-      { name: "Jon", hasHadTurn: false, timeLeft: 10 },
-    ],
-    meetingStartTime: null,
-    meetingEndTime: null,
-    meetingFinished: false,
-  };
+  // const dummyMeeting = {
+  //   type: "standup",
+  //   meetingParticipants: [
+  //     { name: "Daniela", hasHadTurn: true, timeLeft: 43 },
+  //     { name: "Stefan", hasHadTurn: true, timeLeft: -60 },
+  //     { name: "Tommy", hasHadTurn: true, timeLeft: 50 },
+  //     { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20 },
+  //     { name: "Jon", hasHadTurn: false, timeLeft: 10 },
+  //   ],
+  //   meetingStartTime: null,
+  //   meetingEndTime: null,
+  //   meetingFinished: false,
+  // };
 
   const blankMeeting = {
     type: "standup",
@@ -49,7 +49,7 @@ export default function StandUpPage() {
     meetingFinished: false,
   };
 
-  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+  const [meeting, setMeeting] = useState({ ...blankMeeting });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
@@ -156,7 +156,11 @@ export default function StandUpPage() {
   return (
     <div>
       <Collapse in={standUpStep === 1} timeout={800}>
-        <ProductTitle title="StandUp" />
+        <ProductTitle title="StandUp">
+          <p className="stepsTitleText">
+            Our formula for fast and engaging remote standups.
+          </p>
+        </ProductTitle>
       </Collapse>
 
       <Stepper activeStep={standUpStep - 1} style={{ background: "none" }}>

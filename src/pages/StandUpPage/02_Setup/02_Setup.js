@@ -139,11 +139,11 @@ export default function SetupPage({ props }) {
             <Button
               variant="contained"
               color="primary"
-              size="large"
+              size="medium"
               style={{ margin: "5px 20px" }}
               onClick={getParticipants}
             >
-              Get participants
+              Get from previous meeting
             </Button>
             {meeting.meetingParticipants
               ? meeting.meetingParticipants.map((obj, i) => (
