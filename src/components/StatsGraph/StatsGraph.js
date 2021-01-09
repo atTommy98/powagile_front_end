@@ -6,7 +6,6 @@ import { Bar } from "react-chartjs-2";
 
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
-  const [yAxis, setyAxis] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
   // retrieve all meetings from database
   useEffect(() => {
@@ -18,24 +17,31 @@ export default function StatsGraph() {
     retrieveMeetings();
   }, []);
 
-  // when state "stats" is updated, place data in "yAxis" state and calculate the previous week for the x-axis
-  useEffect(() => {
-    setyAxis([0, 0, 0, 0, 0, 0, 0, 0]);
-    if (stats.length !== 0) {
-      let previousWeek = calculatePreviousWeek();
-      // eslint-disable-next-line array-callback-return
-      stats.map((obj, i) => {
-        console.log({ [i]: stats[i] });
-        if (obj.meetingStartTime === null || obj.meetingEndTime === null) {
-          // eslint-disable-next-line array-callback-return
-          return;
-        } else setYAxisValues(obj, previousWeek);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stats]);
+  // generates an array of y-valeus representing the total minutes spent in meetings, corresponds to the last 7 days
+  function generateDataset() {
+    const values = [0, 0, 0, 0, 0, 0, 0, 0];
+    // eslint-disable-next-line array-callback-return
+    stats.map((obj) => {
+      // Check it's a valid meeting
+      if (obj.meetingStartTime && obj.meetingEndTime) {
+        let meetingDate = createDateObject(obj.createdAt);
+        for (let i = 0; i < previousWeek.length; i++) {
+          if (meetingDate.day === previousWeek[i].day) {
+            values[i] = Math.round(
+              values[i] +
+                calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
+            );
 
-  // creates a date object for a specific point in time. allows you to access the date, day, month, year and milliseconds at that point in time.
+            break;
+          }
+        }
+      }
+    });
+
+    return values;
+  }
+
+  // creates a date object to allow you to access the date, day, month, year and milliseconds at a point in time.
   function createDateObject(time) {
     const date = new Date(time);
     const obj = {
@@ -48,32 +54,14 @@ export default function StatsGraph() {
     return obj;
   }
 
-  // find total time of a meeting using start time and end time of the meeting
+  // calculate total time of a meeting
   function calculateTotalTime(startTime, endTime) {
     let total = endTime - startTime;
     total = total / 60000;
     return total;
   }
 
-  // create an array for the y-axis data. if the date of a meetings was in the previous week, assign it to the corresponding day (using the index of the array). rounds up to nearest minutes and sets y-axis state.
-  function setYAxisValues(obj, previousWeek) {
-    let meetingDate = createDateObject(obj.createdAt);
-    for (let i = 0; i < previousWeek.length; i++) {
-      if (meetingDate.day === previousWeek[i].day && yAxis[i] === 0) {
-        let newState = [...yAxis];
-        newState[i] = Math.round(
-          newState[i] +
-            calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
-        );
-        console.log(newState);
-        setyAxis(newState);
-      }
-    }
-  }
-
-  console.log("rener");
-  console.log(`Y axis ${yAxis}`);
-  // calculates the dates of the past week based on todays date.
+  // calculates the dates of the past week
   function calculatePreviousWeek() {
     let date = new Date();
     let arrayOfPreviousWeek = [];
@@ -109,7 +97,7 @@ export default function StatsGraph() {
         hoverBackgroundColor: "rgba(100,100,100,0.3)",
         hoverBorderColor: "rgba(10,10,10,0.5)",
         minBarLength: 0,
-        data: yAxis,
+        data: generateDataset(),
         yAxesID: "Y-Axes",
       },
     ],
@@ -117,7 +105,7 @@ export default function StatsGraph() {
 
   return (
     <div>
-      {!yAxis ? null : (
+      {!stats ? null : (
         <Bar
           data={data}
           options={{
@@ -143,7 +131,8 @@ export default function StatsGraph() {
                   },
                   ticks: {
                     suggestedMin: 0,
-                    suggestedMax: Math.ceil(Math.max(...yAxis) / 10) * 10 + 10,
+                    suggestedMax:
+                      Math.ceil(Math.max(...generateDataset()) / 10) * 10 + 10,
                   },
                 },
               ],
