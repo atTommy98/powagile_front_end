@@ -19,6 +19,7 @@ export default function RetroCard({ props, functions }) {
   const { card, meeting } = props;
   const { id, columnIndex, content, thumbsUp, thumbsDown } = card;
   const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;
+  const source = "local";
 
   return (
     <Card className="retroCard">
@@ -26,7 +27,7 @@ export default function RetroCard({ props, functions }) {
         <IconButton
           className="retroCardDeleteButton"
           size="small"
-          onClick={() => deleteCard({ source: "local", id })}
+          onClick={() => deleteCard({ source, id })}
         >
           <DeleteIcon />
         </IconButton>
@@ -38,7 +39,9 @@ export default function RetroCard({ props, functions }) {
         placeholder="Your card text"
         varian="standard"
         value={content}
-        onChange={(e) => updateCardText({ id, content: e.target.value })}
+        onChange={(e) =>
+          updateCardText({ source, id, content: e.target.value })
+        }
       />
 
       <ButtonGroup fullWidth variant="text" size="small">
@@ -48,12 +51,16 @@ export default function RetroCard({ props, functions }) {
         >
           <ChevronLeftIcon />
         </Button>
-        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsDown" })}>
+        <Button
+          onClick={() => updateCardVotes({ source, id, thumb: "thumbsDown" })}
+        >
           {thumbsDown}&nbsp;
           <ThumbDownIcon />
         </Button>
 
-        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsUp" })}>
+        <Button
+          onClick={() => updateCardVotes({ source, id, thumb: "thumbsUp" })}
+        >
           {thumbsUp}&nbsp;
           <ThumbUpIcon />
         </Button>

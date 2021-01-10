@@ -103,7 +103,7 @@ function Retro() {
     checkForJoin();
   });
 
-  // Interactions with cards on the board
+  // 🧩 Interactions with cards on the board
   //// 👉 2 types of sources - local, and socket
   ////// 👉  With local, we want to socket.emit the card
   ////// 👉  With socket, we want to avoid that to prevent an infinite loop
@@ -170,6 +170,9 @@ function Retro() {
       ...meeting,
       cards: newCards,
     });
+    if (socket && source === "local") {
+      socket.emit("updateCardVotes", { id, thumb });
+    }
   }
   function moveCard({ source, id, direction }) {
     // Find the card

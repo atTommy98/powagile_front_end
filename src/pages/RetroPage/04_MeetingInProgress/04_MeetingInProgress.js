@@ -52,16 +52,31 @@ export default function MeetingInProgress({ props }) {
     }
 
     if (socket) {
-      // "Receive" rules
+      //// 👉 2 types of sources - local, and socket
+      ////// 👉  With socket, we only render, but don't emit the card, to avoid an infinite loop
+      ////// 👉  With local, we render AND emit the card, to send it to other participants
+      const source = "socket";
 
+      // "Receive" rules
+      //
       // Add
       socket.on("addCard", (card) => {
-        addCard({ source: "socket", card });
+        addCard({ source, card });
       });
 
       // Delete
-      socket.on("deleteCard", (card) => {
-        addCard({ source: "socket", card });
+      socket.on("deleteCard", (id) => {
+        addCard({ source, id });
+      });
+
+      // Update Text
+      socket.on("updateCardText", ({ id, content }) => {
+        addCard({ source, id, content });
+      });
+
+      // Update Votes
+      socket.on("updateCardVotes", (id) => {
+        addCard({ source, id });
       });
     }
 
