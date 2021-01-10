@@ -17,7 +17,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroColumn from "./03_01_SetupFacilitator/RetroColumn/RetroColumn";
+import RetroColumn from "./03_Setup/RetroColumn/RetroColumn";
 
 // nanoid
 import { nanoid } from "nanoid";
