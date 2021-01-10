@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "./RetroCard.css";
 
 export default function RetroCard({ props, functions }) {
-  const { card, meeting } = props;
+  const { card, meeting, participant } = props;
   const { id, columnIndex, content, thumbsUp, thumbsDown } = card;
   const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;
   const source = "local";
@@ -52,6 +52,7 @@ export default function RetroCard({ props, functions }) {
           <ChevronLeftIcon />
         </Button>
         <Button
+          disabled={participant.votedOn.includes(id)}
           onClick={() => updateCardVotes({ source, id, thumb: "thumbsDown" })}
         >
           {thumbsDown}&nbsp;
@@ -59,6 +60,7 @@ export default function RetroCard({ props, functions }) {
         </Button>
 
         <Button
+          disabled={participant.votedOn.includes(id)}
           onClick={() => updateCardVotes({ source, id, thumb: "thumbsUp" })}
         >
           {thumbsUp}&nbsp;

@@ -55,6 +55,7 @@ function Retro() {
     isFacilitator: true,
     avatar:
       "https://lh3.googleusercontent.com/a-/AOh14GjrxpdHOMzjCZ2apTkYwCdLkQz4ESxlQPd9hM8BdQA=s96-c",
+    votedOn: [],
   };
   const [participant, setParticipant] = useState({
     ...dummyParticipant,
@@ -163,6 +164,8 @@ function Retro() {
     const index = newCards.findIndex((card) => card.id === id);
     newCards[index][thumb] += 1;
     setMeeting({ ...meeting, cards: newCards });
+
+    setParticipant({ ...participant, votedOn: [...participant.votedOn, id] });
 
     if (socket && source === "local") {
       socket.emit("updateCardVotes", { id, thumb });

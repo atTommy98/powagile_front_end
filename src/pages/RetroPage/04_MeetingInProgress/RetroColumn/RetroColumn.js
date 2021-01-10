@@ -25,6 +25,7 @@ export default function RetroColumn({ props = {} }) {
     updateCardVotes,
     deleteCard,
     moveCard,
+    participant,
   } = props;
 
   return (
@@ -43,7 +44,7 @@ export default function RetroColumn({ props = {} }) {
               .map((card, index) => (
                 <RetroCard
                   key={`${columnTitle}_${card}_${index}`}
-                  props={{ card, index, meeting, setMeeting }}
+                  props={{ card, index, meeting, participant }}
                   functions={{
                     updateCardText,
                     updateCardVotes,

@@ -122,6 +122,7 @@ export default function MeetingInProgress({ props }) {
                 cards: meeting.cards.filter((card) =>
                   card.columnIndex === index && !card.isDeleted ? true : false
                 ),
+                participant,
               }}
             ></RetroColumn>
           ))}
