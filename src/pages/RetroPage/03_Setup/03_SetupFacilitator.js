@@ -1,4 +1,20 @@
 export default function SetupFacilitator() {
+  const retroColumns = {
+    fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
+    starfishSmall: ["Keep", "More Of", "Less Of / Stop"],
+    starfishLarge: [
+      "Keep Doing",
+      "More Of",
+      "Start Doing",
+      "Stop Doing",
+      "Less Of",
+    ],
+    startStopContinue: ["Start", "Stop", "Continue"],
+    madSadGlad: ["Mad", "Sad", "Glad"],
+    oneWord: ["Your Thoughts In One Word"],
+    KALM: ["Keep", "Add", "More", "Less"],
+  };
+
   return (
     <div>
       <input>Your name (autofill if logged in)</input>

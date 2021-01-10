@@ -31,13 +31,13 @@ import { io } from "socket.io-client";
 function Retro() {
   const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    if (!socket) {
-      // connect the socket
-      setSocket(io("http://localhost:8080"));
-    }
-    // try an emit
-  });
+  // useEffect(() => {
+  //   if (!socket) {
+  //     // connect the socket
+  //     setSocket(io("http://localhost:8080"));
+  //   }
+  //   // try an emit
+  // });
 
   const [meeting, setMeeting] = useState({
     type: "retro",
@@ -49,25 +49,9 @@ function Retro() {
     meetingEndTime: null,
   });
 
-  const retroColumns = {
-    fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
-    starfishSmall: ["Keep", "More Of", "Less Of / Stop"],
-    starfishLarge: [
-      "Keep Doing",
-      "More Of",
-      "Start Doing",
-      "Stop Doing",
-      "Less Of",
-    ],
-    startStopContinue: ["Start", "Stop", "Continue"],
-    madSadGlad: ["Mad", "Sad", "Glad"],
-    oneWord: ["Your Thoughts In One Word"],
-    KALM: ["Keep", "Add", "More", "Less"],
-  };
-
-  function setRetroType(type = "fourLs") {
+  function setRetroType(type = "Lean Coffee", columnsArray) {
     // Set the meeting columns, default to 4Ls
-    setMeeting({ ...meeting, subtype: type, columns: retroColumns[type] });
+    setMeeting({ ...meeting, subtype: type, columns: columnsArray });
   }
 
   function addCard(colIndex) {
