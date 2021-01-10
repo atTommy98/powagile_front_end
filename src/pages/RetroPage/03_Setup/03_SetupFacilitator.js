@@ -25,8 +25,20 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 // Nano id
 import { nanoid } from "nanoid";
 
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function SetupFacilitator({ props }) {
-  const { previousStep, nextStep, meeting, setMeeting } = props;
+  const {
+    previousStep,
+    nextStep,
+    participant,
+    setParticipant,
+    meeting,
+    setMeeting,
+  } = props;
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const retroColumns = [
     {
@@ -74,6 +86,7 @@ export default function SetupFacilitator({ props }) {
 
   const styleObj = { width: 700 };
 
+  // Set Meeting Room ID
   useEffect(() => {
     console.log(`The meeting room id is ${meeting.roomId}`);
     if (meeting.roomId === null) {
@@ -81,6 +94,13 @@ export default function SetupFacilitator({ props }) {
     }
     console.log(`The meeting room id is ${meeting.roomId}`);
   });
+
+  // Add avatar URL, if any
+  useEffect(() => {
+    if (user.picture) {
+      setParticipant({ ...participant, avatar: user.picture });
+    }
+  }, [isLoading]);
 
   return (
     <div>

@@ -1,5 +1,5 @@
 // React
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
@@ -15,28 +15,50 @@ export default function MeetingInProgress({ props }) {
     meeting,
     setMeeting,
     addCard,
+    receiveCard,
+    deleteCard,
     updateCardText,
     updateCardVotes,
-    deleteCard,
     moveCard,
+    participant,
+    socket,
+    setSocket,
   } = props;
 
   // Start the meeting
   useEffect(() => {
     if (!meeting.meetingStarted) {
+      setMeeting({ ...meeting, meetingStarted: true });
     }
-    // try an emit
   });
 
-  // const [socket, setSocket] = useState(null);
+  // Establish socket.io connection
+  useEffect(() => {
+    if (!socket) {
+      // Destructure relevant info for connection
+      const { roomId } = meeting;
+      const { name, isFacilitator, avatar } = participant;
 
-  // useEffect(() => {
-  //   if (!socket) {
-  //     // connect the socket
-  //     setSocket(io("http://localhost:8080"));
-  //   }
-  //   // try an emit
-  // });
+      // Establish socket connection
+      setSocket(
+        io("http://localhost:8080", {
+          query: {
+            roomId,
+            name,
+            isFacilitator,
+            avatar,
+          },
+        })
+      );
+
+      // "Receive" rules
+      socket.on("addCard", (card) => {
+        receiveCard(data);
+      });
+    }
+
+    // try an emit
+  });
 
   return (
     <div>

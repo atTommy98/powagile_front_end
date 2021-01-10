@@ -26,7 +26,7 @@ import "./RetroPage.css";
 
 function Retro() {
   // Steps
-  const [retroStep, setRetroStep] = useState(1);
+  const [retroStep, setRetroStep] = useState(4);
   const steps = [
     "Review instructions",
     "Select your role",
@@ -34,7 +34,6 @@ function Retro() {
     "Run your Retrospective",
     "Finish!",
   ];
-
   // Navigate through steps
   function previousStep() {
     setRetroStep(retroStep - 1);
@@ -49,15 +48,21 @@ function Retro() {
       setParticipant({ ...participant, isFacilitator: false });
     }
   }
-  // Store participant information - name, role, meta
-  const [participant, setParticipant] = useState({
-    name: null,
+
+  // TODO: Store participant information - name, role, meta
+  const dummyParticipant = {
+    name: "Stefan",
     isFacilitator: true,
-    details: null,
+    avatar:
+      "https://lh3.googleusercontent.com/a-/AOh14GjrxpdHOMzjCZ2apTkYwCdLkQz4ESxlQPd9hM8BdQA=s96-c",
+  };
+  const [participant, setParticipant] = useState({
+    ...dummyParticipant,
   });
 
-  const [meeting, setMeeting] = useState({
-    roomId: null,
+  // TODO: Meeting State
+  const dummyMeeting = {
+    roomId: 42069,
     type: "retro",
     subtype: "Start, Stop, Continue",
     columns: ["Start", "Stop", "Continue"],
@@ -66,7 +71,11 @@ function Retro() {
     meetingFinished: false,
     meetingStartTime: null,
     meetingEndTime: null,
-  });
+  };
+  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+
+  // Socket.io
+  const [socket, setSocket] = useState(null);
 
   // Check if this is an attempt to join
   useEffect(() => {
@@ -94,26 +103,35 @@ function Retro() {
     checkForJoin();
   });
 
-  function addCard(colIndex) {
+  // Interact with cards on the board
+  //// 2 types of sources - local, and socket
+  //// With local, we also want to socket.emit the card to others
+  //// With socket, we want to avoid that to prevent an infinite loop
+  function addCard({ source, colIndex }) {
     const newState = { ...meeting };
-    newState.cards.push({
+    const newCard = {
       id: nanoid(),
       columnIndex: colIndex,
       content: "",
       thumbsUp: 0,
       thumbsDown: 0,
-    });
+    };
+    newState.cards.push(newCard);
     setMeeting(newState);
+    if (socket) {
+      socket.emit("addCard", newCard);
+    }
   }
-
-  function deleteCard(id) {
+  function deleteCard({ source, id }) {
     setMeeting({
       ...meeting,
       cards: meeting.cards.filter((el) => (el.id !== id ? true : false)),
     });
+    if (socket) {
+      socket.emit("deleteCard", id);
+    }
   }
-
-  function updateCardText({ id, content }) {
+  function updateCardText({ source, id, content }) {
     const index = meeting.cards.findIndex((card) => card.id === id);
     const newCard = meeting.cards[index];
     // Move the card
@@ -125,9 +143,11 @@ function Retro() {
       ...meeting,
       cards: newCards,
     });
+    if (socket) {
+      socket.emit("updateCardText", { id, content });
+    }
   }
-
-  function updateCardVotes({ id, thumb }) {
+  function updateCardVotes({ source, id, thumb }) {
     // Find Card
     const index = meeting.cards.findIndex((card) => card.id === id);
     const newCard = meeting.cards[index];
@@ -141,8 +161,7 @@ function Retro() {
       cards: newCards,
     });
   }
-
-  function moveCard(id, direction) {
+  function moveCard({ source, id, direction }) {
     // Find the card
     const index = meeting.cards.findIndex((card) => card.id === id);
     const newCard = meeting.cards[index];
@@ -215,10 +234,14 @@ function Retro() {
             meeting,
             setMeeting,
             addCard,
+            receiveCard,
+            deleteCard,
             updateCardText,
             updateCardVotes,
-            deleteCard,
             moveCard,
+            participant,
+            socket,
+            setSocket,
           }}
         />
       ) : null}
