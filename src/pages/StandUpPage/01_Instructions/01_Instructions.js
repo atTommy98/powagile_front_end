@@ -6,9 +6,6 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-// Material UI Transitions
-import Grow from "@material-ui/core/Grow";
-
 // CSS
 import "./01_Instructions.css";
 

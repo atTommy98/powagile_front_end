@@ -1,6 +1,23 @@
-export default function MeetingInProgress() {
+// Material UI
+import Grid from "@material-ui/core/Grid";
+
+// Custom componenets
+import RetroColumn from "./RetroColumn/RetroColumn";
+
+export default function MeetingInProgress({ props }) {
+  const {
+    meeting,
+    setMeeting,
+    addCard,
+    updateCardText,
+    updateCardVotes,
+    deleteCard,
+    moveCard,
+  } = props;
+
   return (
     <div>
+      {/*Some sexy logic here where it picks up the time from the meeting*/}
       {/* <TimerPartyParrotHorizontal
           props={{
             totalTime: 600,

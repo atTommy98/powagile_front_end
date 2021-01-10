@@ -1,19 +1,61 @@
-export default function SetupFacilitator() {
-  const retroColumns = {
-    fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
-    starfishSmall: ["Keep", "More Of", "Less Of / Stop"],
-    starfishLarge: [
-      "Keep Doing",
-      "More Of",
-      "Start Doing",
-      "Stop Doing",
-      "Less Of",
-    ],
-    startStopContinue: ["Start", "Stop", "Continue"],
-    madSadGlad: ["Mad", "Sad", "Glad"],
-    oneWord: ["Your Thoughts In One Word"],
-    KALM: ["Keep", "Add", "More", "Less"],
-  };
+// Material UI
+import Button from "@material-ui/core/Button";
+
+// Retro Types Icons
+import Looks4Icon from "@material-ui/icons/Looks4";
+import StarRateIcon from "@material-ui/icons/StarRate";
+import StarIcon from "@material-ui/icons/Star";
+import TrafficIcon from "@material-ui/icons/Traffic";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+
+export default function SetupFacilitator({ props }) {
+  const { setRetroType = null } = props;
+
+  const retroColumns = [
+    {
+      name: "Four Ls (4Ls)",
+      columns: ["Liked", "Learned", "Lacked", "Longed For"],
+      icon: <Looks4Icon />,
+    },
+    {
+      name: "Starfish (Small)",
+      columns: ["Keep", "More Of", "Less Of / Stop"],
+      icon: <StarRateIcon />,
+    },
+    {
+      name: "Starfish (Large)",
+      columns: [
+        "Keep Doing",
+        "More Of",
+        "Start Doing",
+        "Stop Doing",
+        "Less Of",
+      ],
+      icon: <StarIcon />,
+    },
+    {
+      name: "Start, Stop, Continue",
+      columns: ["Start", "Stop", "Continue"],
+      icon: <TrafficIcon />,
+    },
+    {
+      name: "Mad, Sad, Glad",
+      columns: ["Mad", "Sad", "Glad"],
+      icon: <EmojiEmotionsIcon />,
+    },
+    {
+      name: "One Word Retro",
+      columns: ["Your Thoughts In One Word"],
+      icon: <ChatBubbleIcon />,
+    },
+    {
+      name: "KALM Retro",
+      columns: ["Keep", "Add", "More", "Less"],
+      icon: <AssignmentIcon />,
+    },
+  ];
 
   return (
     <div>
@@ -21,70 +63,17 @@ export default function SetupFacilitator() {
       <input>Meeting room name (optional)</input>
       <select>Retro type</select>
       <div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<Looks4Icon />}
-          onClick={() => setRetroType("fourLs")}
-        >
-          Four Ls (4Ls)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarRateIcon />}
-          onClick={() => setRetroType("starfishSmall")}
-        >
-          Starfish (Small)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarIcon />}
-          onClick={() => setRetroType("starfishLarge")}
-        >
-          Starfish (Large)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<TrafficIcon />}
-          onClick={() => setRetroType("startStopContinue")}
-        >
-          Start, Stop, Continue
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<EmojiEmotionsIcon />}
-          onClick={() => setRetroType("madSadGlad")}
-        >
-          Mad, Sad, Glad
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<ChatBubbleIcon />}
-          onClick={() => setRetroType("oneWord")}
-        >
-          One Word Retro
-        </Button>
-
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<AssignmentIcon />}
-          onClick={() => setRetroType("KALM")}
-        >
-          KALM Retro
-        </Button>
+        {retroColumns.map((el) => (
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={el.icon}
+            onClick={() => setRetroType(el)}
+          >
+            {el.name}
+          </Button>
+        ))}
       </div>
       <input>Your unique link - send this to your participants</input>
       <br />

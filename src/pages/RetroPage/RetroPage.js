@@ -4,20 +4,19 @@ import React, { useState, useEffect } from "react";
 // Material UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-
-// Retro Types Icons
-import Looks4Icon from "@material-ui/icons/Looks4";
-import StarRateIcon from "@material-ui/icons/StarRate";
-import StarIcon from "@material-ui/icons/Star";
-import TrafficIcon from "@material-ui/icons/Traffic";
-import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
-import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Collapse from "@material-ui/core/Collapse";
 
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
-import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroColumn from "./03_Setup/RetroColumn/RetroColumn";
+import InstructionsRetro from "./01_Instructions/01_InstructionsRetro";
+import PickRole from "./02_PickRole/02_PickRole";
+import SetupFacilitator from "./03_Setup/03_SetupFacilitator";
+import SetupParticipant from "./03_Setup/03_SetupParticipant";
+import MeetingInProgress from "./04_MeetingInProgress/04_MeetingInProgress";
+import FinishedMeeting from "./05_FinishedMeeting/05_FinishedMeeting";
 
 // nanoid
 import { nanoid } from "nanoid";
@@ -29,7 +28,15 @@ import "./RetroPage.css";
 import { io } from "socket.io-client";
 
 function Retro() {
-  const [socket, setSocket] = useState(null);
+  const steps = [
+    "Review instructions",
+    "Select your role",
+    "Create / Join a Retrospective",
+    "Run your Retrospective",
+    "Finish!",
+  ];
+
+  // const [socket, setSocket] = useState(null);
 
   // useEffect(() => {
   //   if (!socket) {
@@ -38,6 +45,21 @@ function Retro() {
   //   }
   //   // try an emit
   // });
+
+  const [retroStep, setRetroStep] = useState(1);
+
+  function previousStep() {
+    setRetroStep(retroStep - 1);
+  }
+
+  function nextStep() {
+    setRetroStep(retroStep + 1);
+  }
+
+  const [participant, setParticipant] = useState({
+    name: null,
+    isFacilitator: null,
+  });
 
   const [meeting, setMeeting] = useState({
     type: "retro",
@@ -49,9 +71,9 @@ function Retro() {
     meetingEndTime: null,
   });
 
-  function setRetroType(type = "Lean Coffee", columnsArray) {
+  function setRetroType({ name, columns }) {
     // Set the meeting columns, default to 4Ls
-    setMeeting({ ...meeting, subtype: type, columns: columnsArray });
+    setMeeting({ ...meeting, subtype: name, columns: columns });
   }
 
   function addCard(colIndex) {
@@ -126,8 +148,35 @@ function Retro() {
   }
 
   return (
-    <div className="Retro">
-      <ProductTitle title="Retrospective" />
+    <div>
+      <Collapse in={retroStep === 1} timeout={800}>
+        <ProductTitle title="Retrospective">
+          <p className="stepsTitleText">
+            Real time, collaborative, and engaging retros that make a positive
+            impact on your team.
+          </p>
+        </ProductTitle>
+      </Collapse>
+
+      <Stepper activeStep={retroStep - 1} style={{ background: "none" }}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+
+      {retroStep === 1 ? (
+        <InstructionsRetro props={{ nextButton: nextStep }} />
+      ) : null}
+
+      {retroStep === 2 ? <PickRole props={{ prop: "prop" }} /> : null}
+
+      {retroStep === 3 ? <PickRole props={{ prop: "prop" }} /> : null}
     </div>
   );
 }
