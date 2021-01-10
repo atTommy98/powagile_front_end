@@ -1,5 +1,18 @@
 // Material UI
 import Button from "@material-ui/core/Button";
+import React from "react";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import FilledInput from "@material-ui/core/FilledInput";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import TextField from "@material-ui/core/TextField";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 // Retro Types Icons
 import Looks4Icon from "@material-ui/icons/Looks4";
@@ -11,7 +24,7 @@ import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 
 export default function SetupFacilitator({ props }) {
-  const { setRetroType = null } = props;
+  const { previousStep, nextStep, meeting, setMeeting } = props;
 
   const retroColumns = [
     {
@@ -57,31 +70,69 @@ export default function SetupFacilitator({ props }) {
     },
   ];
 
+  const styleObj = { width: 700 };
+
   return (
     <div>
+      <h2>Facilitate a Retrospetive Meeting</h2>
       <p>Your name (autofill if logged in)</p>
-      <input></input>
+      <input onChange={(e) => setMeeting({ ...meeting })}></input>
       <p>Meeting room name (optional)</p>
       <input></input>
-      <select>Retro type</select>
-      <div>
-        {retroColumns.map((el) => (
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            startIcon={el.icon}
-            onClick={() => setRetroType(el)}
-          >
-            {el.name}
-          </Button>
-        ))}
-      </div>
-      <p>Your unique link - send this to your participants</p>
-      <input></input>
       <br />
-      <button>&larr; Back</button>
-      <button>Start session &rarr;</button>
+      <br />
+      <br />
+      <FormControl variant="outlined" style={styleObj}>
+        <InputLabel>Pick your retrospective</InputLabel>
+        <Select
+          value={meeting.subtype}
+          onChange={(e) => {
+            console.log(e.target.value);
+          }}
+          label="Pick your retrospective"
+        >
+          {retroColumns.map((el, i) => (
+            <MenuItem value={el}>
+              {el.icon}&nbsp;{el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <p>Your unique link - send this to your participants</p>
+      <FormControl variant="filled" style={styleObj}>
+        <InputLabel htmlFor="generated-meeting-id">
+          Meeting Room Link
+        </InputLabel>
+        <FilledInput
+          readOnly
+          id="generated-meeting-id"
+          value={
+            "http://localhost:3000/rituals/retro/join/?meetingId=abcdefghj"
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                disableRipple
+                disableFocusRipple
+                aria-label="copy link"
+                onClick={() => console.log("Copy link")}
+                edge="end"
+              >
+                <Button>
+                  Copy &nbsp; <FileCopyIcon />
+                </Button>
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+      <br />
+      <br />
+      <br />
+      <br />
+      <button onClick={previousStep}>&larr; Back</button>
+      <button onClick={nextStep}>Start session &rarr;</button>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 export default function SetupParticipant() {
   return (
     <div>
-      <input>Your name bruh</input>
-      <input>Invite code / link</input>
+      <p>Your name bruh</p>
+      <input></input>
+      <p>Invite code / link</p>
+      <input></input>
       <br />
       <button>&larr; Back</button>
       <button>Connect &rarr;</button>

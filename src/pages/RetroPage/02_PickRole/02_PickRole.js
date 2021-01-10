@@ -1,16 +1,16 @@
 export default function PickRole({ props }) {
-  const { backButton = null, nextButton = null } = props;
+  const { previousStep = null, nextStep = null } = props;
 
   return (
     <div>
       <p>Pick your damn role you bloody mofo 😎</p>
       <br />
-      <button onClick={() => nextButton("facilitator")}>
+      <button onClick={() => nextStep("facilitator")}>
         Facilitator (should be disabled if not logged in)
       </button>
-      <button onClick={() => nextButton("participant")}>Participant</button>
+      <button onClick={() => nextStep("participant")}>Participant</button>
       <br />
-      <button onClick={backButton}>&larr; Back</button>
+      <button onClick={previousStep}>&larr; Back</button>
     </div>
   );
 }

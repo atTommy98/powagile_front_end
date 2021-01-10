@@ -41,15 +41,19 @@ function Retro() {
   }
   function nextStep(role) {
     setRetroStep(retroStep + 1);
-    if (role === "facilitator") {
+    if (!role) {
+      return;
+    } else if (role === "facilitator") {
       setParticipant({ ...participant, isFacilitator: true });
+    } else if (role === "participant") {
+      setParticipant({ ...participant, isFacilitator: false });
     }
   }
 
   // Store participant information - name, role, meta
   const [participant, setParticipant] = useState({
     name: null,
-    isFacilitator: null,
+    isFacilitator: true,
     details: null,
   });
 
@@ -62,10 +66,6 @@ function Retro() {
     meetingStartTime: null,
     meetingEndTime: null,
   });
-
-  function setRetroType({ name, columns }) {
-    setMeeting({ ...meeting, subtype: name, columns: columns });
-  }
 
   function addCard(colIndex) {
     const newState = { ...meeting };
@@ -163,13 +163,18 @@ function Retro() {
         <InstructionsRetro props={{ nextButton: nextStep }} />
       ) : null}
 
-      {retroStep === 2 ? (
-        <PickRole props={{ backButton: previousStep, nextButton: nextStep }} />
-      ) : null}
+      {retroStep === 2 ? <PickRole props={{ previousStep, nextStep }} /> : null}
 
       {retroStep === 3 && participant.isFacilitator ? (
-        <SetupFacilitator props={{ prop: "prop" }} />
-      ) : retroStep === 3 && !participant.isFacilitator ? (
+        <SetupFacilitator
+          props={{
+            previousStep,
+            nextStep,
+            meeting,
+            setMeeting,
+          }}
+        />
+      ) : retroStep === 3 && participant.isFacilitator === false ? (
         <SetupParticipant props={{ prop: "prop" }} />
       ) : null}
     </div>
