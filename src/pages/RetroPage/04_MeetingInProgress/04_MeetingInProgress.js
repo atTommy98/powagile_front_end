@@ -57,8 +57,12 @@ export default function MeetingInProgress({ props }) {
       ////// 👉  With local, we render AND emit the card, to send it to other participants
       const source = "socket";
 
-      // "Receive" rules
-      //
+      // Notification rules
+      socket.on("notification", (notification) => {
+        // FIXME: Do stuff......
+      });
+
+      //// "Receive" rules
       // Add
       socket.on("addCard", (card) => {
         addCard({ source, card });
@@ -66,21 +70,24 @@ export default function MeetingInProgress({ props }) {
 
       // Delete
       socket.on("deleteCard", (id) => {
-        addCard({ source, id });
+        deleteCard({ source, id });
       });
 
       // Update Text
       socket.on("updateCardText", ({ id, content }) => {
-        addCard({ source, id, content });
+        updateCardText({ source, id, content });
       });
 
       // Update Votes
-      socket.on("updateCardVotes", (id) => {
-        addCard({ source, id });
+      socket.on("updateCardVotes", ({ id, thumb }) => {
+        updateCardVotes({ source, id, thumb });
+      });
+
+      // Move card
+      socket.on("moveCard", ({ id, direction }) => {
+        moveCard({ source, id, direction });
       });
     }
-
-    // try an emit
   });
 
   return (

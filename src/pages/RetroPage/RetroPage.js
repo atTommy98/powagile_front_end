@@ -103,7 +103,6 @@ function Retro() {
     checkForJoin();
   });
 
-  // 🧩 Interactions with cards on the board
   //// 👉 2 types of sources - local, and socket
   ////// 👉  With local, we want to socket.emit the card
   ////// 👉  With socket, we want to avoid that to prevent an infinite loop
@@ -136,7 +135,7 @@ function Retro() {
     }
   }
   function deleteCard({ source, id }) {
-    // find the index of the card
+    // Find and "delete" card
     const newCards = [...meeting.cards];
     const index = newCards.findIndex((card) => card.id === id);
     newCards[index].isDeleted = true;
@@ -148,6 +147,7 @@ function Retro() {
     }
   }
   function updateCardText({ source, id, content }) {
+    // Find and update card
     const newCards = [...meeting.cards];
     const index = newCards.findIndex((card) => card.id === id);
     newCards[index].content = content;
@@ -158,43 +158,37 @@ function Retro() {
     }
   }
   function updateCardVotes({ source, id, thumb }) {
-    // Find Card
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
-    // Move the card
-    newCard[thumb] += 1;
+    // Set the thumb
     const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    // Set state
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
+    const index = newCards.findIndex((card) => card.id === id);
+    newCards[index][thumb] += 1;
+    setMeeting({ ...meeting, cards: newCards });
+
     if (socket && source === "local") {
       socket.emit("updateCardVotes", { id, thumb });
     }
   }
   function moveCard({ source, id, direction }) {
     // Find the card
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
+    const newCards = [...meeting.cards];
+    const index = newCards.findIndex((card) => card.id === id);
     // Move the card
     switch (direction) {
       case "left":
-        newCard.columnIndex -= 1;
+        newCards[index].columnIndex -= 1;
         break;
       case "right":
-        newCard.columnIndex += 1;
+        newCards[index].columnIndex += 1;
         break;
       default:
+        console.error(`Incorrect direction passed to "moveCard" function`);
         break;
     }
-    const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
+    setMeeting({ ...meeting, cards: newCards });
+
+    if (socket && source === "local") {
+      socket.emit("moveCard", { id, direction });
+    }
   }
 
   return (

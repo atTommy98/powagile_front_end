@@ -47,7 +47,7 @@ export default function RetroCard({ props, functions }) {
       <ButtonGroup fullWidth variant="text" size="small">
         <Button
           disabled={columnIndex === 0}
-          onClick={() => moveCard(id, "left")}
+          onClick={() => moveCard({ source, id, direction: "left" })}
         >
           <ChevronLeftIcon />
         </Button>
@@ -66,7 +66,7 @@ export default function RetroCard({ props, functions }) {
         </Button>
         <Button
           disabled={columnIndex === meeting.columns.length - 1}
-          onClick={() => moveCard(id, "right")}
+          onClick={() => moveCard({ source, id, direction: "right" })}
         >
           <ChevronRightIcon />
         </Button>
