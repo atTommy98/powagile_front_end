@@ -11,7 +11,7 @@ import "./RetroColumn.css";
 import RetroCard from "../RetroCard/RetroCard";
 
 // shortid
-// import shortid
+import { nanoid } from "nanoid";
 
 export default function RetroColumn({ props = {} }) {
   const {
@@ -35,6 +35,7 @@ export default function RetroColumn({ props = {} }) {
           {cards.length > 0 ? (
             cards.map((card, index) => (
               <RetroCard
+                key={`${columnTitle}_${card}_${index}`}
                 props={{ card, index, meeting, setMeeting }}
                 functions={{
                   updateCardText,

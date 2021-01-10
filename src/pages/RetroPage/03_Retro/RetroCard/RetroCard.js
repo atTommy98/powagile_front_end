@@ -16,8 +16,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "./RetroCard.css";
 
 export default function RetroCard({ props, functions }) {
-  const { index, card, meeting, setMeeting } = props;
-  const { id, columnIndex, columnName, content, thumbsUp, thumbsDown } = card;
+  const { card, meeting } = props;
+  const { id, columnIndex, content, thumbsUp, thumbsDown } = card;
   const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;
 
   return (
@@ -41,7 +41,7 @@ export default function RetroCard({ props, functions }) {
         onChange={(e) => updateCardText({ id, content: e.target.value })}
       />
 
-      <ButtonGroup fullWidth variant="text" size="small" color="black">
+      <ButtonGroup fullWidth variant="text" size="small">
         <Button
           disabled={columnIndex === 0}
           onClick={() => moveCard(id, "left")}

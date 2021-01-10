@@ -1,5 +1,5 @@
 // React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
@@ -25,11 +25,24 @@ import { nanoid } from "nanoid";
 // CSS
 import "./RetroPage.css";
 
+// Socket.io Client
+import { io } from "socket.io-client";
+
 function Retro() {
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    if (!socket) {
+      // connect the socket
+      setSocket(io("http://localhost:8080"));
+    }
+    // try an emit
+  });
+
   const [meeting, setMeeting] = useState({
     type: "retro",
     subtype: undefined,
-    columns: ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"],
+    columns: ["Start", "Stop", "Continue"],
     cards: [],
     meetingStarted: false,
     meetingStartTime: null,
@@ -215,7 +228,7 @@ function Retro() {
         >
           {meeting.columns.map((columnTitle, index) => (
             <RetroColumn
-              key={nanoid()}
+              key={`${columnTitle}_card${index}`}
               props={{
                 meeting,
                 setMeeting,
