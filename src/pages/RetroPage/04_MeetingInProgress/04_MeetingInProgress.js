@@ -92,7 +92,7 @@ export default function MeetingInProgress({ props }) {
 
   return (
     <div>
-      {/*Some sexy logic here where it picks up the time from the meeting*/}
+      {/* TODO: Need some sexy logic here, where the server determines the time of the meeting*/}
       {/* <TimerPartyParrotHorizontal
           props={{
             totalTime: 600,
