@@ -1,3 +1,6 @@
+// React
+import { useEffect } from "react";
+
 // Material UI
 import Grid from "@material-ui/core/Grid";
 
@@ -17,6 +20,13 @@ export default function MeetingInProgress({ props }) {
     deleteCard,
     moveCard,
   } = props;
+
+  // Start the meeting
+  useEffect(() => {
+    if (!meeting.meetingStarted) {
+    }
+    // try an emit
+  });
 
   // const [socket, setSocket] = useState(null);
 

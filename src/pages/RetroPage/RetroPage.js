@@ -49,7 +49,6 @@ function Retro() {
       setParticipant({ ...participant, isFacilitator: false });
     }
   }
-
   // Store participant information - name, role, meta
   const [participant, setParticipant] = useState({
     name: null,
@@ -58,13 +57,41 @@ function Retro() {
   });
 
   const [meeting, setMeeting] = useState({
+    roomId: null,
     type: "retro",
-    subtype: undefined,
+    subtype: "Start, Stop, Continue",
     columns: ["Start", "Stop", "Continue"],
     cards: [],
     meetingStarted: false,
+    meetingFinished: false,
     meetingStartTime: null,
     meetingEndTime: null,
+  });
+
+  // Check if this is an attempt to join
+  useEffect(() => {
+    function checkForJoin() {
+      if (meeting.columnsmeetingStarted || retroStep === 2) {
+        return;
+      }
+      // Get URL params
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (urlParams.get("roomId") === null) {
+        console.log("No attempt to join detected...");
+        return;
+      } else if (meeting.roomId === null) {
+        console.log(`Joining roomId ${urlParams.get("roomId")}...`);
+        // Not a facilitator
+        setParticipant({ ...participant, isFacilitator: false });
+        // Set Meeting Room ID
+        setMeeting({ ...meeting, roomId: urlParams.get("roomId") });
+        // Fast forward to Step 3
+        setRetroStep(3);
+      }
+    }
+
+    checkForJoin();
   });
 
   function addCard(colIndex) {
@@ -170,12 +197,30 @@ function Retro() {
           props={{
             previousStep,
             nextStep,
+            participant,
+            setParticipant,
             meeting,
             setMeeting,
           }}
         />
       ) : retroStep === 3 && participant.isFacilitator === false ? (
-        <SetupParticipant props={{ prop: "prop" }} />
+        <SetupParticipant
+          props={{ previousStep, nextStep, participant, setParticipant }}
+        />
+      ) : null}
+
+      {retroStep === 4 ? (
+        <MeetingInProgress
+          props={{
+            meeting,
+            setMeeting,
+            addCard,
+            updateCardText,
+            updateCardVotes,
+            deleteCard,
+            moveCard,
+          }}
+        />
       ) : null}
     </div>
   );

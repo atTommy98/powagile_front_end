@@ -1,4 +1,6 @@
-export default function SetupParticipant() {
+export default function SetupParticipant({ props }) {
+  const { previousStep, nextStep } = props;
+
   return (
     <div>
       <p>Your name bruh</p>
@@ -6,8 +8,8 @@ export default function SetupParticipant() {
       <p>Invite code / link</p>
       <input></input>
       <br />
-      <button>&larr; Back</button>
-      <button>Connect &rarr;</button>
+      <button onClick={previousStep}>&larr; Back</button>
+      <button onClick={nextStep}>Connect &rarr;</button>
     </div>
   );
 }
