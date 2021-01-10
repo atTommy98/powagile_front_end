@@ -26,7 +26,7 @@ export default function RetroCard({ props, functions }) {
         <IconButton
           className="retroCardDeleteButton"
           size="small"
-          onClick={() => deleteCard(id)}
+          onClick={() => deleteCard({ source: "local", id })}
         >
           <DeleteIcon />
         </IconButton>

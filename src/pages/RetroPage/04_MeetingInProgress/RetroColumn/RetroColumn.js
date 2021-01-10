@@ -50,7 +50,7 @@ export default function RetroColumn({ props = {} }) {
           )}
           <Button
             style={{ width: "100%" }}
-            onClick={() => addCard(index, columnTitle)}
+            onClick={() => addCard({ source: "local", card: { i: index } })}
           >
             Add Card +
           </Button>

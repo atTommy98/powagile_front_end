@@ -15,7 +15,6 @@ export default function MeetingInProgress({ props }) {
     meeting,
     setMeeting,
     addCard,
-    receiveCard,
     deleteCard,
     updateCardText,
     updateCardVotes,
@@ -50,10 +49,19 @@ export default function MeetingInProgress({ props }) {
           },
         })
       );
+    }
 
+    if (socket) {
       // "Receive" rules
+
+      // Add
       socket.on("addCard", (card) => {
-        receiveCard(data);
+        addCard({ source: "socket", card });
+      });
+
+      // Delete
+      socket.on("deleteCard", (card) => {
+        addCard({ source: "socket", card });
       });
     }
 
@@ -90,7 +98,7 @@ export default function MeetingInProgress({ props }) {
                 deleteCard,
                 moveCard,
                 cards: meeting.cards.filter((card) =>
-                  card.columnIndex === index ? true : false
+                  card.columnIndex === index && !card.isDeleted ? true : false
                 ),
               }}
             ></RetroColumn>

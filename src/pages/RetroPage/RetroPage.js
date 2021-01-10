@@ -103,47 +103,57 @@ function Retro() {
     checkForJoin();
   });
 
-  // Interact with cards on the board
-  //// 2 types of sources - local, and socket
-  //// With local, we also want to socket.emit the card to others
-  //// With socket, we want to avoid that to prevent an infinite loop
-  function addCard({ source, colIndex }) {
+  // Interactions with cards on the board
+  //// 👉 2 types of sources - local, and socket
+  ////// 👉  With local, we want to socket.emit the card
+  ////// 👉  With socket, we want to avoid that to prevent an infinite loop
+  function addCard({ source, card }) {
+    // Clone state, create empty card
     const newState = { ...meeting };
-    const newCard = {
-      id: nanoid(),
-      columnIndex: colIndex,
-      content: "",
-      thumbsUp: 0,
-      thumbsDown: 0,
-    };
+    let newCard = {};
+
+    // Check card source
+    if (source === "socket") {
+      newCard = card;
+    } else if (source === "local") {
+      newCard = {
+        id: nanoid(),
+        columnIndex: card.i,
+        content: "",
+        thumbsUp: 0,
+        thumbsDown: 0,
+        isDeleted: false,
+      };
+    }
+
+    // Add the card to the board
     newState.cards.push(newCard);
     setMeeting(newState);
-    if (socket) {
+
+    // Emit from socket if source is local
+    if (socket && source === "local") {
       socket.emit("addCard", newCard);
     }
   }
   function deleteCard({ source, id }) {
-    setMeeting({
-      ...meeting,
-      cards: meeting.cards.filter((el) => (el.id !== id ? true : false)),
-    });
-    if (socket) {
+    // find the index of the card
+    const newCards = [...meeting.cards];
+    const index = newCards.findIndex((card) => card.id === id);
+    newCards[index].isDeleted = true;
+    setMeeting({ ...meeting, cards: newCards });
+
+    // Emit from socket if source is local
+    if (socket && source === "local") {
       socket.emit("deleteCard", id);
     }
   }
   function updateCardText({ source, id, content }) {
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
-    // Move the card
-    newCard.content = content;
     const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    // Set state
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
-    if (socket) {
+    const index = newCards.findIndex((card) => card.id === id);
+    newCards[index].content = content;
+    setMeeting({ ...meeting, cards: newCards });
+
+    if (socket && source === "local") {
       socket.emit("updateCardText", { id, content });
     }
   }
@@ -234,7 +244,6 @@ function Retro() {
             meeting,
             setMeeting,
             addCard,
-            receiveCard,
             deleteCard,
             updateCardText,
             updateCardVotes,
