@@ -17,7 +17,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroColumn from "./03_Retro/RetroColumn/RetroColumn";
+import RetroColumn from "./03_01_SetupFacilitator/RetroColumn/RetroColumn";
 
 // nanoid
 import { nanoid } from "nanoid";
@@ -144,109 +144,6 @@ function Retro() {
   return (
     <div className="Retro">
       <ProductTitle title="Retrospective" />
-      <p>Pick your retro type:</p>
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<Looks4Icon />}
-          onClick={() => setRetroType("fourLs")}
-        >
-          Four Ls (4Ls)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarRateIcon />}
-          onClick={() => setRetroType("starfishSmall")}
-        >
-          Starfish (Small)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarIcon />}
-          onClick={() => setRetroType("starfishLarge")}
-        >
-          Starfish (Large)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<TrafficIcon />}
-          onClick={() => setRetroType("startStopContinue")}
-        >
-          Start, Stop, Continue
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<EmojiEmotionsIcon />}
-          onClick={() => setRetroType("madSadGlad")}
-        >
-          Mad, Sad, Glad
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<ChatBubbleIcon />}
-          onClick={() => setRetroType("oneWord")}
-        >
-          One Word Retro
-        </Button>
-
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<AssignmentIcon />}
-          onClick={() => setRetroType("KALM")}
-        >
-          KALM Retro
-        </Button>
-      </div>
-
-      {/* <TimerPartyParrotHorizontal
-        props={{
-          totalTime: 600,
-          timeLeft: 600,
-        }}
-      /> */}
-
-      <div>
-        <Grid
-          className="retroBoardContainer"
-          container
-          spacing={2}
-          wrap="nowrap"
-        >
-          {meeting.columns.map((columnTitle, index) => (
-            <RetroColumn
-              key={`${columnTitle}_card${index}`}
-              props={{
-                meeting,
-                setMeeting,
-                columnTitle,
-                index,
-                addCard,
-                updateCardText,
-                updateCardVotes,
-                deleteCard,
-                moveCard,
-                cards: meeting.cards.filter((card) =>
-                  card.columnIndex === index ? true : false
-                ),
-              }}
-            ></RetroColumn>
-          ))}
-        </Grid>
-      </div>
     </div>
   );
 }
