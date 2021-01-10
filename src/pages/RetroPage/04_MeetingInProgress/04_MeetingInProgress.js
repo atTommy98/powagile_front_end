@@ -4,6 +4,9 @@ import Grid from "@material-ui/core/Grid";
 // Custom componenets
 import RetroColumn from "./RetroColumn/RetroColumn";
 
+// Socket.io Client
+import { io } from "socket.io-client";
+
 export default function MeetingInProgress({ props }) {
   const {
     meeting,
@@ -14,6 +17,16 @@ export default function MeetingInProgress({ props }) {
     deleteCard,
     moveCard,
   } = props;
+
+  // const [socket, setSocket] = useState(null);
+
+  // useEffect(() => {
+  //   if (!socket) {
+  //     // connect the socket
+  //     setSocket(io("http://localhost:8080"));
+  //   }
+  //   // try an emit
+  // });
 
   return (
     <div>

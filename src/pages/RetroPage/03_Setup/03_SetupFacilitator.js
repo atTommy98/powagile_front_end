@@ -59,8 +59,10 @@ export default function SetupFacilitator({ props }) {
 
   return (
     <div>
-      <input>Your name (autofill if logged in)</input>
-      <input>Meeting room name (optional)</input>
+      <p>Your name (autofill if logged in)</p>
+      <input></input>
+      <p>Meeting room name (optional)</p>
+      <input></input>
       <select>Retro type</select>
       <div>
         {retroColumns.map((el) => (
@@ -75,7 +77,8 @@ export default function SetupFacilitator({ props }) {
           </Button>
         ))}
       </div>
-      <input>Your unique link - send this to your participants</input>
+      <p>Your unique link - send this to your participants</p>
+      <input></input>
       <br />
       <button>&larr; Back</button>
       <button>Start session &rarr;</button>

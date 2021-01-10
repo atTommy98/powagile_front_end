@@ -24,10 +24,9 @@ import { nanoid } from "nanoid";
 // CSS
 import "./RetroPage.css";
 
-// Socket.io Client
-import { io } from "socket.io-client";
-
 function Retro() {
+  // Steps
+  const [retroStep, setRetroStep] = useState(1);
   const steps = [
     "Review instructions",
     "Select your role",
@@ -36,29 +35,22 @@ function Retro() {
     "Finish!",
   ];
 
-  // const [socket, setSocket] = useState(null);
-
-  // useEffect(() => {
-  //   if (!socket) {
-  //     // connect the socket
-  //     setSocket(io("http://localhost:8080"));
-  //   }
-  //   // try an emit
-  // });
-
-  const [retroStep, setRetroStep] = useState(1);
-
+  // Navigate through steps
   function previousStep() {
     setRetroStep(retroStep - 1);
   }
-
-  function nextStep() {
+  function nextStep(role) {
     setRetroStep(retroStep + 1);
+    if (role === "facilitator") {
+      setParticipant({ ...participant, isFacilitator: true });
+    }
   }
 
+  // Store participant information - name, role, meta
   const [participant, setParticipant] = useState({
     name: null,
     isFacilitator: null,
+    details: null,
   });
 
   const [meeting, setMeeting] = useState({
@@ -72,7 +64,6 @@ function Retro() {
   });
 
   function setRetroType({ name, columns }) {
-    // Set the meeting columns, default to 4Ls
     setMeeting({ ...meeting, subtype: name, columns: columns });
   }
 
@@ -160,11 +151,9 @@ function Retro() {
 
       <Stepper activeStep={retroStep - 1} style={{ background: "none" }}>
         {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+            <Step key={`RetroStep_${index}`}>
+              <StepLabel>{label}</StepLabel>
             </Step>
           );
         })}
@@ -174,9 +163,15 @@ function Retro() {
         <InstructionsRetro props={{ nextButton: nextStep }} />
       ) : null}
 
-      {retroStep === 2 ? <PickRole props={{ prop: "prop" }} /> : null}
+      {retroStep === 2 ? (
+        <PickRole props={{ backButton: previousStep, nextButton: nextStep }} />
+      ) : null}
 
-      {retroStep === 3 ? <PickRole props={{ prop: "prop" }} /> : null}
+      {retroStep === 3 && participant.isFacilitator ? (
+        <SetupFacilitator props={{ prop: "prop" }} />
+      ) : retroStep === 3 && !participant.isFacilitator ? (
+        <SetupParticipant props={{ prop: "prop" }} />
+      ) : null}
     </div>
   );
 }
