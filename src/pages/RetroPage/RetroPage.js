@@ -199,12 +199,12 @@ function Retro() {
         </Button>
       </div>
 
-      <TimerPartyParrotHorizontal
+      {/* <TimerPartyParrotHorizontal
         props={{
           totalTime: 600,
           timeLeft: 600,
         }}
-      />
+      /> */}
 
       <div>
         <Grid

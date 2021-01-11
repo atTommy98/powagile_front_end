@@ -10,6 +10,9 @@ import "./RetroColumn.css";
 // Custom Components
 import RetroCard from "../RetroCard/RetroCard";
 
+// shortid
+// import shortid
+
 export default function RetroColumn({ props = {} }) {
   const {
     meeting,

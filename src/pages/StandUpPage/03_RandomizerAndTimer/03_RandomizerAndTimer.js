@@ -19,15 +19,8 @@ import RandomizerCard from "../../../components/RandomizerCard/RandomizerCard";
 import TimerPartyParrot from "../../../components/TimerPartyParrot/TimerPartyParrot";
 
 export default function RandomizerAndTimer({ props }) {
-  const {
-    meeting,
-    setMeeting,
-    array,
-    speakerTime,
-    timeBetweenSpeakers,
-  } = props;
+  const { meeting, setMeeting, speakerTime, timeBetweenSpeakers } = props;
 
-  const [activeParticipants, setActiveParticipants] = useState([...array]);
   const [activeStage, setActiveStage] = useState({
     randomizerStage: true,
     randomizerTime: timeBetweenSpeakers,
@@ -36,14 +29,23 @@ export default function RandomizerAndTimer({ props }) {
   });
 
   useEffect(() => {
+    function progressBarTimeBetweenParticipants() {
+      setTimeout(function () {
+        let newTime = Number((activeStage.randomizerTime - 0.1).toFixed(2));
+
+        setActiveStage({
+          ...activeStage,
+          randomizerTime: newTime,
+        });
+      }, 100);
+    }
     // Randomizer
     if (
       activeStage.randomizerStage === true &&
       activeStage.randomizerTime > 0
     ) {
       progressBarTimeBetweenParticipants();
-    }
-    if (
+    } else if (
       activeStage.randomizerStage === true &&
       activeStage.randomizerTime === 0
     ) {
@@ -55,46 +57,43 @@ export default function RandomizerAndTimer({ props }) {
         timerActive: true,
       });
     }
-  }, [activeStage, progressBarTimeBetweenParticipants, timeBetweenSpeakers]);
+  }, [activeStage, timeBetweenSpeakers]);
 
   useEffect(() => {
+    function circularTimerCountDown() {
+      const newState = [...meeting.meetingParticipants];
+      const index = newState.findIndex(
+        (participant) => !participant.hasHadTurn
+      );
+      try {
+        newState[index].timeLeft -= 1;
+      } catch {
+        return;
+      }
+      setMeeting({ ...meeting, meetingParticipants: newState });
+      return;
+    }
     // Circular Timer
     if (activeStage.timerStage === true && activeStage.timerActive === true) {
-      setTimeout(circularTimerCountDown, 1000);
+      setTimeout(() => circularTimerCountDown(), 1000);
     }
-  }, [activeStage, activeParticipants, circularTimerCountDown]);
-
-  function progressBarTimeBetweenParticipants() {
-    setTimeout(function () {
-      let newTime = Number((activeStage.randomizerTime - 0.1).toFixed(2));
-
-      setActiveStage({
-        ...activeStage,
-        randomizerTime: newTime,
-      });
-    }, 100);
-  }
-
-  function circularTimerCountDown() {
-    let newState = [...array];
-    newState[0].timeLeft -= 1;
-    setActiveParticipants([...newState]);
-    return;
-  }
+  }, [meeting, setMeeting, activeStage.timerActive, activeStage.timerStage]);
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid item xs={4}>
         <Paper className="participantsTracker" elevation={2}>
           <h3>Meeting tracker</h3>
-          <List dense={true}>
-            {array.map((el) => (
+          <List dense={false}>
+            {meeting.meetingParticipants.map((el) => (
               <ListItem>
                 <ListItemText primary={el.name} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    {el.hasHadTurn ? <CheckCircleIcon color="primary" /> : null}
-                  </IconButton>
+                  {el.hasHadTurn ? (
+                    <IconButton edge="end" aria-label="completed">
+                      <CheckCircleIcon color="primary" />
+                    </IconButton>
+                  ) : null}
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
@@ -104,18 +103,21 @@ export default function RandomizerAndTimer({ props }) {
 
       <Grid item xs={8}>
         <RandomizerCard
-          props={{ activeParticipants, timeBetweenSpeakers, activeStage }}
+          props={{
+            meetingParticipants: meeting.meetingParticipants,
+            timeBetweenSpeakers,
+            activeStage,
+          }}
         />
 
         <TimerPartyParrot
           props={{
-            array,
             activeStage,
             setActiveStage,
-            activeParticipants,
+            meeting,
+            setMeeting,
             speakerTime,
           }}
-          helperText={<p>I am a child!</p>}
         ></TimerPartyParrot>
       </Grid>
     </Grid>

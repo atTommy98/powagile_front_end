@@ -6,8 +6,8 @@ import { Bar } from "react-chartjs-2";
 
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
-  const [yAxis, setyAxis] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
+  // retrieve all meetings from database
   useEffect(() => {
     function retrieveMeetings() {
       fetch("https://powagile-back-end.herokuapp.com/meeting")
@@ -17,15 +17,31 @@ export default function StatsGraph() {
     retrieveMeetings();
   }, []);
 
-  useEffect(() => {
-    if (stats.length !== 0) {
-      let previousWeek = calculatePreviousWeek();
-      stats.map((obj) => {
-        return setYAxisValues(obj, previousWeek);
-      });
-    }
-  }, [stats]);
+  // generates an array of y-valeus representing the total minutes spent in meetings, corresponds to the last 7 days
+  function generateDataset() {
+    const values = [0, 0, 0, 0, 0, 0, 0, 0];
+    // eslint-disable-next-line array-callback-return
+    stats.map((obj) => {
+      // Check it's a valid meeting
+      if (obj.meetingStartTime && obj.meetingEndTime) {
+        let meetingDate = createDateObject(obj.createdAt);
+        for (let i = 0; i < previousWeek.length; i++) {
+          if (meetingDate.day === previousWeek[i].day) {
+            values[i] = Math.round(
+              values[i] +
+                calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
+            );
 
+            break;
+          }
+        }
+      }
+    });
+
+    return values;
+  }
+
+  // creates a date object to allow you to access the date, day, month, year and milliseconds at a point in time.
   function createDateObject(time) {
     const date = new Date(time);
     const obj = {
@@ -38,25 +54,11 @@ export default function StatsGraph() {
     return obj;
   }
 
+  // calculate total time of a meeting
   function calculateTotalTime(startTime, endTime) {
     let total = endTime - startTime;
     total = total / 60000;
     return total;
-  }
-
-  function setYAxisValues(obj, previousWeek) {
-    let meetingDate = createDateObject(obj.createdAt);
-    for (let i = 0; i < previousWeek.length; i++) {
-      if (meetingDate.day === previousWeek[i].day) {
-        // TODO: Currently setting to 0 every time same date is found, want to have cumulative addition, not most recent. I think?
-        let newState = [0, 0, 0, 0, 0, 0, 0, 0];
-        newState[i] = Math.round(
-          newState[i] +
-            calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
-        );
-        setyAxis(newState);
-      }
-    }
   }
 
   function calculatePreviousWeek() {
@@ -69,6 +71,7 @@ export default function StatsGraph() {
     return arrayOfPreviousWeek;
   }
 
+  // makes labels for x-axis using the day and months.
   function createLabelArray(arr) {
     let labelArray = [];
     for (let i = 0; i < arr.length; i++) {
@@ -81,6 +84,7 @@ export default function StatsGraph() {
   const previousWeek = calculatePreviousWeek();
   const labelArray = createLabelArray(previousWeek);
 
+  // dataset for the graph
   const data = {
     labels: labelArray,
     datasets: [
@@ -92,7 +96,7 @@ export default function StatsGraph() {
         hoverBackgroundColor: "rgba(100,100,100,0.3)",
         hoverBorderColor: "rgba(10,10,10,0.5)",
         minBarLength: 0,
-        data: yAxis,
+        data: generateDataset(),
         yAxesID: "Y-Axes",
       },
     ],
@@ -100,7 +104,7 @@ export default function StatsGraph() {
 
   return (
     <div>
-      {!yAxis ? null : (
+      {!stats ? null : (
         <Bar
           data={data}
           options={{
@@ -126,7 +130,8 @@ export default function StatsGraph() {
                   },
                   ticks: {
                     suggestedMin: 0,
-                    suggestedMax: Math.ceil(Math.max(...yAxis) / 10) * 10 + 10,
+                    suggestedMax:
+                      Math.ceil(Math.max(...generateDataset()) / 10) * 10 + 10,
                   },
                 },
               ],

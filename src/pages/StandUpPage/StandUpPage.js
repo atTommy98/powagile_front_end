@@ -4,10 +4,21 @@ import { useState, useEffect } from "react";
 // CSS
 import "./StandUpPage.css";
 
+// Material UI
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Collapse from "@material-ui/core/Collapse";
+
 // Custom Componenets
 import InstructionsPage from "./01_Instructions/01_Instructions";
 import SetupPage from "./02_Setup/02_Setup";
 import RandomizerAndTimer from "./03_RandomizerAndTimer/03_RandomizerAndTimer";
+import MeetingFinished from "./04_MeetingFinished/04_MeetingFinished";
+import ProductTitle from "../../components/ProductTitle/ProductTitle";
+
+// Auth0
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function StandUpPage() {
   /*Steps*/
@@ -16,31 +27,36 @@ export default function StandUpPage() {
   /*Meeting Setup*/
   const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
-
   const [participantToAdd, setParticipantToAdd] = useState("");
 
-  /*🔴🔴🔴🔴🔴*/
-  const dummyMeeting = {
+  /*Logged in user (if any)*/
+  const { user } = useAuth0();
+
+  // const dummyMeeting = {
+  //   userId: null,
+  //   type: "standup",
+  //   meetingParticipants: [
+  //     { name: "Daniela", hasHadTurn: true, timeLeft: 43, pauses: [] },
+  //     { name: "Stefan", hasHadTurn: true, timeLeft: -60, pauses: [] },
+  //     { name: "Tommy", hasHadTurn: true, timeLeft: 50, pauses: [] },
+  //     { name: "Kawalpreet", hasHadTurn: true, timeLeft: 20, pauses: [] },
+  //     { name: "Jon", hasHadTurn: false, timeLeft: 10, pauses: [] },
+  //   ],
+  //   meetingStartTime: 1610191221089,
+  //   meetingEndTime: 1610191229759,
+  //   meetingFinished: false,
+  // };
+
+  const blankMeeting = {
+    userId: null,
     type: "standup",
-    meetingParticipants: [
-      { name: "Daniela", hasHadTurn: false, timeLeft: 60 },
-      { name: "Stefan", hasHadTurn: false, timeLeft: 60 },
-      { name: "Tommy", hasHadTurn: false, timeLeft: 60 },
-      { name: "Kawalpreet", hasHadTurn: false, timeLeft: 60 },
-      { name: "Jon", hasHadTurn: false, timeLeft: 60 },
-    ],
+    meetingParticipants: [],
     meetingStartTime: null,
     meetingEndTime: null,
+    meetingFinished: false,
   };
 
-  // const properMeeting = {
-  //   meetingParticipants: [],
-  //   meetingStartTime: null,
-  //   meetingEndTime: null,
-  // };
-  /*🔴🔴🔴🔴🔴*/
-
-  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+  const [meeting, setMeeting] = useState({ ...blankMeeting });
 
   /*Steps*/
   const [totalMeetingTime, setTotalMeetingTime] = useState(0);
@@ -54,20 +70,40 @@ export default function StandUpPage() {
     newState.meetingParticipants.splice(i, 1);
     setMeeting(newState);
   }
-
-  function calculateMeetingTime() {
-    const people = meeting.meetingParticipants.length;
-    const speakingTimeInSeconds = people * minutesPerParticipant * 60;
-    const timeBetweenSpeakersInSeconds = people * timeBetweenSpeakers;
-    const totalTimeInMinutes = Math.round(
-      (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
-    );
-    setTotalMeetingTime(totalTimeInMinutes);
-  }
-
+  // Add User ID if logged in
   useEffect(() => {
-    calculateMeetingTime();
-  });
+    if (user) {
+      setMeeting({ ...meeting, userId: user.sub });
+    }
+  }, [user]);
+
+  // Calculate meeting time
+  useEffect(() => {
+    function calculateMeetingTime() {
+      const people = meeting.meetingParticipants.length;
+      const speakingTimeInSeconds = people * minutesPerParticipant * 60;
+      const timeBetweenSpeakersInSeconds = people * timeBetweenSpeakers;
+      const totalTimeInMinutes = Math.round(
+        (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
+      );
+      setTotalMeetingTime(totalTimeInMinutes);
+    }
+    if (standUpStep === 2) {
+      calculateMeetingTime();
+    }
+  }, [
+    standUpStep,
+    meeting.meetingParticipants.length,
+    minutesPerParticipant,
+    timeBetweenSpeakers,
+  ]);
+
+  // Check if meeting is finished
+  useEffect(() => {
+    if (meeting.meetingFinished === true) {
+      setStandUpStep(4);
+    }
+  }, [setStandUpStep, meeting.meetingFinished]);
 
   function addParticipant(event) {
     event.preventDefault();
@@ -79,11 +115,35 @@ export default function StandUpPage() {
       name: participantToAdd,
       hasHadTurn: false,
       timeLeft: null,
-      timesPaused: [],
+      pauses: [],
     });
     setParticipantToAdd("");
     setMeeting(newState);
   }
+
+  // FIXME: Not working
+  // function shuffleParticipants() {
+  //   // Generate array of indices
+  //   const indices = meeting.meetingParticipants.map((el, i) => i);
+
+  //   //Fisher Yates algorithm - Shuffle Array
+  //   for (let i = indices.length; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     const temp = indices[i];
+  //     indices[i] = indices[j];
+  //     indices[j] = temp;
+  //   }
+
+  //   // Shuffle participants via shuffled indices
+  //   const shuffledParticipants = indices.map(
+  //     (el) => meeting.meetingParticipants[el]
+  //   );
+
+  //   console.log(indices);
+  //   console.log(shuffledParticipants);
+
+  //   setMeeting({ ...meeting, meetingParticipants: shuffledParticipants });
+  // }
 
   function startMeeting() {
     // Give each participant their time
@@ -99,8 +159,35 @@ export default function StandUpPage() {
     setStandUpStep(3);
   }
 
+  const steps = [
+    "Review instructions",
+    "Pick settings, add participants",
+    "Run your StandUp",
+    "Finish!",
+  ];
+
   return (
     <div>
+      <Collapse in={standUpStep === 1} timeout={800}>
+        <ProductTitle title="StandUp">
+          <p className="stepsTitleText">
+            Our formula for fast and engaging remote standups.
+          </p>
+        </ProductTitle>
+      </Collapse>
+
+      <Stepper activeStep={standUpStep - 1} style={{ background: "none" }}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+
       {standUpStep === 1 ? (
         <InstructionsPage nextButton={() => setStandUpStep(2)} />
       ) : null}
@@ -120,6 +207,7 @@ export default function StandUpPage() {
             totalMeetingTime,
             setStandUpStep,
             startMeeting,
+            setMeeting,
           }}
         />
       ) : null}
@@ -130,12 +218,20 @@ export default function StandUpPage() {
             props={{
               meeting,
               setMeeting,
-              array: meeting.meetingParticipants,
               speakerTime: minutesPerParticipant * 60,
               timeBetweenSpeakers,
             }}
           />
         </div>
+      ) : null}
+
+      {standUpStep === 4 ? (
+        <MeetingFinished
+          props={{
+            minutesPerParticipant,
+            meeting,
+          }}
+        />
       ) : null}
     </div>
   );
