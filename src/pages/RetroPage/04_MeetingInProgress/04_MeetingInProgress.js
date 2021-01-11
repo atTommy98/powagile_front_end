@@ -67,8 +67,8 @@ export default function MeetingInProgress({ props }) {
         });
 
         //// 📥 "Receive" rules
-        socket.on("initialise_meeting", ({ meeting }) => {
-          console.log(meeting);
+        // Initialise Meeting
+        socket.on("initialise_meeting", (meeting) => {
           setMeeting(meeting);
         });
         // Add
@@ -101,11 +101,25 @@ export default function MeetingInProgress({ props }) {
     }
 
     // Emit initial meeting state
-    if (socket && participant.isFacilitator && !participant.meetingEmitted) {
+    if (socket && !participant.meetingEmitted) {
+      alert("Imma emmit...");
       socket.emit("startMeeting", meeting);
       setParticipant({ ...participant, meetingEmitted: true });
     }
-  });
+  }, [
+    addCard,
+    deleteCard,
+    meeting,
+    moveCard,
+    participant,
+    rulesEstablished,
+    setMeeting,
+    setParticipant,
+    setSocket,
+    socket,
+    updateCardText,
+    updateCardVotes,
+  ]);
 
   return (
     <div>

@@ -66,7 +66,7 @@ function Retro() {
     title: `Retro meeting on ${new Date().toUTCString()}`,
     type: "retro",
     subtype: "",
-    columns: [],
+    columns: ["Test col"],
     cards: [],
     meetingStarted: false,
     meetingFinished: false,
@@ -109,12 +109,11 @@ function Retro() {
   ////// 👉  With socket, we want to avoid that to prevent an infinite loop
   function addCard({ source, card }) {
     // Clone state, create empty card
-    const newState = { ...meeting };
     let newCard = {};
 
     // Check card source
     if (source === "socket") {
-      newCard = card;
+      newCard = { ...card };
     } else if (source === "local") {
       newCard = {
         id: nanoid(),
@@ -128,8 +127,7 @@ function Retro() {
     }
 
     // Add the card to the board
-    newState.cards.push(newCard);
-    setMeeting(newState);
+    setMeeting({ ...meeting, cards: [...meeting.cards, newCard] });
 
     // Emit from socket if source is local
     if (socket && source === "local") {
