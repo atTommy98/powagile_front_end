@@ -1,5 +1,5 @@
 // React
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // Material UI
 import Button from "@material-ui/core/Button";
@@ -38,7 +38,23 @@ export default function SetupFacilitator({ props }) {
     setMeeting,
   } = props;
 
+  // TODO: Autofill field
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const [pickedRetro, setPickedRetro] = useState(0);
+
+  function changeRetro(e) {
+    const { name, columns, icon } = retroColumns[e.target.value];
+
+    setPickedRetro(e.target.value);
+
+    setMeeting({
+      ...meeting,
+      subtype: name,
+      columns: columns,
+      icon: icon,
+    });
+  }
 
   const retroColumns = [
     {
@@ -120,15 +136,8 @@ export default function SetupFacilitator({ props }) {
       <FormControl variant="outlined" style={styleObj} required>
         <InputLabel>Pick your retrospective</InputLabel>
         <Select
-          value={0}
-          onChange={(e) =>
-            setMeeting({
-              ...meeting,
-              subtype: retroColumns[e.target.value].name,
-              columns: retroColumns[e.target.value].columns,
-              icon: retroColumns[e.target.value].icon,
-            })
-          }
+          value={pickedRetro}
+          onChange={(e) => changeRetro(e)}
           label="Pick your retrospective"
         >
           {retroColumns.map((el, i) => (

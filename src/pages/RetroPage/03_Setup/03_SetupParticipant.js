@@ -10,13 +10,13 @@ export default function SetupParticipant({ props }) {
 
   return (
     <div>
-      <p>Your name bruh</p>
+      <p>Your name *</p>
       <input
         onChange={(e) =>
           setParticipant({ ...participant, name: e.target.value })
         }
       ></input>
-      <p>Invite code / link</p>
+      <p>Invite code / link *</p>
       <input
         value={meeting.roomId}
         onChange={(e) => setMeeting({ ...meeting, roomId: e.target.value })}
