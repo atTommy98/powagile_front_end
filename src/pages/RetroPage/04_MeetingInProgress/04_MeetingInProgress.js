@@ -70,6 +70,7 @@ export default function MeetingInProgress({ props }) {
         // Initialise Meeting
         socket.on("initialise_meeting", (meeting) => {
           setMeeting(meeting);
+          setMeeting(meeting);
         });
         // Add
         socket.on("addCard", (card) => {
