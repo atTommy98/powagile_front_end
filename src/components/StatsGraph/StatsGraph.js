@@ -61,7 +61,6 @@ export default function StatsGraph() {
     return total;
   }
 
-  // calculates the dates of the past week
   function calculatePreviousWeek() {
     let date = new Date();
     let arrayOfPreviousWeek = [];
