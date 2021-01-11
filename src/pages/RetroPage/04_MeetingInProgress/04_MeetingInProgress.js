@@ -88,7 +88,17 @@ export default function MeetingInProgress({ props }) {
         moveCard({ source, id, direction });
       });
     }
-  });
+  }, [
+    addCard,
+    deleteCard,
+    meeting,
+    moveCard,
+    participant,
+    setSocket,
+    socket,
+    updateCardText,
+    updateCardVotes,
+  ]);
 
   return (
     <div>
