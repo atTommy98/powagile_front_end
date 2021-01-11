@@ -88,16 +88,15 @@ export default function SetupFacilitator({ props }) {
 
   // Set Meeting Room ID
   useEffect(() => {
-    console.log(`The meeting room id is ${meeting.roomId}`);
     if (meeting.roomId === null) {
       setMeeting({ ...meeting, roomId: nanoid() });
     }
-    console.log(`The meeting room id is ${meeting.roomId}`);
+    console.info(`Meeting room id set to ${meeting.roomId}`);
   });
 
   // Add avatar URL, if any
   useEffect(() => {
-    if (user.picture) {
+    if (user && user.picture && !isLoading) {
       setParticipant({ ...participant, avatar: user.picture });
     }
   }, [isLoading]);
@@ -105,24 +104,35 @@ export default function SetupFacilitator({ props }) {
   return (
     <div>
       <h2>Facilitate a Retrospective</h2>
-      <p>Your name (autofill if logged in)</p>
-      <input onChange={(e) => setMeeting({ ...meeting })}></input>
-      <p>Meeting room name (optional)</p>
-      <input></input>
+      <p>Your name * (should autofill if logged in)</p>
+      <input
+        onChange={(e) =>
+          setParticipant({ ...participant, name: e.target.value })
+        }
+      ></input>
+      <p>Give your meeting a descriptive title *</p>
+      <input
+        onChange={(e) => setMeeting({ ...meeting, title: e.target.value })}
+      ></input>
       <br />
       <br />
       <br />
-      <FormControl variant="outlined" style={styleObj}>
+      <FormControl variant="outlined" style={styleObj} required>
         <InputLabel>Pick your retrospective</InputLabel>
         <Select
-          value={meeting.subtype}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
+          value={0}
+          onChange={(e) =>
+            setMeeting({
+              ...meeting,
+              subtype: retroColumns[e.target.value].name,
+              columns: retroColumns[e.target.value].columns,
+              icon: retroColumns[e.target.value].icon,
+            })
+          }
           label="Pick your retrospective"
         >
           {retroColumns.map((el, i) => (
-            <MenuItem value={el}>
+            <MenuItem value={i}>
               {el.icon}&nbsp;{el.name}
             </MenuItem>
           ))}
@@ -141,8 +151,6 @@ export default function SetupFacilitator({ props }) {
           endAdornment={
             <InputAdornment position="end">
               <IconButton
-                disableRipple
-                disableFocusRipple
                 aria-label="copy link"
                 onClick={() => console.log("Copy link")}
                 edge="end"

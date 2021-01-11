@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 
 // Material UI
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -26,7 +24,7 @@ import "./RetroPage.css";
 
 function Retro() {
   // Steps
-  const [retroStep, setRetroStep] = useState(4);
+  const [retroStep, setRetroStep] = useState(1);
   const steps = [
     "Review instructions",
     "Select your role",
@@ -62,18 +60,19 @@ function Retro() {
   });
 
   // TODO: Meeting State
-  const dummyMeeting = {
-    roomId: 42069,
+  const blankRetro = {
+    roomId: null,
+    title: `Retro meeting on ${new Date().toUTCString()}`,
     type: "retro",
-    subtype: "Start, Stop, Continue",
-    columns: ["Start", "Stop", "Continue"],
+    subtype: "",
+    columns: [],
     cards: [],
     meetingStarted: false,
     meetingFinished: false,
     meetingStartTime: null,
     meetingEndTime: null,
   };
-  const [meeting, setMeeting] = useState({ ...dummyMeeting });
+  const [meeting, setMeeting] = useState({ ...blankRetro });
 
   // Socket.io
   const [socket, setSocket] = useState(null);
@@ -81,7 +80,7 @@ function Retro() {
   // Check if this is an attempt to join
   useEffect(() => {
     function checkForJoin() {
-      if (meeting.columnsmeetingStarted || retroStep === 2) {
+      if (meeting.meetingStarted === true || retroStep !== 1) {
         return;
       }
       // Get URL params
@@ -118,6 +117,7 @@ function Retro() {
     } else if (source === "local") {
       newCard = {
         id: nanoid(),
+        addedBy: participant.name,
         columnIndex: card.i,
         content: "",
         thumbsUp: 0,
@@ -234,7 +234,14 @@ function Retro() {
         />
       ) : retroStep === 3 && participant.isFacilitator === false ? (
         <SetupParticipant
-          props={{ previousStep, nextStep, participant, setParticipant }}
+          props={{
+            previousStep,
+            nextStep,
+            participant,
+            setParticipant,
+            meeting,
+            setMeeting,
+          }}
         />
       ) : null}
 

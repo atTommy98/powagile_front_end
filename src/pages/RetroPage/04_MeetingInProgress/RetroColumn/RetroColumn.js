@@ -16,7 +16,6 @@ import { nanoid } from "nanoid";
 export default function RetroColumn({ props = {} }) {
   const {
     meeting,
-    setMeeting,
     columnTitle = "Column Title",
     index,
     cards,
