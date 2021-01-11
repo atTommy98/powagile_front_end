@@ -47,10 +47,11 @@ function Retro() {
     }
   }
 
-  // TODO: Store participant information - name, role, meta
+  // TODO: Dummy meeting, does it need more keys?
   const dummyParticipant = {
     name: "Stefan",
     isFacilitator: true,
+    meetingEmitted: false,
     avatar:
       "https://lh3.googleusercontent.com/a-/AOh14GjrxpdHOMzjCZ2apTkYwCdLkQz4ESxlQPd9hM8BdQA=s96-c",
     votedOn: [],
@@ -256,6 +257,7 @@ function Retro() {
             updateCardVotes,
             moveCard,
             participant,
+            setParticipant,
             socket,
             setSocket,
           }}

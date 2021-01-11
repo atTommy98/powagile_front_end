@@ -20,6 +20,7 @@ export default function MeetingInProgress({ props }) {
     updateCardVotes,
     moveCard,
     participant,
+    setParticipant,
     socket,
     setSocket,
   } = props;
@@ -31,14 +32,15 @@ export default function MeetingInProgress({ props }) {
     }
   });
 
-  // Establish socket.io connection
+  // Establish socket.io connection and rules (send/receive)
+  const [rulesEstablished, setRulesEstablished] = useState(false);
   useEffect(() => {
+    // Establish socket connection
     if (!socket) {
       // Destructure relevant info for connection
       const { roomId } = meeting;
       const { name, isFacilitator, avatar } = participant;
 
-      // Establish socket connection
       setSocket(
         io("http://localhost:8080", {
           query: {
@@ -51,58 +53,63 @@ export default function MeetingInProgress({ props }) {
       );
     }
 
+    //// 👉 2 types of sources - local, and socket
+    ////// 👉  With socket, we only render, but don't emit the card, to avoid an infinite loop
+    ////// 👉  With local, we render AND emit the card, to send it to other participants
     if (socket) {
-      //// 👉 2 types of sources - local, and socket
-      ////// 👉  With socket, we only render, but don't emit the card, to avoid an infinite loop
-      ////// 👉  With local, we render AND emit the card, to send it to other participants
-      const source = "socket";
+      if (!rulesEstablished) {
+        const source = "socket";
 
-      // Notification rules
-      socket.on("notification", (notification) => {
-        // FIXME: Do stuff......
-      });
+        // 📲 Notification rules
+        socket.on("notification", (notification) => {
+          // FIXME: Do stuff......
+          console.log(notification);
+        });
 
-      //// "Receive" rules
-      // Add
-      socket.on("addCard", (card) => {
-        addCard({ source, card });
-      });
+        //// 📥 "Receive" rules
+        socket.on("initialise_meeting", ({ meeting }) => {
+          console.log(meeting);
+          setMeeting(meeting);
+        });
+        // Add
+        socket.on("addCard", (card) => {
+          addCard({ source, card });
+        });
 
-      // Delete
-      socket.on("deleteCard", (id) => {
-        deleteCard({ source, id });
-      });
+        // Delete
+        socket.on("deleteCard", (id) => {
+          deleteCard({ source, id });
+        });
 
-      // Update Text
-      socket.on("updateCardText", ({ id, content }) => {
-        updateCardText({ source, id, content });
-      });
+        // Update Text
+        socket.on("updateCardText", ({ id, content }) => {
+          updateCardText({ source, id, content });
+        });
 
-      // Update Votes
-      socket.on("updateCardVotes", ({ id, thumb }) => {
-        updateCardVotes({ source, id, thumb });
-      });
+        // Update Votes
+        socket.on("updateCardVotes", ({ id, thumb }) => {
+          updateCardVotes({ source, id, thumb });
+        });
 
-      // Move card
-      socket.on("moveCard", ({ id, direction }) => {
-        moveCard({ source, id, direction });
-      });
+        // Move card
+        socket.on("moveCard", ({ id, direction }) => {
+          moveCard({ source, id, direction });
+        });
+
+        setRulesEstablished(true);
+      }
     }
-  }, [
-    addCard,
-    deleteCard,
-    meeting,
-    moveCard,
-    participant,
-    setSocket,
-    socket,
-    updateCardText,
-    updateCardVotes,
-  ]);
+
+    // Emit initial meeting state
+    if (socket && participant.isFacilitator && !participant.meetingEmitted) {
+      socket.emit("startMeeting", meeting);
+      setParticipant({ ...participant, meetingEmitted: true });
+    }
+  });
 
   return (
     <div>
-      {/* TODO: Need some sexy logic here, where the server determines the time of the meeting*/}
+      {/* TODO: Need some logic here, where the server determines the time of the meeting*/}
       {/* <TimerPartyParrotHorizontal
           props={{
             totalTime: 600,
