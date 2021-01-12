@@ -1,0 +1,58 @@
+.homePageTitle {
+  font-size: 5em !important;
+  font-family: "Bowlby One SC", cursive;
+  color: white !important;
+  font-weight: normal;
+  margin: 20px 0px;
+}
+
+.homePageSubTitle {
+  font-size: 3em !important;
+  color: white !important;
+  font-family: "Roboto";
+  font-weight: 200;
+  line-height: 45px;
+  margin: 20px 0px;
+}
+
+.homePageSubTitle em {
+  font-weight: 500;
+}
+
+.homePageSalesyText {
+  font-size: 1.2em;
+  color: white !important;
+  margin: 40px 0px !important;
+  padding: 0px 50px 00px 0px;
+}
+
+.titleSection {
+  display: block;
+  background: #2196f3;
+}
+
+.getStartedText {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 50px !important;
+  font-weight: 500 !important;
+  letter-spacing: 1px !important;
+}
+
+.linkWrapper {
+  text-decoration: none !important;
+}
+
+.homeStandUpCard,
+.homeRetroCard {
+  min-height: 180px !important;
+  border-radius: 0.3em !important;
+}
+
+.homeStandUpCard {
+  background: white;
+}
+
+.homeRetroCard {
+  background: white;
+}
