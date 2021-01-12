@@ -1,0 +1,24 @@
+.table {
+  box-sizing: border-box;
+}
+.input-container {
+  margin: 0 auto;
+  text-align: center;
+}
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 10px;
+  height: 200px; /* Should be removed. Only for demonstration */
+}
+
+.statsTitle {
+  font-size: 1.5em;
+  text-align: center;
+  margin: none;
+  padding: none;
+}

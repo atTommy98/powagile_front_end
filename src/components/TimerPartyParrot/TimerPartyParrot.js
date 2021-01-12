@@ -89,6 +89,7 @@ export default function TimerPartyParrot({ props, children }) {
     const index = newParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
+
     newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
