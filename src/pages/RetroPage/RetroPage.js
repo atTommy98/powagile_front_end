@@ -47,26 +47,25 @@ function Retro() {
     }
   }
 
-  // TODO: Dummy meeting, does it need more keys?
-  const dummyParticipant = {
-    name: "Stefan",
-    isFacilitator: true,
+  // Blank Participant State
+  const blankParticipant = {
+    name: "",
+    isFacilitator: false,
     meetingEmitted: false,
-    avatar:
-      "https://lh3.googleusercontent.com/a-/AOh14GjrxpdHOMzjCZ2apTkYwCdLkQz4ESxlQPd9hM8BdQA=s96-c",
+    avatar: "",
     votedOn: [],
   };
   const [participant, setParticipant] = useState({
-    ...dummyParticipant,
+    ...blankParticipant,
   });
 
-  // TODO: Meeting State
+  // Blank Meeting State
   const blankRetro = {
     roomId: null,
     title: `Retro meeting on ${new Date().toUTCString()}`,
     type: "retro",
-    subtype: "",
-    columns: ["Test col"],
+    subtype: "Four Ls (4Ls)",
+    columns: ["Liked", "Learned", "Lacked", "Longed For"],
     cards: [],
     meetingStarted: false,
     meetingFinished: false,
@@ -107,88 +106,47 @@ function Retro() {
   //// 👉 2 types of sources - local, and socket
   ////// 👉  With local, we want to socket.emit the card
   ////// 👉  With socket, we want to avoid that to prevent an infinite loop
-  function addCard({ source, card }) {
-    // Clone state, create empty card
-    let newCard = {};
-
-    // Check card source
-    if (source === "socket") {
-      newCard = { ...card };
-    } else if (source === "local") {
-      newCard = {
-        id: nanoid(),
-        addedBy: participant.name,
-        columnIndex: card.i,
-        content: "",
-        thumbsUp: 0,
-        thumbsDown: 0,
-        isDeleted: false,
-      };
-    }
-
-    // Add the card to the board
-    setMeeting({ ...meeting, cards: [...meeting.cards, newCard] });
-
-    // Emit from socket if source is local
-    if (socket && source === "local") {
+  function addCard({ card }) {
+    // Create card
+    const newCard = {
+      id: nanoid(),
+      addedBy: participant.name,
+      columnIndex: card.i,
+      content: "",
+      thumbsUp: 0,
+      thumbsDown: 0,
+      isDeleted: false,
+    };
+    // Emit from socket
+    if (socket) {
       socket.emit("addCard", newCard);
     }
   }
-  function deleteCard({ source, id }) {
-    // Find and "delete" card
-    const newCards = [...meeting.cards];
-    const index = newCards.findIndex((card) => card.id === id);
-    newCards[index].isDeleted = true;
-    setMeeting({ ...meeting, cards: newCards });
 
-    // Emit from socket if source is local
-    if (socket && source === "local") {
+  function deleteCard({ id }) {
+    // Emit from socket
+    if (socket) {
       socket.emit("deleteCard", id);
     }
   }
-  function updateCardText({ source, id, content }) {
-    // Find and update card
-    const newCards = [...meeting.cards];
-    const index = newCards.findIndex((card) => card.id === id);
-    newCards[index].content = content;
-    setMeeting({ ...meeting, cards: newCards });
 
-    if (socket && source === "local") {
+  function updateCardText({ id, content }) {
+    // Emit from socket
+    if (socket) {
       socket.emit("updateCardText", { id, content });
     }
   }
-  function updateCardVotes({ source, id, thumb }) {
-    // Set the thumb
-    const newCards = [...meeting.cards];
-    const index = newCards.findIndex((card) => card.id === id);
-    newCards[index][thumb] += 1;
-    setMeeting({ ...meeting, cards: newCards });
 
+  function updateCardVotes({ id, thumb }) {
     setParticipant({ ...participant, votedOn: [...participant.votedOn, id] });
-
-    if (socket && source === "local") {
+    if (socket) {
       socket.emit("updateCardVotes", { id, thumb });
     }
   }
-  function moveCard({ source, id, direction }) {
-    // Find the card
-    const newCards = [...meeting.cards];
-    const index = newCards.findIndex((card) => card.id === id);
-    // Move the card
-    switch (direction) {
-      case "left":
-        newCards[index].columnIndex -= 1;
-        break;
-      case "right":
-        newCards[index].columnIndex += 1;
-        break;
-      default:
-        console.error(`Incorrect direction passed to "moveCard" function`);
-        break;
-    }
-    setMeeting({ ...meeting, cards: newCards });
 
-    if (socket && source === "local") {
+  function moveCard({ id, direction }) {
+    // Emit
+    if (socket) {
       socket.emit("moveCard", { id, direction });
     }
   }
