@@ -16,9 +16,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "./RetroCard.css";
 
 export default function RetroCard({ props, functions }) {
-  const { index, card, meeting, setMeeting } = props;
-  const { id, columnIndex, columnName, content, thumbsUp, thumbsDown } = card;
+  const { card, meeting, participant } = props;
+  const { id, columnIndex, content, thumbsUp, thumbsDown } = card;
   const { updateCardText, updateCardVotes, deleteCard, moveCard } = functions;
+  const source = "local";
 
   return (
     <Card className="retroCard">
@@ -26,7 +27,7 @@ export default function RetroCard({ props, functions }) {
         <IconButton
           className="retroCardDeleteButton"
           size="small"
-          onClick={() => deleteCard(id)}
+          onClick={() => deleteCard({ source, id })}
         >
           <DeleteIcon />
         </IconButton>
@@ -38,28 +39,36 @@ export default function RetroCard({ props, functions }) {
         placeholder="Your card text"
         varian="standard"
         value={content}
-        onChange={(e) => updateCardText({ id, content: e.target.value })}
+        onChange={(e) =>
+          updateCardText({ source, id, content: e.target.value })
+        }
       />
 
-      <ButtonGroup fullWidth variant="text" size="small" color="black">
+      <ButtonGroup fullWidth variant="text" size="small">
         <Button
           disabled={columnIndex === 0}
-          onClick={() => moveCard(id, "left")}
+          onClick={() => moveCard({ source, id, direction: "left" })}
         >
           <ChevronLeftIcon />
         </Button>
-        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsDown" })}>
+        <Button
+          disabled={participant.votedOn.includes(id)}
+          onClick={() => updateCardVotes({ source, id, thumb: "thumbsDown" })}
+        >
           {thumbsDown}&nbsp;
           <ThumbDownIcon />
         </Button>
 
-        <Button onClick={() => updateCardVotes({ id, thumb: "thumbsUp" })}>
+        <Button
+          disabled={participant.votedOn.includes(id)}
+          onClick={() => updateCardVotes({ source, id, thumb: "thumbsUp" })}
+        >
           {thumbsUp}&nbsp;
           <ThumbUpIcon />
         </Button>
         <Button
           disabled={columnIndex === meeting.columns.length - 1}
-          onClick={() => moveCard(id, "right")}
+          onClick={() => moveCard({ source, id, direction: "right" })}
         >
           <ChevronRightIcon />
         </Button>

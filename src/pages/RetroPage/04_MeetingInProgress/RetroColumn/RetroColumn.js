@@ -11,12 +11,11 @@ import "./RetroColumn.css";
 import RetroCard from "../RetroCard/RetroCard";
 
 // shortid
-// import shortid
+import { nanoid } from "nanoid";
 
 export default function RetroColumn({ props = {} }) {
   const {
     meeting,
-    setMeeting,
     columnTitle = "Column Title",
     index,
     cards,
@@ -25,6 +24,7 @@ export default function RetroColumn({ props = {} }) {
     updateCardVotes,
     deleteCard,
     moveCard,
+    participant,
   } = props;
 
   return (
@@ -33,23 +33,31 @@ export default function RetroColumn({ props = {} }) {
         <Paper className="columnWrapper">
           <h3 className="columnTitle">{columnTitle}</h3>
           {cards.length > 0 ? (
-            cards.map((card, index) => (
-              <RetroCard
-                props={{ card, index, meeting, setMeeting }}
-                functions={{
-                  updateCardText,
-                  updateCardVotes,
-                  deleteCard,
-                  moveCard,
-                }}
-              />
-            ))
+            cards
+              .sort(
+                (card1, card2) =>
+                  card2.thumbsUp -
+                  card2.thumbsDown -
+                  (card1.thumbsUp - card1.thumbsDown)
+              )
+              .map((card, index) => (
+                <RetroCard
+                  key={`${columnTitle}_${card}_${index}`}
+                  props={{ card, index, meeting, participant }}
+                  functions={{
+                    updateCardText,
+                    updateCardVotes,
+                    deleteCard,
+                    moveCard,
+                  }}
+                />
+              ))
           ) : (
             <p className="columnHelperText">This column has no cards</p>
           )}
           <Button
             style={{ width: "100%" }}
-            onClick={() => addCard(index, columnTitle)}
+            onClick={() => addCard({ source: "local", card: { i: index } })}
           >
             Add Card +
           </Button>

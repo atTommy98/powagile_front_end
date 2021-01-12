@@ -15,6 +15,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "chart.js": "^2.9.4",
+    "notistack": "^1.0.3",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",
     "react-charts": "^2.0.0-beta.7",
@@ -24,14 +25,16 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "socket.io-client": "^3.0.5",
     "universal-cookie": "^4.0.4",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "cypress run",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
