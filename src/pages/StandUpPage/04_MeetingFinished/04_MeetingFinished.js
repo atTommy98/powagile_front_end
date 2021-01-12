@@ -22,9 +22,11 @@ import LockIcon from "@material-ui/icons/Lock";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
+import LogInButton from "../../../components/Login/LogInButton/LogInButton";
+
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
-
+  const { user, isAuthenticated } = useAuth0();
   const congratulationsMessages = [
     "You smashed it! 💪",
     "Agile rockstars! 🤘",
@@ -115,7 +117,7 @@ export default function MeetingFinished({ props }) {
     return slowest.name;
   }
 
-  return (
+  return isAuthenticated ? (
     <div>
       <Confetti numberOfPieces={150} recycle={true} />
 
@@ -164,7 +166,65 @@ export default function MeetingFinished({ props }) {
           </Card>
         </Grid>
       </Grid>
+      <br />
+      <p>
+        Please wait while we upload the details this meeting to your account...
+      </p>
+      <p>Success! The meeting details were saved to your account</p>
+      <p>
+        Hmm... There was a problem saving this meeting to your account. Try
+        again or contact our support team
+      </p>
+    </div>
+  ) : (
+    <div>
+      <Confetti numberOfPieces={150} recycle={true} />
 
+      <section className="finishedTitleArea">
+        <h3 className="meetingFinishedTitle">
+          {pickRandom(congratulationsMessages)}
+        </h3>
+        <h4 className="meetingFinishedSubtitle">You finished your stand up</h4>
+      </section>
+      <br />
+      <Grid container spacing={3}>
+        <Grid item xs>
+          <Card className="statCard">
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                ⌚ Total meeting time
+              </Typography>
+              <Typography variant="h5" component="h2">
+                {calculateTotalMeetingTime()}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs>
+          <Card className="statCard">
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                ⚡ Life in the fast lane
+              </Typography>
+              <Typography variant="h5" component="h2">
+                {findFastest()}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs>
+          <Card className="statCard">
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                ☕ Could use a coffee
+              </Typography>
+              <Typography variant="h5" component="h2">
+                {findSlowest()}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
       <div className="lockedStats">
         <Fade in={true} timeout={2500}>
           <div className="marketingMessage">
@@ -175,7 +235,12 @@ export default function MeetingFinished({ props }) {
               run better, faster, more productive meetings
             </p>
 
-            <Button variant="contained" color="primary" size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              href="https://powershellrangers.eu.auth0.com/u/login?state=g6Fo2SA4VVdkTjRmUUwwdG5lblFlSmdiLU02VTNUalZBTjNXb6N0aWTZIFhJSUE0UmU4SUlLYzcyeVpMNWwtNDhwd0FIcGZIOVh5o2NpZNkgS0NkQ3psdjR4eFQ3WmprSTN1eE1zVkVxakNadTdZVjY"
+            >
               Sign Up for free &rarr;
             </Button>
           </div>
@@ -202,16 +267,6 @@ export default function MeetingFinished({ props }) {
           </Grid>
         </div>
       </div>
-
-      <br />
-      <p>
-        Please wait while we upload the details this meeting to your account...
-      </p>
-      <p>Success! The meeting details were saved to your account</p>
-      <p>
-        Hmm... There was a problem saving this meeting to your account. Try
-        again or contact our support team
-      </p>
     </div>
   );
 }
