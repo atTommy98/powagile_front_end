@@ -4,10 +4,11 @@ import Features4 from "../../components/features/Features4";
 import Team2 from "../../components/team/Team2";
 import Gallery2 from "../../components/gallery/Gallery2";
 import Footer3 from "../../components/footers/Footer3";
-import StatsGraph from "../../components/StatsGraph/StatsGraph"
+
+import UserDashboard from "../../components/UserDashboard/UserDashboard";
+
 
 export default function Index(props) {
-
   return (
     <React.Fragment>
       <Features4
@@ -55,7 +56,9 @@ export default function Index(props) {
       <Gallery2 content={null} />
 
       <Footer3 content={null} />
-      <StatsGraph></StatsGraph>
+
+      <UserDashboard></UserDashboard>
+
     </React.Fragment>
   );
 }
