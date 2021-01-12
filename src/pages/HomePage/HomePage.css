@@ -39,6 +39,10 @@
   letter-spacing: 1px !important;
 }
 
+.linkWrapper {
+  text-decoration: none !important;
+}
+
 .homeStandUpCard,
 .homeRetroCard {
   min-height: 180px !important;
