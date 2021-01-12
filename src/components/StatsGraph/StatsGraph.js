@@ -61,7 +61,6 @@ export default function StatsGraph() {
     return total;
   }
 
-  // calculates the dates of the past week
   function calculatePreviousWeek() {
     let date = new Date();
     let arrayOfPreviousWeek = [];
@@ -132,7 +131,7 @@ export default function StatsGraph() {
                   ticks: {
                     suggestedMin: 0,
                     suggestedMax:
-                      Math.ceil(Math.max(...generateDataset()) / 10) * 10 + 10,
+                      Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                   },
                 },
               ],

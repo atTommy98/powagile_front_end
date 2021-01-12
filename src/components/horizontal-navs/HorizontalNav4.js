@@ -100,13 +100,22 @@ export default function Navigation(props) {
           <MenuIcon />
         </IconButton>
         <div className="link-container">
-          <Link to="/" className="nav-link">
+          <Link to="/" className="nav-link"  onClick={() => {
+                history.replace("/");
+                document.location.reload();
+              }}>
             Home
           </Link>
-          <Link to="/rituals/standup" className="nav-link">
+          <Link to="/rituals/standup" className="nav-link"  onClick={() => {
+                history.replace("/rituals/standup");
+                document.location.reload();
+              }}>
             Stand Up
           </Link>
-          <Link to="/rituals/retro" className="nav-link">
+          <Link to="/rituals/retro" className="nav-link"  onClick={() => {
+                history.replace("/rituals/retro");
+                document.location.reload();
+              }}>
             Retro
           </Link>
         </div>
