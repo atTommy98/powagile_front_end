@@ -11,6 +11,9 @@ import "./UserPage.css";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
+//User Dash
+import UserDashboard from "../../components/UserDashboard/UserDashboard"
+
 // Material UI
 import Button from "@material-ui/core/Button";
 import FormPropsTextFields from "../../components/TextField/Text";
@@ -122,9 +125,7 @@ export default function UserPage(props) {
   return isAuthenticated ? (
     <div>
       <div id="userInfo">
-        <img src={user.picture} alt={user.name} id="userImg" />
-        <h4>{user.name}</h4>
-        <p>{user.email}</p>
+        <UserDashboard></UserDashboard>
       </div>
 
       <div className="input-container">

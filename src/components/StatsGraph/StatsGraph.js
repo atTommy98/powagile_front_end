@@ -131,7 +131,7 @@ export default function StatsGraph() {
                   ticks: {
                     suggestedMin: 0,
                     suggestedMax:
-                      Math.ceil(Math.max(...generateDataset()) / 10) * 10 + 10,
+                      Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                   },
                 },
               ],
