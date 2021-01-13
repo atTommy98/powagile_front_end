@@ -15,7 +15,13 @@ import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4";
 // Router
 import { Route, Switch } from "react-router-dom";
 
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_FRONT_END_URL, REACT_APP_BACK_END_URL } = process.env;
+
 function App() {
+  console.log(REACT_APP_FRONT_END_URL, REACT_APP_BACK_END_URL);
+
   return (
     <div className="appContainer">
       <header>
