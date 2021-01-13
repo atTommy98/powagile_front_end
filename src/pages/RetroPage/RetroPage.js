@@ -1,238 +1,224 @@
 // React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Material UI
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-
-// Retro Types Icons
-import Looks4Icon from "@material-ui/icons/Looks4";
-import StarRateIcon from "@material-ui/icons/StarRate";
-import StarIcon from "@material-ui/icons/Star";
-import TrafficIcon from "@material-ui/icons/Traffic";
-import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
-import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Collapse from "@material-ui/core/Collapse";
 
 // Customer Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
-import TimerPartyParrotHorizontal from "../../components/TimerPartyParrot/TimerPartyParrotHorizontal";
-import RetroColumn from "./03_Retro/RetroColumn/RetroColumn";
+import InstructionsRetro from "./01_Instructions/01_InstructionsRetro";
+import PickRole from "./02_PickRole/02_PickRole";
+import SetupFacilitator from "./03_Setup/03_SetupFacilitator";
+import SetupParticipant from "./03_Setup/03_SetupParticipant";
+import MeetingInProgress from "./04_MeetingInProgress/04_MeetingInProgress";
+import FinishedMeeting from "./05_FinishedMeeting/05_FinishedMeeting";
 
-// uuid
-import { v4 as uuidv4 } from "uuid";
+// nanoid
+import { nanoid } from "nanoid";
 
 // CSS
 import "./RetroPage.css";
 
 function Retro() {
-  const [meeting, setMeeting] = useState({
-    type: "retro",
-    subtype: undefined,
-    columns: ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"],
-    cards: [],
-    meetingStarted: false,
-    meetingStartTime: null,
-    meetingEndTime: null,
-  });
-
-  const retroColumns = {
-    fourLs: ["Liked", "Learned", "Lacked", "Longed For"],
-    starfishSmall: ["Keep", "More Of", "Less Of / Stop"],
-    starfishLarge: [
-      "Keep Doing",
-      "More Of",
-      "Start Doing",
-      "Stop Doing",
-      "Less Of",
-    ],
-    startStopContinue: ["Start", "Stop", "Continue"],
-    madSadGlad: ["Mad", "Sad", "Glad"],
-    oneWord: ["Your Thoughts In One Word"],
-    KALM: ["Keep", "Add", "More", "Less"],
-  };
-
-  function setRetroType(type = "fourLs") {
-    // Set the meeting columns, default to 4Ls
-    setMeeting({ ...meeting, subtype: type, columns: retroColumns[type] });
+  // Steps
+  const [retroStep, setRetroStep] = useState(1);
+  const steps = [
+    "Review instructions",
+    "Select your role",
+    "Create / Join a Retrospective",
+    "Run your Retrospective",
+    "Finish!",
+  ];
+  // Navigate through steps
+  function previousStep() {
+    setRetroStep(retroStep - 1);
+  }
+  function nextStep(role) {
+    setRetroStep(retroStep + 1);
+    if (!role) {
+      return;
+    } else if (role === "facilitator") {
+      setParticipant({ ...participant, isFacilitator: true });
+    } else if (role === "participant") {
+      setParticipant({ ...participant, isFacilitator: false });
+    }
   }
 
-  function addCard(colIndex) {
-    const newState = { ...meeting };
-    newState.cards.push({
-      id: uuidv4(),
-      columnIndex: colIndex,
+  // Blank Participant State
+  const blankParticipant = {
+    name: "",
+    isFacilitator: false,
+    meetingEmitted: false,
+    avatar: "",
+    votedOn: [],
+  };
+  const [participant, setParticipant] = useState({
+    ...blankParticipant,
+  });
+
+  // Blank Meeting State
+  const blankRetro = {
+    roomId: null,
+    title: `Retro meeting on ${new Date().toUTCString()}`,
+    type: "retro",
+    subtype: "Four Ls (4Ls)",
+    columns: ["Liked", "Learned", "Lacked", "Longed For"],
+    cards: [],
+    meetingStarted: false,
+    meetingFinished: false,
+    meetingStartTime: null,
+    meetingEndTime: null,
+  };
+  const [meeting, setMeeting] = useState({ ...blankRetro });
+
+  // Socket.io
+  const [socket, setSocket] = useState(null);
+
+  // Check if this is an attempt to join
+  useEffect(() => {
+    function checkForJoin() {
+      if (meeting.meetingStarted === true || retroStep !== 1) {
+        return;
+      }
+      // Get URL params
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (urlParams.get("roomId") === null) {
+        console.log("No attempt to join detected...");
+        return;
+      } else if (meeting.roomId === null) {
+        console.log(`Joining roomId ${urlParams.get("roomId")}...`);
+        // Not a facilitator
+        setParticipant({ ...participant, isFacilitator: false });
+        // Set Meeting Room ID
+        setMeeting({ ...meeting, roomId: urlParams.get("roomId") });
+        // Fast forward to Step 3
+        setRetroStep(3);
+      }
+    }
+
+    checkForJoin();
+  });
+
+  //// 👉 2 types of sources - local, and socket
+  ////// 👉  With local, we want to socket.emit the card
+  ////// 👉  With socket, we want to avoid that to prevent an infinite loop
+  function addCard({ card }) {
+    // Create card
+    const newCard = {
+      id: nanoid(),
+      addedBy: participant.name,
+      columnIndex: card.i,
       content: "",
       thumbsUp: 0,
       thumbsDown: 0,
-    });
-    setMeeting(newState);
+      isDeleted: false,
+    };
+    // Emit from socket
+    if (socket) {
+      socket.emit("addCard", newCard);
+    }
   }
 
-  function deleteCard(id) {
-    setMeeting({
-      ...meeting,
-      cards: meeting.cards.filter((el) => (el.id !== id ? true : false)),
-    });
+  function deleteCard({ id }) {
+    // Emit from socket
+    if (socket) {
+      socket.emit("deleteCard", id);
+    }
   }
 
   function updateCardText({ id, content }) {
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
-    // Move the card
-    newCard.content = content;
-    const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    // Set state
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
+    // Emit from socket
+    if (socket) {
+      socket.emit("updateCardText", { id, content });
+    }
   }
 
   function updateCardVotes({ id, thumb }) {
-    // Find Card
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
-    // Move the card
-    newCard[thumb] += 1;
-    const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    // Set state
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
+    setParticipant({ ...participant, votedOn: [...participant.votedOn, id] });
+    if (socket) {
+      socket.emit("updateCardVotes", { id, thumb });
+    }
   }
 
-  function moveCard(id, direction) {
-    // Find the card
-    const index = meeting.cards.findIndex((card) => card.id === id);
-    const newCard = meeting.cards[index];
-    // Move the card
-    switch (direction) {
-      case "left":
-        newCard.columnIndex -= 1;
-        break;
-      case "right":
-        newCard.columnIndex += 1;
-        break;
-      default:
-        break;
+  function moveCard({ id, direction }) {
+    // Emit
+    if (socket) {
+      socket.emit("moveCard", { id, direction });
     }
-    const newCards = [...meeting.cards];
-    newCards[index] = newCard;
-    setMeeting({
-      ...meeting,
-      cards: newCards,
-    });
   }
 
   return (
-    <div className="Retro">
-      <ProductTitle title="Retrospective" />
-      <p>Pick your retro type:</p>
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<Looks4Icon />}
-          onClick={() => setRetroType("fourLs")}
-        >
-          Four Ls (4Ls)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarRateIcon />}
-          onClick={() => setRetroType("starfishSmall")}
-        >
-          Starfish (Small)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<StarIcon />}
-          onClick={() => setRetroType("starfishLarge")}
-        >
-          Starfish (Large)
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<TrafficIcon />}
-          onClick={() => setRetroType("startStopContinue")}
-        >
-          Start, Stop, Continue
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<EmojiEmotionsIcon />}
-          onClick={() => setRetroType("madSadGlad")}
-        >
-          Mad, Sad, Glad
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<ChatBubbleIcon />}
-          onClick={() => setRetroType("oneWord")}
-        >
-          One Word Retro
-        </Button>
+    <div>
+      <Collapse in={retroStep === 1} timeout={800}>
+        <ProductTitle title="Retrospective">
+          <p className="stepsTitleText">
+            Real time, collaborative, and engaging retros that make a positive
+            impact on your team.
+          </p>
+        </ProductTitle>
+      </Collapse>
 
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<AssignmentIcon />}
-          onClick={() => setRetroType("KALM")}
-        >
-          KALM Retro
-        </Button>
-      </div>
+      <Stepper activeStep={retroStep - 1} style={{ background: "none" }}>
+        {steps.map((label, index) => {
+          return (
+            <Step key={`RetroStep_${index}`}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
 
-      <TimerPartyParrotHorizontal
-        props={{
-          totalTime: 600,
-          timeLeft: 600,
-        }}
-      />
+      {retroStep === 1 ? (
+        <InstructionsRetro props={{ nextButton: nextStep }} />
+      ) : null}
 
-      <div>
-        <Grid
-          className="retroBoardContainer"
-          container
-          spacing={2}
-          wrap="nowrap"
-        >
-          {meeting.columns.map((columnTitle, index) => (
-            <RetroColumn
-              props={{
-                meeting,
-                setMeeting,
-                columnTitle,
-                index,
-                addCard,
-                updateCardText,
-                updateCardVotes,
-                deleteCard,
-                moveCard,
-                cards: meeting.cards.filter((card) =>
-                  card.columnIndex === index ? true : false
-                ),
-              }}
-            ></RetroColumn>
-          ))}
-        </Grid>
-      </div>
+      {retroStep === 2 ? <PickRole props={{ previousStep, nextStep }} /> : null}
+
+      {retroStep === 3 && participant.isFacilitator ? (
+        <SetupFacilitator
+          props={{
+            previousStep,
+            nextStep,
+            participant,
+            setParticipant,
+            meeting,
+            setMeeting,
+          }}
+        />
+      ) : retroStep === 3 && participant.isFacilitator === false ? (
+        <SetupParticipant
+          props={{
+            previousStep,
+            nextStep,
+            participant,
+            setParticipant,
+            meeting,
+            setMeeting,
+          }}
+        />
+      ) : null}
+
+      {retroStep === 4 ? (
+        <MeetingInProgress
+          props={{
+            meeting,
+            setMeeting,
+            addCard,
+            deleteCard,
+            updateCardText,
+            updateCardVotes,
+            moveCard,
+            participant,
+            setParticipant,
+            socket,
+            setSocket,
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -20,3 +20,19 @@
   max-width: 80%;
   text-align: center;
 }
+
+.loadFromPrevious {
+  box-shadow: none !important;
+  border: 1px dashed #2196f3;
+  background: white !important;
+  font-weight: bold;
+  color: hsl(207, 90%, 34%) !important;
+  font-size: 1.03em !important;
+  background: "white";
+  margin: 0px 25px 20px;
+}
+
+.loadFromPrevious button {
+  padding: 2px;
+  margin: 3px;
+}

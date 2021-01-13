@@ -1,5 +1,11 @@
 .navbarUserSection {
   margin-left: auto;
+  transition: 0.5s all ease;
+  opacity: 1;
+}
+
+.hideWhileLoading {
+  opacity: 0;
 }
 
 .navbarUserSection .btn {
@@ -51,7 +57,8 @@ a:active {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 500px;
+  width: 350px;
+  padding-left: 30px
 }
 
 .bar {

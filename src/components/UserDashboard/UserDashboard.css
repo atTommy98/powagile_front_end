@@ -1,0 +1,33 @@
+.avatar-user {
+    width: 96px !important;
+    height: 96px !important;
+    margin: 25px auto;
+}
+
+.user-details-container {
+    padding-top: 15px;
+}
+
+.user-details {
+    margin: 10px 0px !important;
+    color: rgba(92, 92, 92, 0.6);
+}
+
+.user-name {
+    margin: 10px 0px !important;
+}
+
+.stat-title {
+    font-size: 14px;
+    color: rgba(92, 92, 92, 0.6);
+    margin-top: 12px !important;
+}
+
+.stat {
+    font-size: 50px !important;
+    margin: 0px 0px 0px 20px !important;
+}
+
+.stat-container {
+    padding: 20px 0px 0px 0px;
+}

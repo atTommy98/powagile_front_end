@@ -42,6 +42,19 @@ export default function TimerPartyParrot({ props, children }) {
     }
   }
 
+  function storePauses() {
+    const newParticipants = [...meetingParticipants];
+
+    const index = newParticipants.findIndex(
+      (participant) => participant.hasHadTurn === false
+    );
+
+    newParticipants[index].pauses.push(Date.now());
+
+    setMeeting({ ...meeting, meetingParticipants: newParticipants });
+    setActiveStage({ ...activeStage, timerActive: false });
+  }
+
   function findWhoIsNext() {
     // Find next participant
     const index = meetingParticipants.findIndex(
@@ -76,6 +89,7 @@ export default function TimerPartyParrot({ props, children }) {
     const index = newParticipants.findIndex(
       (participant) => participant.hasHadTurn === false
     );
+
     newParticipants[index].hasHadTurn = true;
     setMeeting({ ...meeting, meetingParticipants: newParticipants });
   }
@@ -87,6 +101,12 @@ export default function TimerPartyParrot({ props, children }) {
       (participant) => participant.hasHadTurn === false
     );
     newParticipants[index].hasHadTurn = true;
+    setMeeting({
+      ...meeting,
+      meetingEndTime: Date.now(),
+      meetingParticipants: newParticipants,
+      meetingFinished: true,
+    });
 
     // Stop all timers
     setActiveStage({
@@ -94,14 +114,6 @@ export default function TimerPartyParrot({ props, children }) {
       timerActive: false,
       timerStage: false,
       randomizerStage: false,
-    });
-
-    // Update main "meeeting" state
-    setMeeting({
-      ...meeting,
-      meetingParticipants: newParticipants,
-      meetingEndTime: Date.now(),
-      meetingFinished: true,
     });
   }
 
@@ -175,12 +187,7 @@ export default function TimerPartyParrot({ props, children }) {
         <div className="supportingComponents">{children}</div>
 
         {activeStage.timerActive === true ? (
-          <Fab
-            color="secondary"
-            onClick={() =>
-              setActiveStage({ ...activeStage, timerActive: false })
-            }
-          >
+          <Fab color="secondary" onClick={storePauses}>
             <PauseIcon />
           </Fab>
         ) : (

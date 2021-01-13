@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navigation(props) {
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { user, isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
   const history = useHistory();
   const classes = useStyles();
 
@@ -61,11 +61,11 @@ export default function Navigation(props) {
       image: "mui-assets/img/logo-pied-piper-white-icon.png",
       width: 32,
     },
-    link1: "Features",
-    link2: "Enterprise",
-    link3: "Support",
-    link4: "ICO",
-    avatar: "",
+    link1: "Home",
+    link2: "StandUp",
+    link3: "Retro",
+    link4: "Sprint Planner",
+    avatar: "Sprint Review",
     ...props.content,
   };
 
@@ -100,23 +100,34 @@ export default function Navigation(props) {
           <MenuIcon />
         </IconButton>
         <div className="link-container">
-          <Link to="/" className="nav-link">
+          <Link to="/" className="nav-link"  onClick={() => {
+                history.replace("/");
+                document.location.reload();
+              }}>
             Home
           </Link>
-          <Link to="/rituals" className="nav-link">
-            Rituals
-          </Link>
-          <Link to="/rituals/standup" className="nav-link">
+          <Link to="/rituals/standup" className="nav-link"  onClick={() => {
+                history.replace("/rituals/standup");
+                document.location.reload();
+              }}>
             Stand Up
           </Link>
-          <Link to="/rituals/retro" className="nav-link">
+          <Link to="/rituals/retro" className="nav-link"  onClick={() => {
+                history.replace("/rituals/retro");
+                document.location.reload();
+              }}>
             Retro
           </Link>
         </div>
-
-        <div className="navbarUserSection">
+        <div
+          className={
+            isLoading
+              ? "navbarUserSection hideWhileLoading"
+              : "navbarUserSection"
+          }
+        >
           {isAuthenticated ? <LogOutButton /> : <LogInButton />}
-          <Link to={isAuthenticated ? "/user" : null}>
+          <Link to={isAuthenticated ? "/user" : "/login"}>
             <IconButton
               color="inherit"
               className="avatar"
