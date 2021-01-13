@@ -67,35 +67,34 @@ export default function MeetingInProgress({ props }) {
         });
 
         //// 📥 "Receive" rules
-        // Initialise Meeting
-        socket.on("initialise_meeting", (meeting) => {
+        // Update Meeting State
+        socket.on("updateMeeting", (meeting) => {
           setMeeting(meeting);
-          setMeeting(meeting);
         });
-        // Add
-        socket.on("addCard", (card) => {
-          addCard({ source, card });
-        });
+        // // Add
+        // socket.on("addCard", (card) => {
+        //   addCard({ source, card });
+        // });
 
-        // Delete
-        socket.on("deleteCard", (id) => {
-          deleteCard({ source, id });
-        });
+        // // Delete
+        // socket.on("deleteCard", (id) => {
+        //   deleteCard({ source, id });
+        // });
 
-        // Update Text
-        socket.on("updateCardText", ({ id, content }) => {
-          updateCardText({ source, id, content });
-        });
+        // // Update Text
+        // socket.on("updateCardText", ({ id, content }) => {
+        //   updateCardText({ source, id, content });
+        // });
 
-        // Update Votes
-        socket.on("updateCardVotes", ({ id, thumb }) => {
-          updateCardVotes({ source, id, thumb });
-        });
+        // // Update Votes
+        // socket.on("updateCardVotes", ({ id, thumb }) => {
+        //   updateCardVotes({ source, id, thumb });
+        // });
 
-        // Move card
-        socket.on("moveCard", ({ id, direction }) => {
-          moveCard({ source, id, direction });
-        });
+        // // Move card
+        // socket.on("moveCard", ({ id, direction }) => {
+        //   moveCard({ source, id, direction });
+        // });
 
         setRulesEstablished(true);
       }
