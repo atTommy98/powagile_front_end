@@ -44,14 +44,15 @@ export default function MeetingStats(props) {
     <div className="input-container">
       <Paper
         elevation={3}
-        style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
+        style={{ height: "auto", padding: "5px", margin: "0px auto" }}
       >
-        <p className="statsTitle">Filter your meeting by Date</p>
+        <p style={{ fontSize: "26px", margin: "15px" }}>Select Meeting Date</p>
         <input
           style={{
             width: "175px",
             align: "center",
             display: "inline-block",
+            marginBottom: "15px",
           }}
           className="form-control-homepage"
           type="date"
@@ -71,7 +72,7 @@ export default function MeetingStats(props) {
         <p>Showing all meetings from: {dateFilter} 📅</p>
         {meetingHistory.map((obj, i) => {
           return (
-            <div className="notes inner">
+            <div className="notes-inner">
               <div key={i}>
                 <FormPropsTextFields
                   index={i}
@@ -86,10 +87,11 @@ export default function MeetingStats(props) {
                 <FormPropsTextFields
                   index={i}
                   label="Meeting Time"
-                  defaultValue={
-                    new Date(obj.meetingEndTime).getTime() -
-                    new Date(obj.meetingStartTime).getTime()
-                  }
+                  defaultValue={`${Math.round(
+                    (new Date(obj.meetingEndTime).getTime() -
+                      new Date(obj.meetingStartTime).getTime()) /
+                      60000
+                  )} minutes`}
                 />
                 <SimpleAccordion
                   title="Details"

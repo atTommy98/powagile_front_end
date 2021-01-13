@@ -4,6 +4,11 @@ import React, { useState, useEffect } from "react";
 // React-Charts
 import { Bar } from "react-chartjs-2";
 
+//MUI
+import Card from "@material-ui/core/Card";
+
+import "./StatsGraph.css"
+
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
 
@@ -90,11 +95,11 @@ export default function StatsGraph() {
     datasets: [
       {
         label: "Total Meeting Time",
-        backgroundColor: "rgba(100,100,100,0.2)",
-        borderColor: "rgba(10,10,10,0.2)",
+        backgroundColor: "rgba(33, 148, 243, 0.2)",
+        borderColor: "rgba(50, 100, 100,0.4)",
         borderWidth: 1,
-        hoverBackgroundColor: "rgba(100,100,100,0.3)",
-        hoverBorderColor: "rgba(10,10,10,0.5)",
+        hoverBackgroundColor: "rgba(33, 148, 243,0.4)",
+        hoverBorderColor: "rgba(50, 100, 100,0.8)",
         minBarLength: 0,
         data: generateDataset(),
         yAxesID: "Y-Axes",
@@ -103,51 +108,56 @@ export default function StatsGraph() {
   };
 
   return (
-    <div>
-      {!stats ? null : (
-        <Bar
-          data={data}
-          options={{
-            title: {
-              display: true,
-              text: "Total Time in Meetings This Week",
-              fontSize: 20,
-            },
-            animation: { duration: 2000 },
-            legend: {
-              display: true,
-              align: "center",
-              position: "top",
-              labels: { padding: 5 },
-            },
-            scales: {
-              yAxes: [
-                {
-                  scaleLabel: {
-                    display: true,
-                    labelString: "Minutes",
-                    fontSize: 15,
+    <Card elevation={3}>
+      <div className="graph-container">
+        {!stats ? null : (
+          <Bar
+            data={data}
+            options={{
+              title: {
+                display: true,
+                text: "Total Time in Meetings This Week",
+                fontSize: 24,
+                fontFamily: "Roboto",
+                fontColor: "rgba(0,0,0)"
+              },
+              animation: { duration: 2000 },
+              legend: {
+                display: true,
+                align: "center",
+                position: "top",
+                labels: { padding: 5 },
+              },
+              scales: {
+                yAxes: [
+                  {
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Minutes",
+                      fontSize: 15,
+                    },
+                    ticks: {
+                      suggestedMin: 0,
+                      suggestedMax:
+                        Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                    },
                   },
-                  ticks: {
-                    suggestedMin: 0,
-                    suggestedMax:
-                      Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                ],
+                xAxes: [
+                  {
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Date (day/month)",
+                      fontSize: 15,
+
+                    },
                   },
-                },
-              ],
-              xAxes: [
-                {
-                  scaleLabel: {
-                    display: true,
-                    labelString: "Date (day/month)",
-                    fontSize: 15,
-                  },
-                },
-              ],
-            },
-          }}
-        />
-      )}
-    </div>
+                ],
+              },
+            }}
+          />
+        )}
+      </div>
+    </Card>
   );
 }
