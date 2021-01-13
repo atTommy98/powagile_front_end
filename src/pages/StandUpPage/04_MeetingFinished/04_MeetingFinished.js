@@ -22,7 +22,9 @@ import LockIcon from "@material-ui/icons/Lock";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
-import LogInButton from "../../../components/Login/LogInButton/LogInButton";
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
@@ -61,7 +63,7 @@ export default function MeetingFinished({ props }) {
   useEffect(() => {
     function postMeetingToDatabase() {
       try {
-        fetch("http://localhost:8080/meeting", {
+        fetch(`${REACT_APP_BACK_END_URL}/meeting`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(meeting),

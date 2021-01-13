@@ -13,6 +13,10 @@ import { Typography } from "@material-ui/core";
 import SimpleAccordion from "./Acordion";
 import FormPropsTextFields from "../../components/TextField/Text";
 
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_BACK_END_URL } = process.env;
+
 export default function MeetingStats(props) {
   const { calculateTotalMeetingTime } = props;
   // state for filtered date
@@ -28,7 +32,7 @@ export default function MeetingStats(props) {
     timestamp = timestamp.getTime();
 
     const res = await fetch(
-      `http://localhost:8080/meeting/getByDate?meetingStartTime=${timestamp}`
+      `${REACT_APP_BACK_END_URL}/meeting/getByDate?meetingStartTime=${timestamp}`
     );
     const { data } = await res.json();
     console.log(data);

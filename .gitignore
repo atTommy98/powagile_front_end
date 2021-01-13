@@ -27,3 +27,9 @@ yarn-error.log*
 ## eslintcache
 .eslintcache
 *.eslintcache
+
+## environment variables
+*.env
+.env
+.env.development
+.env.dev
