@@ -21,13 +21,6 @@ import { Link } from "react-router-dom";
 // CSS
 import "./HomePage.css";
 
-// Unused
-import Features4 from "../../components/features/Features4";
-import Team2 from "../../components/team/Team2";
-import Gallery2 from "../../components/gallery/Gallery2";
-import Footer3 from "../../components/footers/Footer3";
-import UserDashboard from "../../components/UserDashboard/UserDashboard";
-
 export default function Index(props) {
   return (
     <div>
