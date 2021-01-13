@@ -17,6 +17,7 @@ import "./02_Setup.css";
 // Custom Componenets
 import ParticipantCard from "../../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 
+// Environment variables
 require("dotenv").config();
 const { REACT_APP_BACK_END_URL } = process.env;
 
