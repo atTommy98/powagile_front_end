@@ -17,6 +17,9 @@ import "./02_Setup.css";
 // Custom Componenets
 import ParticipantCard from "../../../components/MeetingParticipants/ParticipantCard/ParticipantCard";
 
+require("dotenv").config();
+const { REACT_APP_BACK_END_URL } = process.env;
+
 export default function SetupPage({ props }) {
   const {
     minutesPerParticipant,
@@ -38,7 +41,7 @@ export default function SetupPage({ props }) {
 
   // FIXME: Needs to do a query just for the last meeting for that user
   async function getParticipants() {
-    const res = await fetch("http://localhost:8080/meeting/getAll");
+    const res = await fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`);
     const data = await res.json();
 
     const fetchedParticipants = [];

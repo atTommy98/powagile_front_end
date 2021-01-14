@@ -26,5 +26,5 @@ export default function UserDashboard() {
   }
 
   generateNumberOfRetros()
-  return <h3>Total Retros Held: {generateNumberOfRetros()}</h3>;
+  return <h3 className="stat">{generateNumberOfRetros()}</h3>;
 }

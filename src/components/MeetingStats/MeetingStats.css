@@ -22,3 +22,9 @@
   margin: none;
   padding: none;
 }
+
+
+.notes-inner {
+  border:rgba(92, 92, 92, 0.6) solid 1px;
+  padding: 30px
+}

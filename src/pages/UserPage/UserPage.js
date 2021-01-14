@@ -11,15 +11,15 @@ import "./UserPage.css";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 // Components
 
-//User Dash
-import UserDashboard from "../../components/UserDashboard/UserDashboard"
-
-
+import UserDashboard from "../../components/UserDashboard/UserDashboard";
 import StatsGraph from "../../components/StatsGraph/StatsGraph";
 import MeetingStats from "../../components/MeetingStats/MeetingStats";
+import FastestMeeting from "../../components/FastestMeeting/FastestMeeting"
+
+// MUI
+import Grid from "@material-ui/core/Grid";
 
 export default function UserPage() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -68,13 +68,18 @@ export default function UserPage() {
   }, [getAccessTokenSilently, user]);
 
   return isAuthenticated ? (
-    <div>
-      <div id="userInfo">
+    <Grid container spacing={5}>
+      <Grid item xs={12}>
         <UserDashboard></UserDashboard>
-      </div>
-      <MeetingStats></MeetingStats>
-      <StatsGraph></StatsGraph>
-    </div>
+      </Grid>
+      <Grid item xs={4}>
+        <MeetingStats></MeetingStats>
+      </Grid>
+      <Grid item xs={8}>
+        <StatsGraph></StatsGraph>
+        <FastestMeeting></FastestMeeting>
+      </Grid>
+    </Grid>
   ) : (
     <h2>🤔 You don't seem to be logged in!</h2>
   );

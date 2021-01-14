@@ -28,6 +28,10 @@ import { nanoid } from "nanoid";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_FRONT_END_URL } = process.env;
+
 export default function SetupFacilitator({ props }) {
   const {
     previousStep,
@@ -156,7 +160,7 @@ export default function SetupFacilitator({ props }) {
         <FilledInput
           readOnly
           id="generated-meeting-url"
-          value={`http://localhost:3000/rituals/retro?roomId=${meeting.roomId}`}
+          value={`${REACT_APP_FRONT_END_URL}/rituals/retro?roomId=${meeting.roomId}`}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
