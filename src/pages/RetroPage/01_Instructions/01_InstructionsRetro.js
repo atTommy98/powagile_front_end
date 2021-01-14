@@ -19,7 +19,8 @@ export default function InstructionsRetro({ props }) {
     },
     {
       title: `How long does a Retrospective last?`,
-      text: `Sprint retrospective should take between 60 to 90 minutes for a two-week sprint and likely a bit longer (however, probably not proportionally longer) when doing longer sprints.`,
+      text: `Sprint retrospective should take between 60 to 90 minutes for a two-week sprint and likely a bit longer (however, probably not proportionally longer) when doing longer sprints. 
+      Daily Retrospective should last between 10 - 15 minutes depending on the type of retro selected`,
     },
     {
       title: `What questions are asked in a Retrospective?`,
@@ -29,14 +30,6 @@ export default function InstructionsRetro({ props }) {
       title: `What are the benefits of a Retrospective?`,
       text: `The most important benefit is that it cuts through hierarchy and gives equal power to the team members to open up and present their views effectively.
       Retrospectives provide platform to celebrate success and ponder upon failures. Team members can deliberate upon the course of improvements to be included in the next sprint. Retrospective encourages participation, sharing of interests and views, taking the team towards an amicable solution. End of a retrospective let’s the team to start the next sprint with a clean slate.`,
-    },
-    {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
-    },
-    {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
     },
   ];
   return (
