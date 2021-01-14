@@ -13,12 +13,15 @@ import { Typography } from "@material-ui/core";
 import SimpleAccordion from "./Acordion";
 import FormPropsTextFields from "../../components/TextField/Text";
 
+
+
 // Environment variables
 require("dotenv").config();
 const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingStats(props) {
   const { calculateTotalMeetingTime } = props;
+
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
 

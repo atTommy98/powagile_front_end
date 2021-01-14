@@ -15,27 +15,41 @@ export default function InstructionsRetro({ props }) {
   const retroInfo = [
     {
       title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      text: `Identify how to improve teamwork by reflecting on what worked, what didn’t, and why. We recommend running a Retrospective with your team every couple of weeks or at the end of a project milestone.`,
     },
     {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      title: `Prep`,
+      text: `Start the retrospective by creating a new session. Give it a suggestive title and choose between different types of Retro you would like to run.`,
     },
     {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      title: `Set the stage`,
+      text: `Let your team know the following at the start of the meeting: 
+      The reason you’re taking the time to talk about how we have worked is to see how we can make improvements. 
+      We’re coming into this meeting understanding that everyone did the best that they could given their knowledge and tools. 
+      This meeting is a safe space. Nothing that is shared will be used against anyone. 
+      We’re here to explore, not to blame.`,
     },
     {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      title: `Key moments`,
+      text: `Have the team think back over the chosen time period. What were the key events that occured? Provide a few examples, such as goals met, team celebrations, team members joining, company events. 
+      Anchoring the team in key milestones jogs the team’s memory of events that occurred and how they felt about them.`,
     },
     {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      title: `What we did wel`,
+      text: `Depending on the type pf Retro you will run. explain to the team the meaning of all columns.
+      Using our tool, have each team member write down by adding a new card what the team did well, one idea per note. Delete similar or duplicate ideas. Discuss each one briefly as a team.`,
     },
     {
-      title: `What is a Retrospective?`,
-      text: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.`,
+      title: `What we can do better`,
+      text: `Have everyone write down what they think can be improved, one idea per card. Delete similar or duplicate ideas. Discuss each one briefly as a team.`,
+    },
+    {
+      title: `Share your action plan`,
+      text: `Have everyone brainstorm actions that can be taken to improve problem areas, one idea per card. Each person will have a few minutes to share their plan. Use the actions list to capture each action. Make sure to include who will do it, what they are doing, and by when.`,
+    },
+    {
+      title: `Wrap up`,
+      text: `Commit to when you’ll track progress on actions on a regular basis, such as at team meetings or at the next Retro.`,
     },
   ];
   return (

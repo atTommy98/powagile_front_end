@@ -12,6 +12,7 @@ import "./UserPage.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
 // Components
+
 import UserDashboard from "../../components/UserDashboard/UserDashboard";
 import StatsGraph from "../../components/StatsGraph/StatsGraph";
 import MeetingStats from "../../components/MeetingStats/MeetingStats";
