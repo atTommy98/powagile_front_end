@@ -192,7 +192,7 @@ export default function SetupPage({ props }) {
         <p className="totalStandupTime">
           You'll be done in about <b>{totalMeetingTime} minutes.</b>
           <br />
-          Ready to start?
+          Please now share your screen!
         </p>
       ) : totalMeetingTime > 15 ? (
         <p className="totalStandupTime">
