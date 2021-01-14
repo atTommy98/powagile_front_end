@@ -15,6 +15,9 @@ import HorizontalNav4 from "./components/horizontal-navs/HorizontalNav4";
 // Router
 import { Route, Switch } from "react-router-dom";
 
+// Environment variables
+require("dotenv").config();
+
 function App() {
   return (
     <div className="appContainer">

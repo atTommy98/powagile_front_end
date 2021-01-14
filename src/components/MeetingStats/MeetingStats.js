@@ -13,7 +13,15 @@ import { Typography } from "@material-ui/core";
 import SimpleAccordion from "./Acordion";
 import FormPropsTextFields from "../../components/TextField/Text";
 
-export default function MeetingStats() {
+
+
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_BACK_END_URL } = process.env;
+
+export default function MeetingStats(props) {
+  const { calculateTotalMeetingTime } = props;
+
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
 
@@ -27,7 +35,7 @@ export default function MeetingStats() {
     timestamp = timestamp.getTime();
 
     const res = await fetch(
-      `http://localhost:8080/meeting/getByDate?meetingStartTime=${timestamp}`
+      `${REACT_APP_BACK_END_URL}/meeting/getByDate?meetingStartTime=${timestamp}`
     );
     const { data } = await res.json();
     console.log(data);
@@ -35,31 +43,19 @@ export default function MeetingStats() {
     // setIsDateFilter(true);
   }
 
-  function TimeDiff(startTime, endTime) {
-    let sT = new Date(startTime);
-    let eT = new Date(endTime);
-    let difference = eT - sT;
-    let diff_seconds = Math.floor(difference / 1000);
-    let diff_minutes = Math.floor(difference / (1000 * 60));
-    let diffsec2 = diff_seconds - 60;
-    if (diff_minutes === 0) {
-      return `${diff_minutes}:${diff_seconds}`;
-    } else {
-      return `${Math.floor(diff_seconds / 60)}:${Math.abs(diffsec2)}`;
-    }
-  }
   return (
     <div className="input-container">
       <Paper
         elevation={3}
-        style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
+        style={{ height: "auto", padding: "5px", margin: "0px auto" }}
       >
-        <p className="statsTitle">Filter your meeting by Date</p>
+        <p style={{ fontSize: "26px", margin: "15px" }}>Select Meeting Date</p>
         <input
           style={{
             width: "175px",
             align: "center",
             display: "inline-block",
+            marginBottom: "15px",
           }}
           className="form-control-homepage"
           type="date"
@@ -79,7 +75,7 @@ export default function MeetingStats() {
         <p>Showing all meetings from: {dateFilter} 📅</p>
         {meetingHistory.map((obj, i) => {
           return (
-            <div className="notes inner">
+            <div className="notes-inner">
               <div key={i}>
                 <FormPropsTextFields
                   index={i}
@@ -94,10 +90,11 @@ export default function MeetingStats() {
                 <FormPropsTextFields
                   index={i}
                   label="Meeting Time"
-                  defaultValue={TimeDiff(
-                    obj.meetingStartTime,
-                    obj.meetingEndTime
-                  )}
+                  defaultValue={`${Math.round(
+                    (new Date(obj.meetingEndTime).getTime() -
+                      new Date(obj.meetingStartTime).getTime()) /
+                      60000
+                  )} minutes`}
                 />
                 <SimpleAccordion
                   title="Details"
