@@ -26,7 +26,7 @@ export default function SimpleAccordion({
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

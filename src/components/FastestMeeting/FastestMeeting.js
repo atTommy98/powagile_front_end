@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
 // React
+import React, { useEffect, useState } from "react";
+
+//MUI
+import Card from "@material-ui/core/Card";
+
+//CSS
+import "./FastestMeeting.css";
 
 export default function UserDashboard() {
   const [meetings, setMeetings] = useState([]);
@@ -80,16 +86,25 @@ export default function UserDashboard() {
     let quickestIndex = meetingTimeArr.indexOf(Math.min(...meetingTimeArr));
     let dayOfQuickest = dayArray[quickestIndex];
     if (dayOfQuickest === 1) {
-      return `Your fastest meeting was ${quickest} minutes on the ${dayOfQuickest}th`;
+      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}st`;
     } else if (dayOfQuickest === 2) {
-      return `Your fastest meeting was ${quickest} minutes on the ${dayOfQuickest}th`;
+      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}nd`;
     } else if (dayOfQuickest === 3) {
-      return `Your fastest meeting was ${quickest} minutes on the ${dayOfQuickest}th`;
+      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}rd`;
     } else {
-      return `Your fastest meeting was ${quickest} minutes on the ${dayOfQuickest}th`;
+      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}th`;
     }
   }
   const dataset = generateDataset();
 
-  return <h3>{meetings ? quickestMeeting(dataset) : null}</h3>;
+  return (
+    <div className="fastest-container">
+      <Card>
+      <div className="info-container"> 
+
+        <h3 className="fastest-text">{meetings ? quickestMeeting(dataset) : null}</h3>
+      </div>
+      </Card>
+    </div>
+  );
 }

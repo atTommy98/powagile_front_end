@@ -10,6 +10,10 @@ import RetroColumn from "./RetroColumn/RetroColumn";
 // Socket.io Client
 import { io } from "socket.io-client";
 
+// Environment variables
+require("dotenv").config();
+const { REACT_APP_BACK_END_URL } = process.env;
+
 export default function MeetingInProgress({ props }) {
   const {
     meeting,
@@ -42,7 +46,7 @@ export default function MeetingInProgress({ props }) {
       const { name, isFacilitator, avatar } = participant;
 
       setSocket(
-        io("http://localhost:8080", {
+        io(`${REACT_APP_BACK_END_URL}`, {
           query: {
             roomId,
             name,

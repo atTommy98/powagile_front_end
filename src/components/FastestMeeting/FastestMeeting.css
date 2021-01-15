@@ -1,0 +1,14 @@
+.fastest-container {
+    margin-top: 10px !important
+}
+
+.info-container {
+    padding: 10px;
+    display: flex;
+}
+
+.fastest-text {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-size: 20px;
+}

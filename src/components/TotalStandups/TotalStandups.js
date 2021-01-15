@@ -27,5 +27,5 @@ export default function UserDashboard() {
   }
 
   generateNumberOfStandups();
-  return <h3>Total Standups Held: {generateNumberOfStandups()}</h3>;
+  return <h3 className="stat">{generateNumberOfStandups()}</h3>;
 }
