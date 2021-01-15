@@ -8,13 +8,11 @@ import "./MeetingStats.css";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card"
+import Card from "@material-ui/core/Card";
 
 //components
 import SimpleAccordion from "./Acordion";
 import FormPropsTextFields from "../../components/TextField/Text";
-
-
 
 // Environment variables
 require("dotenv").config();
@@ -74,46 +72,44 @@ export default function MeetingStats(props) {
           Get all Meetings
         </Button>
         <p>Showing all meetings from: {dateFilter} 📅</p>
-        {meetingHistory.map((obj, i) => {
-          return (
-            <div className="notes-inner">
-              <div key={i}>
-                <FormPropsTextFields
-                  index={i}
-                  label="Meeting Type"
-                  defaultValue={obj.type}
-                />
-                <FormPropsTextFields
-                  index={i}
-                  label="Meeting Date"
-                  defaultValue={dateFilter}
-                />
-                <FormPropsTextFields
-                  index={i}
-                  label="Meeting Time"
-                  defaultValue={`${Math.round(
-                    (new Date(obj.meetingEndTime).getTime() -
-                      new Date(obj.meetingStartTime).getTime()) /
-                      60000
-                  )} minutes`}
-                />
-                <SimpleAccordion
-                  title="Details"
-                  textParticipant={obj.meetingParticipants.map((ojs) => {
-                    return <div>Name: {ojs.name}</div>;
-                  })}
-                  textTimeLeft={obj.meetingParticipants.map((ojs) => {
-                    return <div>Time left: {ojs.timeLeft}</div>;
-                  })}
-                  //   textTimePaused={obj.meetingParticipants.map((ojs) => {
-                  //     return <div>Pauses: {ojs.pauses}</div>;
-                  //   })}
-                ></SimpleAccordion>
-              </div>
-            </div>
-          );
-        })}
       </Paper>
+      {meetingHistory.map((obj, i) => {
+        return (
+          <Card className="notes-inner" elevation={3}>
+            <FormPropsTextFields
+              index={i}
+              label="Meeting Type"
+              defaultValue={obj.type}
+            />
+            <FormPropsTextFields
+              index={i}
+              label="Meeting Date"
+              defaultValue={dateFilter}
+            />
+            <FormPropsTextFields
+              index={i}
+              label="Meeting Time"
+              defaultValue={`${Math.round(
+                (new Date(obj.meetingEndTime).getTime() -
+                  new Date(obj.meetingStartTime).getTime()) /
+                  60000
+              )} minutes`}
+            />
+            <SimpleAccordion
+              title="Details"
+              textParticipant={obj.meetingParticipants.map((ojs) => {
+                return <div>Name: {ojs.name}</div>;
+              })}
+              textTimeLeft={obj.meetingParticipants.map((ojs) => {
+                return <div>Time left: {ojs.timeLeft}</div>;
+              })}
+              //   textTimePaused={obj.meetingParticipants.map((ojs) => {
+              //     return <div>Pauses: {ojs.pauses}</div>;
+              //   })}
+            ></SimpleAccordion>
+          </Card>
+        );
+      })}
     </div>
   );
 }
