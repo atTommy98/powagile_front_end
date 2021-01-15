@@ -115,7 +115,7 @@ export default function StatsGraph() {
               text: "Total Time in Meetings This Week",
               fontSize: 20,
             },
-            animation: { duration: 2000 },
+            animation: { duration: 1000 },
             legend: {
               display: true,
               align: "center",
@@ -132,8 +132,8 @@ export default function StatsGraph() {
                   },
                   ticks: {
                     suggestedMin: 0,
-                    suggestedMax:
-                      Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                    suggestedMax: 100
+                      // Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                   },
                 },
               ],
