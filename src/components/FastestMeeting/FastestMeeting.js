@@ -7,6 +7,11 @@ import Card from "@material-ui/core/Card";
 //CSS
 import "./FastestMeeting.css";
 
+// Environment variables
+require("dotenv").config();
+
+const { REACT_APP_BACK_END_URL } = process.env;
+
 export default function UserDashboard() {
   const [meetings, setMeetings] = useState([]);
 
@@ -15,7 +20,7 @@ export default function UserDashboard() {
   // retrieve all meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting")
+      fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`)
         .then((res) => res.json())
         .then((data) => setMeetings(data));
     }
@@ -55,8 +60,8 @@ export default function UserDashboard() {
     // eslint-disable-next-line array-callback-return
     meetings.map((obj) => {
       let meetingTime = calculateTotalTime(
-        obj.meetingStartTime,
-        obj.meetingEndTime
+        Date.parse(obj.meetingStartTime),
+        Date.parse(obj.meetingEndTime)
       );
       // Check it's a valid meeting
       if (obj.meetingStartTime && obj.meetingEndTime) {
@@ -85,26 +90,18 @@ export default function UserDashboard() {
     let quickest = Math.ceil(Math.min(...meetingTimeArr));
     let quickestIndex = meetingTimeArr.indexOf(Math.min(...meetingTimeArr));
     let dayOfQuickest = dayArray[quickestIndex];
-    if (dayOfQuickest === 1) {
-      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}st`;
-    } else if (dayOfQuickest === 2) {
-      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}nd`;
-    } else if (dayOfQuickest === 3) {
-      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}rd`;
-    } else {
-      return `Your fastest meeting in the past week was ${quickest} minutes on the ${dayOfQuickest}th`;
-    }
+    return (
+      <div className="fastest-meeting-container">
+        <h3 className="fastest-meeting-number">{quickest} minutes</h3>
+        <h4 className="fastest-meeting-text">Fastest Meeting This Week 💨</h4>
+      </div>
+    );
   }
   const dataset = generateDataset();
 
   return (
     <div className="fastest-container">
-      <Card>
-      <div className="info-container"> 
-
-        <h3 className="fastest-text">{meetings ? quickestMeeting(dataset) : null}</h3>
-      </div>
-      </Card>
+      <Card>{meetings ? quickestMeeting(dataset) : null}</Card>
     </div>
   );
 }

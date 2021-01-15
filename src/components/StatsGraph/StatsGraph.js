@@ -4,10 +4,16 @@ import React, { useState, useEffect } from "react";
 // React-Charts
 import { Bar } from "react-chartjs-2";
 
-//MUI
+// MUI
 import Card from "@material-ui/core/Card";
 
+// CSS
 import "./StatsGraph.css"
+
+// Environment variables
+require("dotenv").config();
+
+const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
@@ -17,7 +23,7 @@ export default function StatsGraph() {
   //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting/getAll")
+      fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`)
         .then((res) => res.json())
         .then((data) => setStats(data.flat()));
     }

@@ -8,6 +8,7 @@ import "./MeetingStats.css";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
+import Card from "@material-ui/core/Card"
 
 //components
 import SimpleAccordion from "./Acordion";
