@@ -11,13 +11,15 @@ import "./StatsGraph.css"
 
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
+  const previousWeek = calculatePreviousWeek();
+  const labelArray = createLabelArray(previousWeek);
 
-  // retrieve all meetings from database
+  //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting")
+      fetch("https://powagile-back-end.herokuapp.com/meeting/getAll")
         .then((res) => res.json())
-        .then((data) => setStats(data));
+        .then((data) => setStats(data.flat()));
     }
     retrieveMeetings();
   }, []);
@@ -34,15 +36,16 @@ export default function StatsGraph() {
           if (meetingDate.day === previousWeek[i].day) {
             values[i] = Math.round(
               values[i] +
-                calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
+                calculateTotalTime(
+                  Date.parse(obj.meetingStartTime),
+                  Date.parse(obj.meetingEndTime)
+                )
             );
-
             break;
           }
         }
       }
     });
-
     return values;
   }
 
@@ -86,8 +89,7 @@ export default function StatsGraph() {
     return labelArray;
   }
 
-  const previousWeek = calculatePreviousWeek();
-  const labelArray = createLabelArray(previousWeek);
+  console.log(generateDataset());
 
   // dataset for the graph
   const data = {
@@ -138,8 +140,8 @@ export default function StatsGraph() {
                     },
                     ticks: {
                       suggestedMin: 0,
-                      suggestedMax:
-                        Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                      suggestedMax: 100,
+                        //Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                     },
                   },
                 ],

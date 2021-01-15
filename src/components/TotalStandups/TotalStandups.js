@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 export default function UserDashboard() {
   const [meetings, setMeetings] = useState([]);
 
+  //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting")
+      fetch("https://powagile-back-end.herokuapp.com/meeting/getAll")
         .then((res) => res.json())
         .then((data) => setMeetings(data));
     }

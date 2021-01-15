@@ -26,6 +26,7 @@ export default function UserPage() {
   const [userMetadata, setUserMetadata] = useState(null);
   const cookies = new Cookies();
 
+
   // Get and set user metadata, cookie
   useEffect(() => {
     const getUserMetadata = async () => {
