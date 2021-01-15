@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 // React
 
-export default function UserDashboard() {
+export default function UserDashboard(props) {
   const [meetings, setMeetings] = useState([]);
 
+  //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting")
+      fetch("https://powagile-back-end.herokuapp.com/meeting/getAll")
         .then((res) => res.json())
         .then((data) => setMeetings(data));
     }
