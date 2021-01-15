@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
 // React
+import React, { useEffect, useState } from "react";
+
+// Environment variables
+require("dotenv").config();
+
+const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function UserDashboard() {
   const [meetings, setMeetings] = useState([]);
@@ -7,7 +12,7 @@ export default function UserDashboard() {
   //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting/getAll")
+      fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`)
         .then((res) => res.json())
         .then((data) => setMeetings(data));
     }

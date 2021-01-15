@@ -36,7 +36,7 @@ export default function UserDashboard() {
         <Grid item xs={6}>
           <div className="user-details-container">
             <h2 className="user-name">
-              {user ? user.name : <h3>pws log in</h3>}
+              {user ? user.name : <h3>Please log in</h3>}
             </h2>
             <h4 className="user-details">Facilitator</h4>
             <h4 className="user-details">

@@ -20,14 +20,13 @@
 .stat-title {
     font-size: 14px;
     color: rgba(92, 92, 92, 0.6);
-    margin-top: 12px !important;
 }
 
 .stat {
     font-size: 50px !important;
-    margin: 0px 0px 0px 20px !important;
+    margin: 20px 0px 0px 0px;
 }
 
 .stat-container {
-    padding: 20px 0px 0px 0px;
+    text-align: center;
 }
