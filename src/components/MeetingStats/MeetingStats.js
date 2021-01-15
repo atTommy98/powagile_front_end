@@ -73,43 +73,45 @@ export default function MeetingStats(props) {
         </Button>
         <p>Showing all meetings from: {dateFilter} 📅</p>
       </Paper>
-      {meetingHistory.map((obj, i) => {
-        return (
-          <Card className="notes-inner" elevation={3}>
-            <FormPropsTextFields
-              index={i}
-              label="Meeting Type"
-              defaultValue={obj.type}
-            />
-            <FormPropsTextFields
-              index={i}
-              label="Meeting Date"
-              defaultValue={dateFilter}
-            />
-            <FormPropsTextFields
-              index={i}
-              label="Meeting Time"
-              defaultValue={`${Math.round(
-                (new Date(obj.meetingEndTime).getTime() -
-                  new Date(obj.meetingStartTime).getTime()) /
-                  60000
-              )} minutes`}
-            />
-            <SimpleAccordion
-              title="Details"
-              textParticipant={obj.meetingParticipants.map((ojs) => {
-                return <div>Name: {ojs.name}</div>;
-              })}
-              textTimeLeft={obj.meetingParticipants.map((ojs) => {
-                return <div>Time left: {ojs.timeLeft}</div>;
-              })}
-              //   textTimePaused={obj.meetingParticipants.map((ojs) => {
-              //     return <div>Pauses: {ojs.pauses}</div>;
-              //   })}
-            ></SimpleAccordion>
-          </Card>
-        );
-      })}
+      {meetingHistory
+        ? meetingHistory.map((obj, i) => {
+            return (
+              <Card className="notes-inner" elevation={3}>
+                <FormPropsTextFields
+                  index={i}
+                  label="Meeting Type"
+                  defaultValue={obj.type}
+                />
+                <FormPropsTextFields
+                  index={i}
+                  label="Meeting Date"
+                  defaultValue={dateFilter}
+                />
+                <FormPropsTextFields
+                  index={i}
+                  label="Meeting Time"
+                  defaultValue={`${Math.round(
+                    (new Date(obj.meetingEndTime).getTime() -
+                      new Date(obj.meetingStartTime).getTime()) /
+                      60000
+                  )} minutes`}
+                />
+                <SimpleAccordion
+                  title="Details"
+                  textParticipant={obj.meetingParticipants.map((ojs) => {
+                    return <div>Name: {ojs.name}</div>;
+                  })}
+                  textTimeLeft={obj.meetingParticipants.map((ojs) => {
+                    return <div>Time left: {ojs.timeLeft}</div>;
+                  })}
+                  //   textTimePaused={obj.meetingParticipants.map((ojs) => {
+                  //     return <div>Pauses: {ojs.pauses}</div>;
+                  //   })}
+                ></SimpleAccordion>
+              </Card>
+            );
+          })
+        : null}
     </div>
   );
 }
