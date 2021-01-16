@@ -34,7 +34,7 @@ export default function MeetingStats(props) {
     timestamp = timestamp.getTime();
 
     const res = await fetch(
-      `${REACT_APP_BACK_END_URL}/meeting/getByDate?meetingStartTime=${timestamp}`
+      `${REACT_APP_BACK_END_URL}/meetingStandUp/getByDate?meetingStartTime=${timestamp}`
     );
     const { data } = await res.json();
     console.log(data);

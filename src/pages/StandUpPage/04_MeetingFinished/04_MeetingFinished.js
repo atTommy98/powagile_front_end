@@ -68,7 +68,7 @@ export default function MeetingFinished({ props }) {
   useEffect(() => {
     function postMeetingToDatabase() {
       try {
-        fetch(`${REACT_APP_BACK_END_URL}/meeting`, {
+        fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(meeting),

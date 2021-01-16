@@ -20,7 +20,7 @@ export default function UserDashboard() {
   // retrieve all meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`)
+      fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp/getAll`)
         .then((res) => res.json())
         .then((data) => setMeetings(data));
     }
