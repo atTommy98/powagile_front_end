@@ -41,7 +41,7 @@ export default function SetupPage({ props }) {
 
   // FIXME: Needs to do a query just for the last meeting for that user
   async function getParticipants() {
-    const res = await fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`);
+    const res = await fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp/getAll`);
     const data = await res.json();
 
     const fetchedParticipants = [];

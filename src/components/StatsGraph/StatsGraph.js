@@ -8,7 +8,7 @@ import { Bar } from "react-chartjs-2";
 import Card from "@material-ui/core/Card";
 
 // CSS
-import "./StatsGraph.css"
+import "./StatsGraph.css";
 
 // Environment variables
 require("dotenv").config();
@@ -23,7 +23,7 @@ export default function StatsGraph() {
   //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`)
+      fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp/getAll`)
         .then((res) => res.json())
         .then((data) => setStats(data.flat()));
     }
@@ -127,7 +127,7 @@ export default function StatsGraph() {
                 text: "Total Time in Meetings This Week",
                 fontSize: 24,
                 fontFamily: "Roboto",
-                fontColor: "rgba(0,0,0)"
+                fontColor: "rgba(0,0,0)",
               },
               animation: { duration: 2000 },
               legend: {
@@ -147,7 +147,7 @@ export default function StatsGraph() {
                     ticks: {
                       suggestedMin: 0,
                       suggestedMax: 100,
-                        //Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                      //Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                     },
                   },
                 ],
@@ -157,7 +157,6 @@ export default function StatsGraph() {
                       display: true,
                       labelString: "Date (day/month)",
                       fontSize: 15,
-
                     },
                   },
                 ],
