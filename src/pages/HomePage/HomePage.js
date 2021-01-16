@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 // Custom Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import PlatformLogo from "./images/logo512.png";
-
+import ImgMediaCard from "../../components/ProfileCards/ProfileCard";
 // React Router
 import { Link } from "react-router-dom";
 
@@ -45,7 +45,6 @@ export default function Index(props) {
           </Grid>
         </Grid>
       </section>
-
       <Typography
         className="getStartedText"
         variant="h5"
@@ -55,7 +54,6 @@ export default function Index(props) {
       >
         Get started using our free tools 👇
       </Typography>
-
       <section className="productButtonsSection">
         <Grid container spacing={3}>
           <Grid item xs>
@@ -103,15 +101,11 @@ export default function Index(props) {
           </Grid>
         </Grid>
       </section>
-
-      {/* <section className="ourTeam">
+      <section className="ourTeam">
         <div className="teamMate">
-          <img src="" alt="Daniela Leva - a developer on this project"></img>
-          <h3>Daniela Leva</h3>
-          <h4>Back End, MongoDB, Mongoose</h4>
-          <a href="/">LinkedIn</a>
+          <ImgMediaCard></ImgMediaCard>
         </div>
-      </section> */}
+      </section>
     </div>
   );
 }
