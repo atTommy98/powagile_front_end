@@ -177,7 +177,9 @@ export default function MeetingInProgress({ props }) {
           totalTime: 600,
           timeLeft: 260,
         }}
-      />
+      >
+        <p>Finish button will go here</p>
+      </TimerPartyParrotHorizontal>
       <div>
         <Grid
           className="retroBoardContainer"
