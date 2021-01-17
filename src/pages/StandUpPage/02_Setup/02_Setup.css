@@ -36,3 +36,29 @@
   padding: 2px;
   margin: 3px;
 }
+
+.shareScreenReminder {
+  width: 285px;
+  margin: 20px auto;
+  border: 1px dashed rgba(63, 81, 181, 0.5) !important;
+  border-radius: 5px;
+  padding: 10px 15px;
+  text-align: center !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.shareScreenReminder p {
+  font-size: 0.85em;
+  margin: 0px auto !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.85px !important;
+  margin: 0px !important;
+  color: #3f51b5 !important;
+  font-weight: 500 !important;
+}
+
+.shareScreenReminder svg {
+  fill: #3f51b5 !important;
+  margin: 0 auto;
+}

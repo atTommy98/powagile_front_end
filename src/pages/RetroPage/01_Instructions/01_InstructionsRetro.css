@@ -1,0 +1,12 @@
+.accordionWrapper {
+  margin: 35px auto;
+  max-width: 60%;
+}
+
+.accordionTitle {
+  font-weight: 500 !important;
+}
+
+.accordionContent {
+  text-align: left !important;
+}

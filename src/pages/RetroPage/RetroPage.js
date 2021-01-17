@@ -19,6 +19,9 @@ import FinishedMeeting from "./05_FinishedMeeting/05_FinishedMeeting";
 // nanoid
 import { nanoid } from "nanoid";
 
+// _lodash.debounce
+// import debounce from "lodash.debounce";
+
 // CSS
 import "./RetroPage.css";
 
@@ -131,7 +134,13 @@ function Retro() {
   }
 
   function updateCardText({ id, content }) {
-    // Emit from socket
+    // Update the card (locally)
+    const newCards = [...meeting.cards];
+    const index = newCards.findIndex((card) => card.id === id);
+    newCards[index].content = content;
+    setMeeting({ ...meeting, cards: newCards });
+
+    // Emit from socket (debounced)
     if (socket) {
       socket.emit("updateCardText", { id, content });
     }
