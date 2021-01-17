@@ -8,7 +8,6 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Button from "@material-ui/core/Button";
 import React from "react";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -16,6 +15,13 @@ import IconButton from "@material-ui/core/IconButton";
 import FilledInput from "@material-ui/core/FilledInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import Paper from "@material-ui/core/Paper";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // Custom componenets
 import RetroColumn from "./RetroColumn/RetroColumn";
@@ -26,6 +32,9 @@ import { useSnackbar } from "notistack";
 
 // Socket.io Client
 import { io } from "socket.io-client";
+
+// CSS
+import "./04_MeetingInProgress.css";
 
 // Environment variables
 require("dotenv").config();
@@ -71,6 +80,8 @@ export default function MeetingInProgress({ props }) {
 
   // Establish socket.io connection and rules (send/receive)
   const [rulesEstablished, setRulesEstablished] = useState(false);
+  const [activeParticipants, setActiveParticipants] = useState([]);
+
   useEffect(() => {
     // Establish socket connection
     if (!socket) {
@@ -113,6 +124,10 @@ export default function MeetingInProgress({ props }) {
           setMeeting(meeting);
         });
 
+        socket.on("updateParticipants", (newParticipants) => {
+          setActiveParticipants(newParticipants);
+        });
+
         setRulesEstablished(true);
       }
     }
@@ -145,9 +160,13 @@ export default function MeetingInProgress({ props }) {
           <Typography variant="h4">{meeting.title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl variant="filled" className="uniqueLinkReadOnlyField">
+          <FormControl
+            onClick={copyLink}
+            variant="filled"
+            className="uniqueLinkReadOnlyField"
+          >
             <InputLabel htmlFor="generated-meeting-url">
-              Your unique link - send this to your participants
+              Your meeting room link - click to copy
             </InputLabel>
             <FilledInput
               readOnly
@@ -155,15 +174,7 @@ export default function MeetingInProgress({ props }) {
               value={`${REACT_APP_FRONT_END_URL}/rituals/retro?roomId=${meeting.roomId}`}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton
-                    aria-label="copy link"
-                    onClick={copyLink}
-                    edge="end"
-                  >
-                    <Button>
-                      Copy &nbsp; <FileCopyIcon />
-                    </Button>
-                  </IconButton>
+                  <FileCopyIcon />
                 </InputAdornment>
               }
             />
@@ -171,15 +182,45 @@ export default function MeetingInProgress({ props }) {
         </AccordionDetails>
       </Accordion>
 
-      {/* TODO: Need some logic here, where the server determines the time of the meeting*/}
-      <TimerPartyParrotHorizontal
-        props={{
-          totalTime: 600,
-          timeLeft: 260,
-        }}
-      >
-        <p>Finish button will go here</p>
-      </TimerPartyParrotHorizontal>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <Paper className="retroParticipantsTracker" elevation={2}>
+            <h3>Connected participants</h3>
+            <List className="retroParticipantsListContainer" dense={false}>
+              {activeParticipants.map((el, i) => (
+                <ListItem key={`participant_${el.id}`}>
+                  <ListItemText
+                    primary={el.name}
+                    secondary={i === 0 ? "Facilitator" : "Participant"}
+                  />
+                  {/* FIXME: */}
+                  <ListItemSecondaryAction
+                    onClick={() => console.log(`Kicking ${el.id}`)}
+                  >
+                    {i !== 0 && participant.isFacilitator ? (
+                      <IconButton edge="end" aria-label="completed">
+                        <ExitToAppIcon color="secondary" />
+                      </IconButton>
+                    ) : null}
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item xs={9}>
+          {/* FIXME: No children showing*/}
+          <TimerPartyParrotHorizontal
+            props={{
+              totalTime: 600,
+              timeLeft: 260,
+            }}
+          >
+            <p>Finish button will go here....</p>
+          </TimerPartyParrotHorizontal>
+        </Grid>
+      </Grid>
+
       <div>
         <Grid
           className="retroBoardContainer"

@@ -1,4 +1,5 @@
-.retroCreatePage {
+.retroCreatePage,
+.retroJoinPage {
   margin: 0 auto;
   text-align: center;
 }
@@ -12,8 +13,23 @@
   width: 600px !important;
   text-align: left !important;
 }
-
 .uniqueLinkReadOnlyField {
   width: 600px !important;
   margin: 25px 0px !important;
+}
+
+.uniqueLinkReadOnlyField div,
+input,
+svg {
+  cursor: pointer !important;
+}
+
+#generated-meeting-url {
+  letter-spacing: 0.45px;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.05) 95%
+  );
 }
