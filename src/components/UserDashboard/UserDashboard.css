@@ -1,32 +1,37 @@
 .avatar-user {
-    width: 96px !important;
-    height: 96px !important;
-    margin: 25px auto;
+  width: 96px !important;
+  height: 96px !important;
+  margin: 25px auto;
 }
 
 .user-details-container {
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
 .user-details {
-    margin: 10px 0px !important;
-    color: rgba(92, 92, 92, 0.6);
+  margin: 10px 0px !important;
+  color: rgba(92, 92, 92, 0.6);
 }
 
 .user-name {
-    margin: 10px 0px !important;
+  margin: 10px 0px !important;
 }
 
 .stat-title {
-    font-size: 14px;
-    color: rgba(92, 92, 92, 0.6);
+  font-size: 14px;
+  color: rgba(92, 92, 92, 0.6);
 }
 
 .stat {
-    font-size: 50px !important;
-    margin: 20px 0px 0px 0px;
+  font-size: 50px !important;
+  margin: 20px 0px 0px 0px;
 }
 
 .stat-container {
-    text-align: center;
+  text-align: center;
+}
+
+.email-icon {
+  margin-bottom: -5px;
+  padding: 3px;
 }

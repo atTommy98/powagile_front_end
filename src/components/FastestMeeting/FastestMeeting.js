@@ -101,7 +101,7 @@ export default function UserDashboard() {
 
   return (
     <div className="fastest-container">
-      <Card>{meetings ? quickestMeeting(dataset) : null}</Card>
+      <Card elevation={3}>{meetings ? quickestMeeting(dataset) : null}</Card>
     </div>
   );
 }

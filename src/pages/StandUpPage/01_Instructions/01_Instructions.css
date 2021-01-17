@@ -13,11 +13,6 @@
   padding: none;
 }
 
-.stepsWrapper {
-  width: 100%;
-  margin: 20px auto;
-}
-
 .stepContainer {
   background: rgba(0, 0, 0, 0.015);
   display: inline-block;
@@ -40,4 +35,17 @@
 
 .stepText {
   font-size: 1.2em;
+}
+
+.accordionWrapper {
+  margin: 35px auto;
+  max-width: 60%;
+}
+
+.accordionTitle {
+  font-weight: 500 !important;
+}
+
+.accordionContent {
+  text-align: left !important;
 }

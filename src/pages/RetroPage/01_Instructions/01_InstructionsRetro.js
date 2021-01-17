@@ -69,17 +69,17 @@ export default function InstructionsRetro({ props }) {
   ];
   return (
     <section className="getStartedPage">
-      <div className="stepsWrapper">
+      <div className="accordionWrapper">
         {retroInfo.map((el, i) => (
           <Accordion key={`RetroInstruction_${i}`}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
             >
-              <Typography style={{ fontWeight: "500" }}>{el.title}</Typography>
+              <Typography className="accordionTitle">{el.title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{el.text}</Typography>
+              <Typography className="accordionContent">{el.text}</Typography>
             </AccordionDetails>
           </Accordion>
         ))}

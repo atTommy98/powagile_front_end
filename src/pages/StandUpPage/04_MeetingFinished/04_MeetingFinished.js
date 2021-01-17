@@ -32,7 +32,7 @@ const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const congratulationsMessages = [
     "You smashed it! 💪",

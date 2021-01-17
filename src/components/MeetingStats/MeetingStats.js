@@ -19,7 +19,7 @@ require("dotenv").config();
 const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingStats(props) {
-  const { calculateTotalMeetingTime } = props;
+  // const { calculateTotalMeetingTime } = props;
 
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
@@ -90,7 +90,7 @@ export default function MeetingStats(props) {
                 <FormPropsTextFields
                   index={i}
                   label="Meeting Time"
-                  defaultValue={`${Math.round(
+                  defaultValue={`${Math.ceil(
                     (new Date(obj.meetingEndTime).getTime() -
                       new Date(obj.meetingStartTime).getTime()) /
                       60000
