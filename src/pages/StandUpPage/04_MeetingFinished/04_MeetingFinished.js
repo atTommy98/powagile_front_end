@@ -15,9 +15,13 @@ import { CardContent } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Zoom } from "@material-ui/core";
 import { Fade } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 // Material Icons
 import LockIcon from "@material-ui/icons/Lock";
+
+// notistack
+import { useSnackbar } from "notistack";
 
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
@@ -28,7 +32,8 @@ const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingFinished({ props }) {
   const { minutesPerParticipant, meeting } = props;
-  const { user, isAuthenticated } = useAuth0();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const congratulationsMessages = [
     "You smashed it! 💪",
     "Agile rockstars! 🤘",
@@ -63,19 +68,33 @@ export default function MeetingFinished({ props }) {
   useEffect(() => {
     function postMeetingToDatabase() {
       try {
-        fetch(`${REACT_APP_BACK_END_URL}/meeting`, {
+        fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(meeting),
         })
           .then((response) => response.json())
-          .then((data) => console.log(data));
+          .then((data) =>
+            enqueueSnackbar(
+              "Your meeting was successfully saved to your account!",
+              {
+                persist: false,
+                variant: "success",
+              }
+            )
+          );
       } catch (err) {
-        console.log("hi");
+        console.error(err);
+        enqueueSnackbar(err, {
+          persist: false,
+          variant: "error",
+        });
       }
     }
 
-    postMeetingToDatabase();
+    if (user && isAuthenticated) {
+      postMeetingToDatabase();
+    }
   });
 
   console.log({ minutesPerParticipant, meeting });
@@ -119,10 +138,9 @@ export default function MeetingFinished({ props }) {
     return slowest.name;
   }
 
-  return isAuthenticated ? (
+  return (
     <div>
       <Confetti numberOfPieces={150} recycle={true} />
-
       <section className="finishedTitleArea">
         <h3 className="meetingFinishedTitle">
           {pickRandom(congratulationsMessages)}
@@ -132,143 +150,102 @@ export default function MeetingFinished({ props }) {
       <br />
       <Grid container spacing={3}>
         <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ⌚ Total meeting time
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {calculateTotalMeetingTime()}
-              </Typography>
-            </CardContent>
-          </Card>
+          <Zoom in={true} timeout={1000}>
+            <Card className="statCard">
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  ⌚ Total meeting time
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  {calculateTotalMeetingTime()}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Zoom>
+        </Grid>
+
+        <Grid item xs>
+          <Zoom in={true} timeout={1500}>
+            <Card className="statCard">
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  ⚡ Life in the fast lane
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  {findFastest()}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Zoom>
         </Grid>
         <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ⚡ Life in the fast lane
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {findFastest()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ☕ Could use a coffee
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {findSlowest()}
-              </Typography>
-            </CardContent>
-          </Card>
+          <Zoom in={true} timeout={2000}>
+            <Card className="statCard">
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  ☕ Could use a coffee
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  {findSlowest()}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Zoom>
         </Grid>
       </Grid>
       <br />
-      <p>
-        Please wait while we upload the details this meeting to your account...
-      </p>
-      <p>Success! The meeting details were saved to your account</p>
-      <p>
-        Hmm... There was a problem saving this meeting to your account. Try
-        again or contact our support team
-      </p>
-    </div>
-  ) : (
-    <div>
-      <Confetti numberOfPieces={150} recycle={true} />
 
-      <section className="finishedTitleArea">
-        <h3 className="meetingFinishedTitle">
-          {pickRandom(congratulationsMessages)}
-        </h3>
-        <h4 className="meetingFinishedSubtitle">You finished your stand up</h4>
-      </section>
-      <br />
-      <Grid container spacing={3}>
-        <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ⌚ Total meeting time
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {calculateTotalMeetingTime()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ⚡ Life in the fast lane
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {findFastest()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs>
-          <Card className="statCard">
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                ☕ Could use a coffee
-              </Typography>
-              <Typography variant="h5" component="h2">
-                {findSlowest()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      <div className="lockedStats">
-        <Fade in={true} timeout={2500}>
-          <div className="marketingMessage">
-            <LockIcon fontSize="large" />
-            <p className="salesyTitle">Unlock even more valuable stats</p>
-            <p className="salesySubtitle">
-              {" "}
-              run better, faster, more productive meetings
-            </p>
-
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              href="https://powershellrangers.eu.auth0.com/u/login?state=g6Fo2SA4VVdkTjRmUUwwdG5lblFlSmdiLU02VTNUalZBTjNXb6N0aWTZIFhJSUE0UmU4SUlLYzcyeVpMNWwtNDhwd0FIcGZIOVh5o2NpZNkgS0NkQ3psdjR4eFQ3WmprSTN1eE1zVkVxakNadTdZVjY"
-            >
-              Sign Up for free &rarr;
-            </Button>
-          </div>
-        </Fade>
-
-        <div className="blurryStats">
-          <Grid container spacing={3}>
-            {valuableStats.map((el, i) => (
-              <Zoom in={true} timeout={1200 * (i + 1)}>
-                <Grid item xs={6} sm={3}>
-                  <Card className="statCard">
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        {el}
-                      </Typography>
-                      <Typography variant="h5" component="h2">
-                        ???
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Zoom>
-            ))}
-          </Grid>
+      {user && isAuthenticated ? (
+        <div>
+          <Alert severity="success">
+            Did you know? You can view detailed stats about your meetings in
+            your account page.
+          </Alert>
         </div>
-      </div>
+      ) : (
+        <div className="lockedStats">
+          <Fade in={true} timeout={2500}>
+            <div className="marketingMessage">
+              <LockIcon fontSize="large" />
+              <p className="salesyTitle">Unlock even more valuable stats</p>
+              <p className="salesySubtitle">
+                {" "}
+                run better, faster, more productive meetings
+              </p>
+
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={() => loginWithRedirect()}
+              >
+                Sign Up for free &rarr;
+              </Button>
+            </div>
+          </Fade>
+
+          <div className="blurryStats">
+            <Grid container spacing={3}>
+              {valuableStats.map((el, i) => (
+                <Zoom in={true} timeout={1200 * (i + 1)}>
+                  <Grid item xs={6} sm={3}>
+                    <Card className="statCard">
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          {el}
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          ???
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Zoom>
+              ))}
+            </Grid>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,8 +7,15 @@
     display: flex;
 }
 
-.fastest-text {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    font-size: 20px;
+.fastest-meeting-text {
+    font-size: 14px;
+    color: rgba(92, 92, 92, 0.6);
+}
+
+.fastest-meeting-number {
+    font-size: 36px;
+}
+
+.fastest-meeting-container {
+    text-align: center;
 }

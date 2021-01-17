@@ -1,0 +1,19 @@
+.retroCreatePage {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.inputFieldFacilitator {
+  width: 600px !important;
+  margin: 5px auto;
+}
+
+.retrospectiveDropdown {
+  width: 600px !important;
+  text-align: left !important;
+}
+
+.uniqueLinkReadOnlyField {
+  width: 600px !important;
+  margin: 25px 0px !important;
+}

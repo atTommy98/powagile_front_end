@@ -4,11 +4,12 @@
 describe("The Home Page", () => {
   it("successfully loads", () => {
     cy.visit("http://localhost:3000");
+    cy.wait(500);
   });
 });
 
 // url for stand page
-describe("standup pages url should be correct and loads successfully", () => {
+describe("Standup pages url should be correct and loads successfully", () => {
   it("url is correct", () => {
     cy.visit("http://localhost:3000/rituals/standup");
     cy.url().should("include", "/rituals/standup");
@@ -18,7 +19,7 @@ describe("standup pages url should be correct and loads successfully", () => {
 });
 
 // url for retros page
-describe("retro page url should be correct and loads successfully", () => {
+describe("Retro page url should be correct and loads successfully", () => {
   it("url is correct", () => {
     cy.visit("http://localhost:3000/rituals/retro");
     cy.url().should("include", "/rituals/retro");
@@ -28,8 +29,8 @@ describe("retro page url should be correct and loads successfully", () => {
 });
 
 // retro page button and cards
-describe("Ensure the retro buttons work and cards change", () => {
-  it('finds the content "Retro"', () => {
+describe("Retro Test Facilitator", () => {
+  it('finds the content of "Retro page ensuring all functionality is working"', () => {
     cy.visit("http://localhost:3000/");
     cy.contains("Retro").click();
     cy.url().should("include", "/rituals/retro");
@@ -99,7 +100,7 @@ describe("Ensure the retro buttons work and cards change", () => {
     cy.get(
       ":nth-child(1) > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiPaper-root > .MuiButtonBase-root > .MuiButton-label"
     ).click();
-    cy.get('[rows="4"]').type("fdhshdfh");
+    cy.get('[rows="4"]').type("Sprint planning for the next sprint");
 
     // add card to second column and add text
     cy.get(
@@ -107,7 +108,7 @@ describe("Ensure the retro buttons work and cards change", () => {
     ).click();
     cy.get(
       ':nth-child(2) > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .columnWrapper > .MuiPaper-root > [rows="4"]'
-    ).type("dwhfgq");
+    ).type("Seek help with blockers from the team");
 
     // add card to third column and add text
     cy.get(
@@ -115,7 +116,7 @@ describe("Ensure the retro buttons work and cards change", () => {
     ).click();
     cy.get(
       ':nth-child(3) > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .columnWrapper > .MuiPaper-root > [rows="4"]'
-    ).type("adhahs");
+    ).type("Energisers");
 
     // dislike button
     cy.get(
@@ -149,8 +150,31 @@ describe("Ensure the retro buttons work and cards change", () => {
   });
 });
 
+// retro page button and cards
+// describe("Retro Test - Participant", () => {
+//   it('finds the content of "Retro page ensuring all functionality is working"', () => {
+//     cy.visit("http://localhost:3000/");
+//     cy.contains("Retro").click();
+//     cy.url().should("include", "/rituals/retro");
+
+//     // get started button
+//     cy.get(".MuiButton-label").click();
+
+//     // participant 🔲
+//     cy.get(":nth-child(3) > :nth-child(5)").click();
+
+//     // partipant 📛
+//     cy.get("main > :nth-child(1) > :nth-child(3) > :nth-child(2)").type(
+//       "Tommy"
+//     );
+//     cy.get('[value=""]').type("FtjgOrPEDLprDcWNHs9Tz");
+
+//     cy.get(":nth-child(3) > :nth-child(8)").click();
+//   });
+// });
+
 describe("Standup Test", () => {
-  it('finds the content "Stand Up"', () => {
+  it('finds the content "Stand Up page and ensure all functionalty is working"', () => {
     cy.visit("http://localhost:3000");
     //select stand up button by content and click
     cy.contains("Stand Up").click();
@@ -172,36 +196,48 @@ describe("Standup Test", () => {
     cy.get(
       ".participantCardsList > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input"
     ).type("Jon");
-    cy.wait(500);
+    cy.wait(200);
     // click add participant button
     cy.get(".participantCardsList > .MuiButtonBase-root").click();
     //select add participant text field and add "Kawalpreet"
     cy.get(
       ".participantCardsList > .MuiFormControl-root > .MuiInputBase-root > .MuiInputBase-input"
     ).type("Kawalpreet");
-    cy.wait(500);
+    cy.wait(200);
+    // click add participant button
+    cy.get(".participantCardsList > .MuiButtonBase-root").click();
+
+    // click add participant button
+    cy.get(".participantCardsList > .MuiButtonBase-root").click();
+
     // click add participant button
     cy.get(".participantCardsList > .MuiButtonBase-root").click();
     //select start stand up button and click
     cy.get("center > .MuiButton-contained").click();
-    cy.wait(10000);
+    cy.wait(9000);
     //pause stand up
     cy.get(".MuiFab-root").click();
     cy.wait(2000);
     //resume standup
     cy.get(".MuiFab-root").click();
     cy.wait(2000);
+
     //click next participant button
     cy.get(".MuiButton-root").click();
-    cy.wait(4000);
+    cy.wait(9000);
+
     //click end stand up button
     cy.get(".MuiButton-root").click();
   });
 });
 
-describe("user page Test", () => {
-  it("finds the content of the user page", () => {
-    cy.visit("http://localhost:3000/user");
-  });
-});
-//end of test
+// describe("user page Test", () => {
+//   it("finds the content of the user page", () => {
+//     cy.visit("http://localhost:3000/");
+
+//     cy.get(".btn").click();
+//     cy.login();
+//   });
+// });
+
+// end of test

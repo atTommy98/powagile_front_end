@@ -1,0 +1,12 @@
+.roleContainer {
+  padding: 20px !important;
+}
+
+.disabledCard {
+  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  box-shadow: none !important;
+}

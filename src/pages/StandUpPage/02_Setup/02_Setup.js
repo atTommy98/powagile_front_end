@@ -11,6 +11,9 @@ import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import Collapse from "@material-ui/core/Collapse";
 
+// Material Icons
+import ScreenShareOutlinedIcon from "@material-ui/icons/ScreenShareOutlined";
+
 // CSS
 import "./02_Setup.css";
 
@@ -42,7 +45,7 @@ export default function SetupPage({ props }) {
 
   // FIXME: Needs to do a query just for the last meeting for that user
   async function getParticipants() {
-    const res = await fetch(`${REACT_APP_BACK_END_URL}/meeting/getAll`);
+    const res = await fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp/getAll`);
     const data = await res.json();
 
     const fetchedParticipants = [];
@@ -189,12 +192,19 @@ export default function SetupPage({ props }) {
         </Paper>
       </form>
 
-      {totalMeetingTime <= 0 ? null : totalMeetingTime <= 15 ? (
-        <p className="totalStandupTime">
-          You'll be done in about <b>{totalMeetingTime} minutes.</b>
-          <br />
-          Ready to start?
-        </p>
+      {totalMeetingTime <= 0 ? null : totalMeetingTime <= 15 &&
+        meeting.meetingParticipants.length > 1 ? (
+        <div>
+          <p className="totalStandupTime">
+            You'll be done in about <b>{totalMeetingTime} minutes.</b>
+            <br />
+          </p>
+          <div className="shareScreenReminder">
+            <ScreenShareOutlinedIcon />
+            <br />
+            <p>Remember to share your screen!</p>
+          </div>
+        </div>
       ) : totalMeetingTime > 15 ? (
         <p className="totalStandupTime">
           You'll be done in about <b>{totalMeetingTime} minutes.</b>
@@ -217,6 +227,7 @@ export default function SetupPage({ props }) {
           color="primary"
           variant="contained"
           disabled={
+            meeting.meetingParticipants.length < 2 ||
             minutesPerParticipant < 1 ||
             timeBetweenSpeakers < 1 ||
             totalMeetingTime <= 0

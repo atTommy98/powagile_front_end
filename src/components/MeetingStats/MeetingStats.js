@@ -8,6 +8,7 @@ import "./MeetingStats.css";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
 
 //components
 import SimpleAccordion from "./Acordion";
@@ -18,7 +19,8 @@ require("dotenv").config();
 const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function MeetingStats(props) {
-  const { calculateTotalMeetingTime } = props;
+  // const { calculateTotalMeetingTime } = props;
+
   // state for filtered date
   const [dateFilter, setDateFilter] = useState(null);
 
@@ -32,7 +34,7 @@ export default function MeetingStats(props) {
     timestamp = timestamp.getTime();
 
     const res = await fetch(
-      `${REACT_APP_BACK_END_URL}/meeting/getByDate?meetingStartTime=${timestamp}`
+      `${REACT_APP_BACK_END_URL}/meetingStandUp/getByDate?meetingStartTime=${timestamp}`
     );
     const { data } = await res.json();
     console.log(data);
@@ -70,10 +72,11 @@ export default function MeetingStats(props) {
           Get all Meetings
         </Button>
         <p>Showing all meetings from: {dateFilter} 📅</p>
-        {meetingHistory.map((obj, i) => {
-          return (
-            <div className="notes-inner">
-              <div key={i}>
+      </Paper>
+      {meetingHistory
+        ? meetingHistory.map((obj, i) => {
+            return (
+              <Card className="notes-inner" elevation={3}>
                 <FormPropsTextFields
                   index={i}
                   label="Meeting Type"
@@ -87,7 +90,7 @@ export default function MeetingStats(props) {
                 <FormPropsTextFields
                   index={i}
                   label="Meeting Time"
-                  defaultValue={`${Math.round(
+                  defaultValue={`${Math.ceil(
                     (new Date(obj.meetingEndTime).getTime() -
                       new Date(obj.meetingStartTime).getTime()) /
                       60000
@@ -105,11 +108,10 @@ export default function MeetingStats(props) {
                   //     return <div>Pauses: {ojs.pauses}</div>;
                   //   })}
                 ></SimpleAccordion>
-              </div>
-            </div>
-          );
-        })}
-      </Paper>
+              </Card>
+            );
+          })
+        : null}
     </div>
   );
 }

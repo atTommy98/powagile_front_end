@@ -25,6 +25,7 @@
 
 
 .notes-inner {
-  border:rgba(92, 92, 92, 0.6) solid 1px;
-  padding: 30px
+  width: 275px;
+  padding: 30px;
+  margin: 10px auto;
 }

@@ -13,7 +13,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import AppsIcon from "@material-ui/icons/Apps";
-import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
@@ -64,7 +65,6 @@ export default function Navigation(props) {
     link1: "Home",
     link2: "StandUp",
     link3: "Retro",
-    link4: "Sprint Planner",
     avatar: "Sprint Review",
     ...props.content,
   };
@@ -153,7 +153,7 @@ export default function Navigation(props) {
               <ListItemIcon>
                 <AppsIcon />
               </ListItemIcon>
-              <ListItemText primary={content["link1"]} />
+              <ListItemText primary={"Home"} />
             </ListItem>
             <ListItem
               button
@@ -164,9 +164,22 @@ export default function Navigation(props) {
               key={content["link2"]}
             >
               <ListItemIcon>
-                <BusinessCenterIcon />
+                <ArrowUpwardIcon />
               </ListItemIcon>
-              <ListItemText primary={content["link2"]} />
+              <ListItemText primary={"Stand Up"} />
+            </ListItem>
+            <ListItem
+              button
+              onClick={() => {
+                history.replace("/rituals/retro");
+                document.location.reload();
+              }}
+              key={content["link3"]}
+            >
+              <ListItemIcon>
+                <GroupWorkIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Retro"} />
             </ListItem>
           </List>
         </div>

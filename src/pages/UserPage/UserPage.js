@@ -11,17 +11,23 @@ import "./UserPage.css";
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 
-// Components
+// Material UI
+import Grid from "@material-ui/core/Grid";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+// Custom Components
 import UserDashboard from "../../components/UserDashboard/UserDashboard";
 import StatsGraph from "../../components/StatsGraph/StatsGraph";
 import MeetingStats from "../../components/MeetingStats/MeetingStats";
-import FastestMeeting from "../../components/FastestMeeting/FastestMeeting"
-
-// MUI
-import Grid from "@material-ui/core/Grid";
+import FastestMeeting from "../../components/FastestMeeting/FastestMeeting";
 
 export default function UserPage() {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {
+    user,
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently,
+  } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const cookies = new Cookies();
 
@@ -66,7 +72,7 @@ export default function UserPage() {
     }
   }, [getAccessTokenSilently, user]);
 
-  return isAuthenticated ? (
+  return user && isAuthenticated ? (
     <Grid container spacing={5}>
       <Grid item xs={12}>
         <UserDashboard></UserDashboard>
@@ -76,10 +82,11 @@ export default function UserPage() {
       </Grid>
       <Grid item xs={8}>
         <StatsGraph></StatsGraph>
+        <br />
         <FastestMeeting></FastestMeeting>
       </Grid>
     </Grid>
   ) : (
-    <h2>🤔 You don't seem to be logged in!</h2>
+    <LinearProgress />
   );
 }

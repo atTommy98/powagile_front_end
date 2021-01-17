@@ -4,20 +4,28 @@ import React, { useState, useEffect } from "react";
 // React-Charts
 import { Bar } from "react-chartjs-2";
 
-//MUI
+// MUI
 import Card from "@material-ui/core/Card";
 
-import "./StatsGraph.css"
+// CSS
+import "./StatsGraph.css";
+
+// Environment variables
+require("dotenv").config();
+
+const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function StatsGraph() {
   const [stats, setStats] = useState([]);
+  const previousWeek = calculatePreviousWeek();
+  const labelArray = createLabelArray(previousWeek);
 
-  // retrieve all meetings from database
+  //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
-      fetch("https://powagile-back-end.herokuapp.com/meeting")
+      fetch(`${REACT_APP_BACK_END_URL}/meetingStandUp/getAll`)
         .then((res) => res.json())
-        .then((data) => setStats(data));
+        .then((data) => setStats(data.flat()));
     }
     retrieveMeetings();
   }, []);
@@ -34,15 +42,16 @@ export default function StatsGraph() {
           if (meetingDate.day === previousWeek[i].day) {
             values[i] = Math.round(
               values[i] +
-                calculateTotalTime(obj.meetingStartTime, obj.meetingEndTime)
+                calculateTotalTime(
+                  Date.parse(obj.meetingStartTime),
+                  Date.parse(obj.meetingEndTime)
+                )
             );
-
             break;
           }
         }
       }
     });
-
     return values;
   }
 
@@ -86,8 +95,7 @@ export default function StatsGraph() {
     return labelArray;
   }
 
-  const previousWeek = calculatePreviousWeek();
-  const labelArray = createLabelArray(previousWeek);
+  console.log(generateDataset());
 
   // dataset for the graph
   const data = {
@@ -119,7 +127,7 @@ export default function StatsGraph() {
                 text: "Total Time in Meetings This Week",
                 fontSize: 24,
                 fontFamily: "Roboto",
-                fontColor: "rgba(0,0,0)"
+                fontColor: "rgba(0,0,0)",
               },
               animation: { duration: 2000 },
               legend: {
@@ -138,8 +146,8 @@ export default function StatsGraph() {
                     },
                     ticks: {
                       suggestedMin: 0,
-                      suggestedMax:
-                        Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                      suggestedMax: 100,
+                      //Math.ceil(Math.max(...generateDataset()) / 10) * 10,
                     },
                   },
                 ],
@@ -149,7 +157,6 @@ export default function StatsGraph() {
                       display: true,
                       labelString: "Date (day/month)",
                       fontSize: 15,
-
                     },
                   },
                 ],
