@@ -10,6 +10,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import PeopleIcon from "@material-ui/icons/People";
 
 // Custom Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
@@ -102,6 +103,15 @@ export default function Index(props) {
         </Grid>
       </section>
       <section className="ourTeam">
+        <Typography
+          className="getStartedText"
+          variant="h5"
+          element="p"
+          display="block"
+          gutterBottom
+        >
+          Meet our team! <PeopleIcon />
+        </Typography>
         <div className="teamMate">
           <ImgMediaCard></ImgMediaCard>
         </div>
