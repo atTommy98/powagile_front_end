@@ -1,0 +1,19 @@
+/* .homePagePhotos {
+  max-width: 350px;
+  max-height: 350px;
+  border-radius: 999px;
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+  padding: 10px;
+  height: 300px;
+}
