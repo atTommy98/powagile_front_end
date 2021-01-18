@@ -13,8 +13,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import AppsIcon from "@material-ui/icons/Apps";
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
 
 // Auth0
 import { useAuth0 } from "@auth0/auth0-react";
@@ -29,9 +29,12 @@ import "./HorizontalNav4.css";
 import LogInButton from "../Login/LogInButton/LogInButton";
 import LogOutButton from "../Login/LogOutButton/LogOutButton";
 
+// Logo
+import PowAgileLogo from "./images/POW_Agile_Nav_Logo.png";
+
 const useStyles = makeStyles((theme) => ({
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   linkBrand: {
     flexGrow: 1,
@@ -47,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawerContainer: {
-    width: 256,
+    width: 250,
   },
 }));
 
@@ -100,22 +103,39 @@ export default function Navigation(props) {
           <MenuIcon />
         </IconButton>
         <div className="link-container">
-          <Link to="/" className="nav-link"  onClick={() => {
-                history.replace("/");
-                document.location.reload();
-              }}>
+          <img
+            className="navLogo"
+            alt="POW!Agile Logo"
+            src={PowAgileLogo}
+          ></img>
+          <Link
+            to="/"
+            className="nav-link"
+            onClick={() => {
+              history.replace("/");
+              document.location.reload();
+            }}
+          >
             Home
           </Link>
-          <Link to="/rituals/standup" className="nav-link"  onClick={() => {
-                history.replace("/rituals/standup");
-                document.location.reload();
-              }}>
+          <Link
+            to="/rituals/standup"
+            className="nav-link"
+            onClick={() => {
+              history.replace("/rituals/standup");
+              document.location.reload();
+            }}
+          >
             Stand Up
           </Link>
-          <Link to="/rituals/retro" className="nav-link"  onClick={() => {
-                history.replace("/rituals/retro");
-                document.location.reload();
-              }}>
+          <Link
+            to="/rituals/retro"
+            className="nav-link"
+            onClick={() => {
+              history.replace("/rituals/retro");
+              document.location.reload();
+            }}
+          >
             Retro
           </Link>
         </div>
@@ -141,6 +161,11 @@ export default function Navigation(props) {
 
       <Drawer anchor="left" open={state.open} onClose={toggleDrawer(false)}>
         <div className={classes.drawerContainer}>
+          <img
+            className="drawerNavLogo"
+            alt="POW!Agile Logo"
+            src={PowAgileLogo}
+          ></img>
           <List>
             <ListItem
               button

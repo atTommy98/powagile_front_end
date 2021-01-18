@@ -10,3 +10,9 @@
   user-select: none !important;
   box-shadow: none !important;
 }
+
+.registerNudgeText {
+  text-align: center;
+  font-size: 1em;
+  color: #f50057;
+}

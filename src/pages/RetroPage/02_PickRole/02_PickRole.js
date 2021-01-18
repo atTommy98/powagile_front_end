@@ -19,7 +19,7 @@ import "./02_PickRole.css";
 
 export default function PickRole({ props }) {
   const { previousStep = null, nextStep = null } = props;
-  const { user } = useAuth0();
+  const { user, isLoading } = useAuth0();
   return (
     <section className="retroSetupPage">
       <Paper
@@ -27,6 +27,12 @@ export default function PickRole({ props }) {
         style={{ maxWidth: "700px", padding: "5px", margin: "10px auto" }}
       >
         <h3 style={{ textAlign: "center" }}>Select your role</h3>
+
+        {!user && !isLoading ? (
+          <p className="registerNudgeText">
+            To facilitate a Retrospective, please register an account
+          </p>
+        ) : null}
 
         <Grid className="roleContainer" container spacing={2}>
           <Grid item xs>
