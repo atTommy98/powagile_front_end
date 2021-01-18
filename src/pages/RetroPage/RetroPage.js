@@ -172,6 +172,11 @@ function Retro() {
     if (socket) {
       socket.emit("endMeeting");
     }
+    setMeeting({
+      ...meeting,
+      meetingFinished: true,
+      meetingEndTime: Date.now(),
+    });
   }
 
   return (
@@ -250,7 +255,6 @@ function Retro() {
         <FinishedMeeting
           props={{
             meeting,
-
             participant,
           }}
         />

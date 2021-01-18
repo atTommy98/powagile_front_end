@@ -16,10 +16,6 @@ import { Typography } from "@material-ui/core";
 import { Zoom } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
-// Environment variables
-require("dotenv").config();
-const { REACT_APP_BACK_END_URL } = process.env;
-
 export default function FinishedMeeting({ props }) {
   const { meeting, participant } = props;
   const congratulationsMessages = [
