@@ -20,7 +20,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Button from "@material-ui/core/Button";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // Custom componenets
@@ -49,10 +49,13 @@ export default function MeetingInProgress({ props }) {
     updateCardText,
     updateCardVotes,
     moveCard,
+    kickParticipant,
+    finishMeeting,
     participant,
     setParticipant,
     socket,
     setSocket,
+    nextStep,
   } = props;
 
   // Snackbar notifications
@@ -128,6 +131,11 @@ export default function MeetingInProgress({ props }) {
           setActiveParticipants(newParticipants);
         });
 
+        socket.on("endMeeting", () => {
+          nextStep();
+          socket.disconnect();
+        });
+
         setRulesEstablished(true);
       }
     }
@@ -193,12 +201,14 @@ export default function MeetingInProgress({ props }) {
                     primary={el.name}
                     secondary={i === 0 ? "Facilitator" : "Participant"}
                   />
-                  {/* FIXME: */}
-                  <ListItemSecondaryAction
-                    onClick={() => console.log(`Kicking ${el.id}`)}
-                  >
+
+                  <ListItemSecondaryAction>
                     {i !== 0 && participant.isFacilitator ? (
-                      <IconButton edge="end" aria-label="completed">
+                      <IconButton
+                        edge="end"
+                        aria-label="kick"
+                        onClick={() => kickParticipant(el.id)}
+                      >
                         <ExitToAppIcon color="secondary" />
                       </IconButton>
                     ) : null}
@@ -209,14 +219,15 @@ export default function MeetingInProgress({ props }) {
           </Paper>
         </Grid>
         <Grid item xs={9}>
-          {/* FIXME: No children showing*/}
           <TimerPartyParrotHorizontal
             props={{
               totalTime: 600,
               timeLeft: 260,
             }}
           >
-            <p>Finish button will go here....</p>
+            <Button onClick={finishMeeting} color="secondary">
+              Finish Meeting &rarr;
+            </Button>
           </TimerPartyParrotHorizontal>
         </Grid>
       </Grid>

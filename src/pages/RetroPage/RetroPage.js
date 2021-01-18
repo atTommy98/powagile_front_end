@@ -160,6 +160,20 @@ function Retro() {
     }
   }
 
+  function kickParticipant({ id }) {
+    // Emit
+    if (socket) {
+      socket.emit("kick", id);
+    }
+  }
+
+  function finishMeeting() {
+    // Emit
+    if (socket) {
+      socket.emit("endMeeting");
+    }
+  }
+
   return (
     <div>
       <Collapse in={retroStep === 1} timeout={800}>
@@ -221,10 +235,23 @@ function Retro() {
             updateCardText,
             updateCardVotes,
             moveCard,
+            kickParticipant,
+            finishMeeting,
             participant,
             setParticipant,
             socket,
             setSocket,
+            nextStep,
+          }}
+        />
+      ) : null}
+
+      {retroStep === 5 ? (
+        <FinishedMeeting
+          props={{
+            meeting,
+            setMeeting,
+            participant,
           }}
         />
       ) : null}

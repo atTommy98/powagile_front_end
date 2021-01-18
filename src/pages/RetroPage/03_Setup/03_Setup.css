@@ -19,8 +19,8 @@
 }
 
 .uniqueLinkReadOnlyField div,
-input,
-svg {
+.uniqueLinkReadOnlyField input,
+.uniqueLinkReadOnlyField svg {
   cursor: pointer !important;
 }
 
@@ -29,7 +29,7 @@ svg {
   -webkit-mask-image: linear-gradient(
     90deg,
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 60%,
-    rgba(0, 0, 0, 0.05) 95%
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.025) 95%
   );
 }

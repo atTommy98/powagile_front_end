@@ -1,5 +1,6 @@
 .retroParticipantsTracker {
-  height: 355px;
+  height: 340px;
+  margin-bottom: 5px;
 }
 
 .retroParticipantsTracker h3 {
@@ -8,7 +9,7 @@
 }
 
 .retroParticipantsListContainer {
-  max-height: 280px !important;
+  height: 260px !important;
   overflow-y: scroll;
   -webkit-mask-image: linear-gradient(
     180deg,

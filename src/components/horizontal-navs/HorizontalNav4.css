@@ -58,14 +58,28 @@ a:active {
   justify-content: space-between;
   align-items: flex-end;
   width: 350px;
-  padding-left: 30px
+  padding-left: 30px;
 }
 
 .bar {
   background-color: #2196f3;
 }
 
-@media only screen and (max-width: 900px) {
+.navLogo {
+  display: none !important;
+  pointer-events: none;
+  width: 100px;
+  display: inline-block;
+  background: #2196f3;
+}
+
+.drawerNavLogo {
+  pointer-events: none;
+  width: 250px;
+  background: #2196f3;
+}
+
+@media only screen and (max-width: 650px) {
   .link-container {
     display: none;
   }
