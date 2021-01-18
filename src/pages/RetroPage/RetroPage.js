@@ -250,7 +250,7 @@ function Retro() {
         <FinishedMeeting
           props={{
             meeting,
-            setMeeting,
+
             participant,
           }}
         />
