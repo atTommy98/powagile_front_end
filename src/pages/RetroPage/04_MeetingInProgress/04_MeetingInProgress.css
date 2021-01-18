@@ -1,0 +1,42 @@
+.retroParticipantsTracker {
+  height: 340px;
+  margin-bottom: 5px;
+}
+
+.retroParticipantsTracker h3 {
+  text-align: center;
+  padding: 20px 0px 0px 0px;
+}
+
+.retroParticipantsListContainer {
+  height: 260px !important;
+  overflow-y: scroll;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 70%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+}
+
+/* width */
+.retroParticipantsListContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.retroParticipantsListContainer::-webkit-scrollbar-track {
+  border-radius: 15em;
+  background: #d7d7d7;
+}
+
+/* Handle */
+.retroParticipantsListContainer::-webkit-scrollbar-thumb {
+  border-radius: 15em;
+  background: #888;
+}
+
+/* Handle on hover */
+.retroParticipantsListContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

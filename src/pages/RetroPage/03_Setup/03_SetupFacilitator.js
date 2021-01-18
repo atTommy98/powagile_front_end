@@ -127,11 +127,10 @@ export default function SetupFacilitator({ props }) {
 
   // Set Meeting Room ID
   useEffect(() => {
-    if (meeting.roomId === null) {
-      setMeeting({ ...meeting, roomId: nanoid() });
-    }
+    setMeeting({ ...meeting, roomId: nanoid() });
+
     console.info(`Meeting room id set to ${meeting.roomId}`);
-  });
+  }, []);
 
   // Add avatar URL, if any
   useEffect(() => {
@@ -186,16 +185,20 @@ export default function SetupFacilitator({ props }) {
             label="Pick your retrospective"
           >
             {retroColumns.map((el, i) => (
-              <MenuItem value={i}>
+              <MenuItem key={`option_${i}`} value={i}>
                 {el.icon}&nbsp;{el.name}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
 
-        <FormControl variant="filled" className="uniqueLinkReadOnlyField">
+        <FormControl
+          onClick={copyLink}
+          variant="filled"
+          className="uniqueLinkReadOnlyField"
+        >
           <InputLabel htmlFor="generated-meeting-url">
-            Your unique link - send this to your participants
+            Your meeting room link - click to copy
           </InputLabel>
           <FilledInput
             readOnly
@@ -203,15 +206,7 @@ export default function SetupFacilitator({ props }) {
             value={`${REACT_APP_FRONT_END_URL}/rituals/retro?roomId=${meeting.roomId}`}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="copy link"
-                  onClick={copyLink}
-                  edge="end"
-                >
-                  <Button>
-                    Copy &nbsp; <FileCopyIcon />
-                  </Button>
-                </IconButton>
+                <FileCopyIcon />
               </InputAdornment>
             }
           />
@@ -219,6 +214,7 @@ export default function SetupFacilitator({ props }) {
       </Paper>
 
       <center>
+        <br />
         <Button color="secondary" onClick={previousStep}>
           &larr; Back
         </Button>

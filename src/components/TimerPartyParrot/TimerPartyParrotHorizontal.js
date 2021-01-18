@@ -10,7 +10,7 @@ import FastParrot from "../Parrots/hd/fastparrot.gif";
 // CSS
 import "./TimerPartyParrot.css";
 
-export default function TimerPartyParrotHorizontal({ props, helperText }) {
+export default function TimerPartyParrotHorizontal({ props, children }) {
   const { totalTime, timeLeft } = props;
 
   return (
@@ -42,8 +42,7 @@ export default function TimerPartyParrotHorizontal({ props, helperText }) {
           </p>
         </div>
         <br />
-
-        <div className="supportingComponents">{helperText}</div>
+        {children}
       </Paper>
     </Collapse>
   );
