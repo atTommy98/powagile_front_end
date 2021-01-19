@@ -77,7 +77,12 @@ export default function MeetingInProgress({ props }) {
   // Start the meeting
   useEffect(() => {
     if (!meeting.meetingStarted) {
-      setMeeting({ ...meeting, meetingStarted: true });
+      setMeeting({
+        ...meeting,
+        meetingStarted: true,
+        meetingStartTime: Date.now(),
+        meetingShouldEndAt: Date.now() + meeting.meetingDuration * 60000,
+      });
     }
   });
 
@@ -161,6 +166,16 @@ export default function MeetingInProgress({ props }) {
     updateCardVotes,
   ]);
 
+  // Timer countdown
+  const [timeLeft, seTtimeLeft] = useState(4500);
+  useEffect(() => {
+    function updateTimer() {
+      seTtimeLeft(Math.ceil((meeting.meetingShouldEndAt - Date.now()) / 1000));
+    }
+
+    setTimeout(updateTimer, 1000);
+  });
+
   return (
     <div>
       <Accordion>
@@ -207,7 +222,7 @@ export default function MeetingInProgress({ props }) {
                       <IconButton
                         edge="end"
                         aria-label="kick"
-                        onClick={() => kickParticipant(el.id)}
+                        onClick={() => kickParticipant({ id: el.id })}
                       >
                         <ExitToAppIcon color="secondary" />
                       </IconButton>
@@ -221,8 +236,8 @@ export default function MeetingInProgress({ props }) {
         <Grid item xs={9}>
           <TimerPartyParrotHorizontal
             props={{
-              totalTime: 600,
-              timeLeft: 260,
+              totalTime: meeting.meetingDuration * 60,
+              timeLeft: timeLeft,
             }}
           >
             <Button onClick={finishMeeting} color="secondary">

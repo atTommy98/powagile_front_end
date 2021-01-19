@@ -25,7 +25,7 @@ export default function StandUpPage() {
   const [standUpStep, setStandUpStep] = useState(1);
 
   /*Meeting Setup*/
-  const [minutesPerParticipant, setMinutesPerParticipant] = useState(1);
+  const [secondsPerParticipant, setSecondsPerParticipant] = useState(60);
   const [timeBetweenSpeakers, setTimeBetweenSpeakers] = useState(10);
   const [participantToAdd, setParticipantToAdd] = useState("");
 
@@ -81,7 +81,7 @@ export default function StandUpPage() {
   useEffect(() => {
     function calculateMeetingTime() {
       const people = meeting.meetingParticipants.length;
-      const speakingTimeInSeconds = people * minutesPerParticipant * 60;
+      const speakingTimeInSeconds = people * secondsPerParticipant;
       const timeBetweenSpeakersInSeconds = people * timeBetweenSpeakers;
       const totalTimeInMinutes = Math.round(
         (speakingTimeInSeconds + timeBetweenSpeakersInSeconds) / 60
@@ -94,7 +94,7 @@ export default function StandUpPage() {
   }, [
     standUpStep,
     meeting.meetingParticipants.length,
-    minutesPerParticipant,
+    secondsPerParticipant,
     timeBetweenSpeakers,
   ]);
 
@@ -148,7 +148,7 @@ export default function StandUpPage() {
   function startMeeting() {
     // Give each participant their time
     const myArr = meeting.meetingParticipants.map((el) => {
-      el.timeLeft = minutesPerParticipant * 60;
+      el.timeLeft = secondsPerParticipant;
       return el;
     });
     setMeeting({ ...meeting, meetingParticipants: [...myArr] });
@@ -195,8 +195,8 @@ export default function StandUpPage() {
       {standUpStep === 2 ? (
         <SetupPage
           props={{
-            minutesPerParticipant,
-            setMinutesPerParticipant,
+            secondsPerParticipant,
+            setSecondsPerParticipant,
             timeBetweenSpeakers,
             setTimeBetweenSpeakers,
             participantToAdd,
@@ -218,7 +218,7 @@ export default function StandUpPage() {
             props={{
               meeting,
               setMeeting,
-              speakerTime: minutesPerParticipant * 60,
+              speakerTime: secondsPerParticipant,
               timeBetweenSpeakers,
             }}
           />
@@ -228,7 +228,7 @@ export default function StandUpPage() {
       {standUpStep === 4 ? (
         <MeetingFinished
           props={{
-            minutesPerParticipant,
+            secondsPerParticipant,
             meeting,
           }}
         />

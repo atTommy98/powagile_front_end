@@ -2,20 +2,17 @@
 import React from "react";
 
 // Material UI
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PeopleIcon from "@material-ui/icons/People";
 
 // Custom Components
 import ProductTitle from "../../components/ProductTitle/ProductTitle";
 import PlatformLogo from "./images/logo512.png";
-import ImgMediaCard from "../../components/ProfileCards/ProfileCard";
+import OurTeam from "../../components/OurTeam/OurTeam";
 // React Router
 import { Link } from "react-router-dom";
 
@@ -103,18 +100,10 @@ export default function Index(props) {
         </Grid>
       </section>
       <section className="ourTeam">
-        <Typography
-          className="getStartedText"
-          variant="h5"
-          element="p"
-          display="block"
-          gutterBottom
-        >
-          Meet our team! <PeopleIcon />
-        </Typography>
-        <div className="teamMate">
-          <ImgMediaCard></ImgMediaCard>
-        </div>
+        <h2 className="meetTheTeam">
+          <PeopleIcon /> Meet the team...
+        </h2>
+        <OurTeam />
       </section>
     </div>
   );

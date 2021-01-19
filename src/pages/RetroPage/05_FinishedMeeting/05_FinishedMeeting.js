@@ -1,6 +1,3 @@
-// React
-import { useEffect } from "react";
-
 // CSS
 import "./05_FinishedMeeting.css";
 
@@ -39,7 +36,24 @@ export default function FinishedMeeting({ props }) {
   }
 
   function findTotalTime() {
-    // Do stuff
+    let mins = 0;
+    let secs = Math.ceil(
+      (meeting.meetingEndTime - meeting.meetingStartTime) / 1000
+    );
+
+    while (secs > 60) {
+      secs -= 60;
+      mins += 1;
+    }
+
+    if (mins < 10) {
+      mins = `0${mins}`;
+    }
+    if (secs < 10) {
+      secs = `0${mins}`;
+    }
+
+    return `${mins}:${secs}`;
   }
 
   function findTopContributor() {
@@ -79,7 +93,8 @@ export default function FinishedMeeting({ props }) {
         minCount = modeMap[el];
       }
     }
-    return minEl;
+
+    return minEl === findTopContributor() ? "No one..." : minEl;
   }
 
   function findTotalCardsCount() {
@@ -118,7 +133,7 @@ export default function FinishedMeeting({ props }) {
                   ⌚ Total meeting time
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  XX:XX
+                  {findTotalTime()}
                 </Typography>
               </CardContent>
             </Card>

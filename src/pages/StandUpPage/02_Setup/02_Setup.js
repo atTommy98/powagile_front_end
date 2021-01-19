@@ -26,8 +26,8 @@ const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function SetupPage({ props }) {
   const {
-    minutesPerParticipant,
-    setMinutesPerParticipant,
+    secondsPerParticipant,
+    setSecondsPerParticipant,
     timeBetweenSpeakers,
     setTimeBetweenSpeakers,
     participantToAdd,
@@ -56,7 +56,7 @@ export default function SetupPage({ props }) {
         fetchedParticipants.push({
           name: participant.name,
           hasHadTurn: false,
-          timeLeft: minutesPerParticipant * 60,
+          timeLeft: secondsPerParticipant,
           pauses: [],
         })
       );
@@ -83,24 +83,24 @@ export default function SetupPage({ props }) {
           <TextField
             type="number"
             variant="outlined"
-            label="Minutes per participant"
-            defaultValue={minutesPerParticipant}
-            error={minutesPerParticipant < 1}
+            label="Seconds per participant"
+            defaultValue={secondsPerParticipant}
+            error={secondsPerParticipant < 10}
             helperText={
-              minutesPerParticipant < 1
-                ? "Please give meeting at least 1 minute"
-                : minutesPerParticipant > 10
+              secondsPerParticipant < 1
+                ? "Please give participants at least 30 seconds"
+                : secondsPerParticipant > 120
                 ? "Aim for a shorter standup, if possible"
                 : null
             }
-            onChange={(e) => setMinutesPerParticipant(Number(e.target.value))}
+            onChange={(e) => setSecondsPerParticipant(Number(e.target.value))}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
                   <TimelapseIcon />
                 </InputAdornment>
               ),
-              endAdornment: <InputAdornment position="end">min</InputAdornment>,
+              endAdornment: <InputAdornment position="end">sec</InputAdornment>,
             }}
           />
           <TextField
@@ -228,7 +228,7 @@ export default function SetupPage({ props }) {
           variant="contained"
           disabled={
             meeting.meetingParticipants.length < 2 ||
-            minutesPerParticipant < 1 ||
+            secondsPerParticipant < 1 ||
             timeBetweenSpeakers < 1 ||
             totalMeetingTime <= 0
           }
