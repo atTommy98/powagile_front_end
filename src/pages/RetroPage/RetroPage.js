@@ -71,6 +71,7 @@ function Retro() {
     columns: ["Liked", "Learned", "Lacked", "Longed For"],
     cards: [],
     meetingStarted: false,
+    meetingDuration: 15,
     meetingFinished: false,
     meetingStartTime: null,
     meetingEndTime: null,
@@ -162,6 +163,8 @@ function Retro() {
 
   function kickParticipant({ id }) {
     // Emit
+    console.log("Trying to kick");
+    console.log(id);
     if (socket) {
       socket.emit("kick", id);
     }

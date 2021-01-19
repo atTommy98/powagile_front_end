@@ -15,7 +15,12 @@
 }
 .uniqueLinkReadOnlyField {
   width: 600px !important;
-  margin: 25px 0px !important;
+  margin: 20px 0px 30px 0px !important;
+}
+
+.timeLimitRetro {
+  width: 600px !important;
+  margin: 15px 0px !important;
 }
 
 .uniqueLinkReadOnlyField div,

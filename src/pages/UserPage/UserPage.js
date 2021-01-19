@@ -20,6 +20,7 @@ import UserDashboard from "../../components/UserDashboard/UserDashboard";
 import StatsGraph from "../../components/StatsGraph/StatsGraph";
 import MeetingStats from "../../components/MeetingStats/MeetingStats";
 import FastestMeeting from "../../components/FastestMeeting/FastestMeeting";
+import SlowestMeeting from "../../components/SlowestMeeting/SlowestMeeting";
 
 export default function UserPage() {
   const {
@@ -75,15 +76,16 @@ export default function UserPage() {
   return user && isAuthenticated ? (
     <Grid container spacing={5}>
       <Grid item xs={12}>
-        <UserDashboard></UserDashboard>
+        <UserDashboard />
       </Grid>
       <Grid item xs={4}>
-        <MeetingStats></MeetingStats>
+        <MeetingStats />
       </Grid>
       <Grid item xs={8}>
-        <StatsGraph></StatsGraph>
+        <StatsGraph />
         <br />
-        <FastestMeeting></FastestMeeting>
+        <FastestMeeting />
+        <SlowestMeeting />
       </Grid>
     </Grid>
   ) : (

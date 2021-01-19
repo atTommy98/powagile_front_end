@@ -9,11 +9,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import IconButton from "@material-ui/core/IconButton";
 import FilledInput from "@material-ui/core/FilledInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import TextField from "@material-ui/core/TextField";
+import TimelapseIcon from "@material-ui/icons/Timelapse";
 
 // Retro Types Icons
 import Looks4Icon from "@material-ui/icons/Looks4";
@@ -113,6 +113,13 @@ export default function SetupFacilitator({ props }) {
     });
   }
 
+  function changeRetroTime(e) {
+    setMeeting({
+      ...meeting,
+      meetingDuration: Number(e.target.value),
+    });
+  }
+
   function copyLink() {
     const uniqueLink = document.getElementById("generated-meeting-url");
     uniqueLink.select();
@@ -191,6 +198,24 @@ export default function SetupFacilitator({ props }) {
             ))}
           </Select>
         </FormControl>
+
+        <TextField
+          type="number"
+          variant="outlined"
+          className="timeLimitRetro"
+          label="Enter a time limit for this Retrospective"
+          defaultValue={15}
+          helperText="For daily Retrospectives, we recommend 15-20 mins"
+          onChange={(e) => changeRetroTime(e)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <TimelapseIcon />
+              </InputAdornment>
+            ),
+            endAdornment: <InputAdornment position="end">min</InputAdornment>,
+          }}
+        />
 
         <FormControl
           onClick={copyLink}
