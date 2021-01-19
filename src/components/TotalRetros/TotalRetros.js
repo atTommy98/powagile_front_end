@@ -7,28 +7,20 @@ require("dotenv").config();
 const { REACT_APP_BACK_END_URL } = process.env;
 
 export default function UserDashboard(props) {
-  const [meetings, setMeetings] = useState([]);
+  const [retros, setRetros] = useState([]);
 
   //Get meetings
   useEffect(() => {
     function retrieveMeetings() {
       fetch(`${REACT_APP_BACK_END_URL}/meetingRetro/getAll`)
         .then((res) => res.json())
-        .then((data) => setMeetings(data));
+        .then((data) => setRetros(data));
     }
     retrieveMeetings();
   }, []);
 
   function generateNumberOfRetros() {
-    console.log(meetings);
-    let numberOfRetros = 0;
-    // eslint-disable-next-line array-callback-return
-    meetings.map((obj) => {
-      if (obj.type === "retro") {
-        numberOfRetros++;
-      }
-    });
-    return numberOfRetros;
+    return retros.length;
   }
 
   generateNumberOfRetros();

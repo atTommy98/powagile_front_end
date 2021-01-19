@@ -95,6 +95,13 @@ export default function StatsGraph() {
     return labelArray;
   }
 
+  function calculateSuggestedMax() {
+    return (
+      Math.max(...generateDataset()) +
+      (Math.max(...generateDataset()) * 20) / 100
+    );
+  }
+
   console.log(generateDataset());
 
   // dataset for the graph
@@ -145,9 +152,10 @@ export default function StatsGraph() {
                       fontSize: 15,
                     },
                     ticks: {
-                      suggestedMin: 0,
-                      suggestedMax: 100,
-                      //Math.ceil(Math.max(...generateDataset()) / 10) * 10,
+                      max: calculateSuggestedMax(),
+                      min: 0,
+                      /*Math.max(...generateDataset()) +
+                        (Math.max(...generateDataset()) * 15) / 100*/
                     },
                   },
                 ],

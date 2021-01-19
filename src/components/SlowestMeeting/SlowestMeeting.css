@@ -1,4 +1,4 @@
-.fastest-container {
+.slowest-container {
   margin-top: 15px !important;
 }
 
@@ -7,17 +7,17 @@
   display: flex;
 }
 
-.fastest-meeting-text {
+.slowest-meeting-text {
   font-size: 18px;
   margin: 15px 0px;
   color: rgba(92, 92, 92, 0.6);
 }
 
-.fastest-meeting-number {
+.slowest-meeting-number {
   font-size: 36px;
   margin: 10px 0px;
 }
 
-.fastest-meeting-container {
+.slowest-meeting-container {
   text-align: center;
 }
